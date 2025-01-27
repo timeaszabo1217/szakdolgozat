@@ -29,7 +29,7 @@ def test_classifier(new_dataset_dir, classifier_file):
 
 if __name__ == "__main__":
     # Az új adatkészlet könyvtárának megadása (cseréld le a megfelelő elérési útra)
-    new_dataset_dir = os.path.abspath('data/CASIA2.0_Groundtruth')
+    new_dataset_dir = os.path.abspath('../data/CASIA2.0_Groundtruth')
 
     # A mentett osztályozó fájl elérési útja
     classifier_file = os.path.join('results', 'classifier_model.pkl')

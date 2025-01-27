@@ -37,7 +37,7 @@ def preprocess_images(revised_dir):
 
 
 if __name__ == "__main__":
-    revised_dir = os.path.abspath('data/CASIA2.0_revised')
+    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     print(f"Using revised directory: {revised_dir}")
     images, labels = preprocess_images(revised_dir)
     print(f"Number of loaded images: {len(images)}")

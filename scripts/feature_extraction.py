@@ -48,7 +48,7 @@ def load_features(file_path):
 if __name__ == "__main__":
     from preprocess import preprocess_images
 
-    revised_dir = os.path.abspath('data/CASIA2.0_revised')
+    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
     output_file = os.path.join(result_dir, 'features_labels.npz')

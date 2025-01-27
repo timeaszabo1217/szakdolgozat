@@ -80,7 +80,7 @@ if __name__ == "__main__":
         from preprocess import preprocess_images
         from feature_extraction import extract_features
 
-        revised_dir = os.path.abspath('data/CASIA2.0_revised')
+        revised_dir = os.path.abspath('../data/CASIA2.0_revised')
         images, labels = preprocess_images(revised_dir)
         features = extract_features(images)
         save_features(features, labels, features_file)
