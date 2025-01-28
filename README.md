@@ -75,6 +75,8 @@ A projekt könyvtárszerkezete a következő:
 ```
 ├── data/
 │   ├── CASIA2.0_revised/
+│   │   ├── Au/
+│   │   └── Tp/
 │   └── CASIA2.0_Groundtruth/
 ├── scripts/
 │   ├── results/
