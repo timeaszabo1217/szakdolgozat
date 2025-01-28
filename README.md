@@ -34,29 +34,25 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
    [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
 
 ## Használat
-**Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
+1. **Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
+   ```bash
+   python scripts/preprocess.py
+   ```
 
-```bash
-python scripts/preprocess.py
-```
+2. **Jellemzők kinyerése**: Futtasuk a `feature_extraction.py` scriptet a jellemzők kinyeréséhez:
+   ```bash
+   python scripts/feature_extraction.py
+   ```
 
-**Jellemzők kinyerése**: Futtasuk a `feature_extraction.py` scriptet a jellemzők kinyeréséhez:
-
-```bash
-python scripts/feature_extraction.py
-```
-
-**Modell Betanítása**: Futtasuk a `train_classifier.py` scriptet a modell betanításához:
-
-```bash
-python scripts/train_classifier.py
-```
-
-**Osztályozó Tesztelése**: Futtasuk a `test_classifier.py` scriptet az új adatkészleten történő teszteléshez:
-
-```bash
-python scripts/test_classifier.py
-```
+3. **Modell Betanítása**: Futtasuk a `train_classifier.py` scriptet a modell betanításához:
+   ```bash
+   python scripts/train_classifier.py
+   ```
+   
+4. **Osztályozó Tesztelése**: Futtasuk a `test_classifier.py` scriptet az új adatkészleten történő teszteléshez:
+   ```bash
+   python scripts/test_classifier.py
+   ```
 
 ## Eredmények
 A betanított modell teljesítményének értékeléséhez a következő metrikákat használom:
