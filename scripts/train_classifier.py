@@ -25,8 +25,8 @@ def save_classifier(classifier, output_file):
 
 def save_metrics(accuracy, recall, output_file):
     with open(output_file, 'w') as f:
-        f.write(f'Accuracy: {accuracy}\n')
-        f.write(f'Recall: {recall}\n')
+        f.write(f'Accuracy: {accuracy * 100:.2f}%\n')
+        f.write(f'Recall: {recall * 100:.2f}%\n')
     print(f"Metrics saved to {output_file}")
 
 
@@ -40,12 +40,12 @@ def load_classifier(file_path):
 def plot_metrics(accuracy, recall, output_file):
     plt.figure()
     metrics = ['Accuracy', 'Recall']
-    values = [accuracy, recall]
-    plt.bar(metrics, values, color=['blue', 'orange'])
+    values = [accuracy * 100, recall * 100]
+    plt.bar(metrics, values, color=['green', 'purple'])
     plt.xlabel('Metrics')
-    plt.ylabel('Scores')
+    plt.ylabel('Scores (%)')
     plt.title('Classifier Performance Metrics')
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
     plt.savefig(output_file)
     plt.close()
     print(f"Plot saved to {output_file}")
@@ -55,7 +55,7 @@ def plot_metrics(accuracy, recall, output_file):
 def plot_data_distribution(labels, title):
     unique, counts = np.unique(labels, return_counts=True)
     plt.figure()
-    plt.bar(unique, counts, color=['blue', 'orange'])
+    plt.bar(unique, counts, color=['green', 'purple'])
     plt.xlabel('Classes')
     plt.ylabel('Number of Samples')
     plt.title(title)
@@ -93,8 +93,8 @@ if __name__ == "__main__":
         print(f"Loaded metrics: \n{metrics}")
     else:
         classifier, accuracy, recall = train_and_evaluate(features, labels)
-        print(f'Accuracy: {accuracy}')
-        print(f'Recall: {recall}')
+        print(f'Accuracy: {accuracy * 100:.2f}%')
+        print(f'Recall: {recall * 100:.2f}%')
         save_classifier(classifier, classifier_file)
         save_metrics(accuracy, recall, metrics_file)
         plot_metrics(accuracy, recall, plot_file)

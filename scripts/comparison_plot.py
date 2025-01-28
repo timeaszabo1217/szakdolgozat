@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
 # Eredmények dokumentálása és összehasonlítása
-your_accuracy = 0.85
-your_recall = 0.80
+your_accuracy = 0.7792
+your_recall = 0.0
 
 # Korábbi kutatásból származó eredmények
 previous_accuracy = 0.83
@@ -32,8 +32,8 @@ def plot_comparison(your_accuracy, your_recall, previous_accuracy, previous_reca
     x = range(len(metrics))
 
     plt.figure()
-    plt.bar(x, your_scores, width=0.4, label='Current Model', color='blue', align='center')
-    plt.bar(x, previous_scores, width=0.4, label='Previous Research', color='orange', align='edge')
+    plt.bar(x, your_scores, width=0.4, label='Current Model', color='green', align='center')
+    plt.bar(x, previous_scores, width=0.4, label='Previous Research', color='purple', align='edge')
     plt.xlabel('Metrics')
     plt.ylabel('Scores')
     plt.title('Comparison of Current Model and Previous Research')
