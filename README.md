@@ -1,88 +1,114 @@
-# Groundtruth of spliced images in dataset CASIA 2.0
+# Szakdolgozat Projekt
 
-* CASIA 1.0 groundtruth dataset is avaiable at: https://github.com/namtpham/casia1groundtruth
+Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet használatával különböző képfeldolgozási és gépi tanulási technikákat vizsgál a manipulált képek felismerésére.
 
-![Tp_D_CRN_M_N_pla00035_pla00033_10997.jpg](https://i.imgur.com/7AmV8Wx.jpg)
-![Tp_D_CRN_M_N_pla00035_pla00033_10997_gt.png](https://i.imgur.com/3eFze2H.png)
+## Tartalomjegyzék
+- [Bevezetés](#bevezetés)
+- [Követelmények](#követelmények)
+- [Telepítés](#telepítés)
+- [Használat](#használat)
+- [Eredmények](#eredmények)
+- [Következtetések](#következtetések)
 
-![Tp_D_CRN_S_N_nat00033_cha00086_11502.jpg](https://i.imgur.com/6TgSMcG.jpg)
-![Tp_D_CRN_S_N_nat00033_cha00086_11502_gt.png](https://i.imgur.com/3Pd5DK0.png)
+## Bevezetés
+A projekt célja, hogy egy gépi tanulási modellt fejlesszen ki a manipulált képek felismerésére. A projekt az alábbi fő lépéseket tartalmazza:
+1. Az adatok előfeldolgozása és jellemzők kinyerése
+2. A modell betanítása és értékelése
+3. Az osztályozó tesztelése új adatkészleteken
 
-* Groundtruth dataset can be downloaded directly from this repository.
-* Recently, I received several requests of the original dataset since the server is no longer available.
-I upload this dataset to my Drive to spread this dataset to the research community. Please visit the following link to download: (~2.6 GB)
+## Követelmények
+A projekt futtatásához a következő könyvtárak és eszközök szükségesek:
+- Python 3.x
+- OpenCV
+- NumPy
+- Matplotlib
+- Scikit-learn
 
-* [Update 2022/04/14] Revised dataset: https://bit.ly/2QazgkG
+## Telepítés
+1. **Könyvtárak Telepítése**:
+   Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
+   ```bash
+   pip install opencv-python numpy matplotlib scikit-learn
+   ```
+2. **Adatok Letöltése**:
+   [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
 
-I removed the download link of the original dataset to avoid the confusion. If you need it, feel free to email me.
+## Használat
+**Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
 
-* [Update 2019/09/30]: In this version, almost the noises in the previous version are handled. The file names are also revised carefully.
+```bash
+python scripts/preprocess.py
+```
 
-* [List of duplicate authentic images](https://pastebin.com/BBdwR3cX) provided by another researcher.
+**Jellemzők kinyerése**: Futtasuk a `feature_extraction.py` scriptet a jellemzők kinyeréséhez:
 
-Please notice that the authors made many mistakes in naming the files. People who download the original dataset (before 2021/04/20) please rename the tampered images using the commands in the excel files. 
-Originally, it was reported that there are 5123 tampered images, including 3274 copy-move images and 1849 spliced images. However, mistakenly classified files are renamed as follows.
+```bash
+python scripts/feature_extraction.py
+```
 
-| No. of images | Originally named as           | Re-classified as              |
-| :---:         | :---:                         | :---:                         |
-| 39            | Copy-move images (TP_S_)      | Spliced images (S->D)         |
-| 60            | Spliced images (TP_D_)        | Copy-move images (D->S)       |
+**Modell Betanítása**: Futtasuk a `train_classifier.py` scriptet a modell betanításához:
 
-        After renaming the files, the number of copy-move and spliced images are 3295 and 1828, respectively.
+```bash
+python scripts/train_classifier.py
+```
 
-Due to the lack of manual file, I write up here the naming convention:
+**Osztályozó Tesztelése**: Futtasuk a `test_classifier.py` scriptet az új adatkészleten történő teszteléshez:
 
-## Authentic images:
+```bash
+python scripts/test_classifier.py
+```
 
-Au_ani_00001.jpg
-Au: Authentic
-ani: animal category
-Other categories: arc (architecture), art, cha (characters), ind (indoor), nat (nature), pla (plants), txt (texture)
+## Eredmények
+A betanított modell teljesítményének értékeléséhez a következő metrikákat használom:
 
-## Tampering images
+**Pontosság (Accuracy)**: Az összes helyes előrejelzés aránya az összes előrejelzéshez képest.
 
-a. Spliced image
+**Recall**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
 
-        Tp_D_CRN_S_N_cha00063_art00014_11818.jpg
-* Tp: Tampering
-* D: Different (means the tampered region was copied from the different image)
-* Next 5 letters stand for the techniques they used to create the images. Unfortunately, I don't remember exactly.
-* cha00063: the source image
-* art00014: the target image
-* 11818: tampered image ID
+Az eredményeket a `results` mappában tároljuk:
 
-b. Copy-move images
+- `evaluation_metrics.txt`: A modell teljesítményének metrikái
 
-        Tp_S_NRN_M_N_pla00020_pla00020_10988.jpg
-* Tp: Tampering
-* S: Same (means the tampered region was copied from the same image)
-* And the rest is similar to case a.
+- `metrics_plot.png`: A teljesítménymutatók grafikonja
 
-If you use the groundtruth dataset for a scientific publication, please cite the following papers:
+## Következtetések
+További munkák és kutatások szükségesek a modell pontosságának és recall értékének növelése érdekében.
 
-* CASIA dataset
+## Fájlstruktúra
+A projekt könyvtárszerkezete a következő:
+```
+├── data/
+│   ├── CASIA2.0_revised/
+│   └── CASIA2.0_Groundtruth/
+├── scripts/
+│   ├── results/
+│   │   ├── classifier_model.pkl
+│   │   ├── evaluation_metrics.txt
+│   │   ├── features_labels.npz
+│   │   └── metrics_plot.png
+│   ├── preprocess.py
+│   ├── feature_extraction.py
+│   ├── train_classifier.py
+│   └── test_classifier.py
+└── README.md
+```
 
-        @inproceedings{Dong2013,
-        doi = {10.1109/chinasip.2013.6625374},
-        url = {https://doi.org/10.1109/chinasip.2013.6625374},
-        year = {2013},
-        month = jul,
-        publisher = {{IEEE}},
-        author = {Jing Dong and Wei Wang and Tieniu Tan},
-        title = {{CASIA} Image Tampering Detection Evaluation Database},
-        booktitle = {2013 {IEEE} China Summit and International Conference on Signal and Information Processing}
-        }
+## Hibakeresés
+Ha problémák merülnek fel a script futtatása közben, itt van néhány gyakori hiba és megoldás:
 
+**Adatok Betöltési Hibája**:
 
- * CASIA groundtruth dataset 
- 
-        @article{pham2019hybrid,
-        title={Hybrid Image-Retrieval Method for Image-Splicing Validation},
-        author={Pham, Nam Thanh and Lee, Jong-Weon and Kwon, Goo-Rak and Park, Chun-Su},
-        journal={Symmetry},
-        volume={11},
-        number={1},
-        pages={83},
-        year={2019},
-        publisher={Multidisciplinary Digital Publishing Institute}
-        }
+Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges képek, és a fájlnevek helyesen vannak megadva.
+
+**Kép Konvertálási Hiba**:
+
+Ellenőrizzük, hogy az OpenCV megfelelően telepítve van, és a képek elérhetők-e.
+
+**Modell Betöltési Hiba**:
+
+Győződjünk meg róla, hogy a `classifier_model.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
+
+## Kapcsolat
+Email: [timeaszabo1217@gmail.com](mailto:timeaszabo1217@gmail.com)
+
+LinkedIn: [timeaszabo1217](https://www.linkedin.com/in/timeaszabo1217/)
