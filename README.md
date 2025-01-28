@@ -25,11 +25,11 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
 - Scikit-learn
 
 ## Telepítés
-1. **Könyvtárak Telepítése**:
-   Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
+1. **Könyvtárak Telepítése**: Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
    ```bash
    pip install opencv-python numpy matplotlib scikit-learn
    ```
+   
 2. **Adatok Letöltése**:
    [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
 
