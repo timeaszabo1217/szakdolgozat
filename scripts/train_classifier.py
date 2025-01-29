@@ -3,17 +3,30 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import svm
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
+from feature_extraction import load_features, extract_features_lbp_ltp, extract_features_fft_eltp, save_features
+from preprocess import preprocess_images
 
 
 def train_and_evaluate(features, labels):
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1)
-    classifier = svm.SVC(kernel='rbf', gamma=0.3225)
-    classifier.fit(X_train, y_train)
+    if features.ndim == 1:
+        features = features.reshape(-1, 1)
+    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
+    param_grid = {
+        'C': [0.1, 1, 10, 100],
+        'gamma': [1, 0.1, 0.01, 0.001],
+        'kernel': ['rbf']
+    }
+    grid = GridSearchCV(svm.SVC(), param_grid, refit=True, verbose=2)
+    grid.fit(X_train, y_train)
+    print(f"Best parameters: {grid.best_params_}")
+    print(f"Best estimator: {grid.best_estimator_}")
+
+    classifier = grid.best_estimator_
     y_pred = classifier.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred, zero_division=1)
     return classifier, accuracy, recall
 
 
@@ -51,55 +64,74 @@ def plot_metrics(accuracy, recall, output_file):
     print(f"Plot saved to {output_file}")
 
 
-# Adatok megoszlásának vizualizálása
 def plot_data_distribution(labels, title):
     unique, counts = np.unique(labels, return_counts=True)
+    print(f"Unique labels: {unique}, Counts: {counts}")
     plt.figure()
     plt.bar(unique, counts, color=['green', 'purple'])
     plt.xlabel('Classes')
     plt.ylabel('Number of Samples')
     plt.title(title)
-    plt.xticks(unique, ['Authentic', 'Tampered'])
+    plt.xticks(unique, ['Authentic', 'Tampered'][:len(unique)])
     plt.show()
 
 
 if __name__ == "__main__":
-    from feature_extraction import load_features, save_features
-
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
-    features_file = os.path.join(result_dir, 'features_labels.npz')
-    classifier_file = os.path.join(result_dir, 'classifier_model.pkl')
+    features_file_lbp_ltp = os.path.join(result_dir, 'lbp_ltp_features_labels.npz')
+    features_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_features_labels.npz')
+    classifier_file_lbp_ltp = os.path.join(result_dir, 'classifier_lbp_ltp.pkl')
+    classifier_file_fft_eltp = os.path.join(result_dir, 'classifier_fft_eltp.pkl')
     metrics_file = os.path.join(result_dir, 'evaluation_metrics.txt')
     plot_file = os.path.join(result_dir, 'metrics_plot.png')
 
-    if os.path.exists(features_file):
-        print(f"Loading features from {features_file}")
-        features, labels = load_features(features_file)
-    else:
-        from preprocess import preprocess_images
-        from feature_extraction import extract_features
+    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
 
-        revised_dir = os.path.abspath('../data/CASIA2.0_revised')
+    # LBP és LTP jellemzők kezelése
+    if os.path.exists(features_file_lbp_ltp):
+        print(f"Loading LBP and LTP features from {features_file_lbp_ltp}")
+        features_lbp_ltp, labels = load_features(features_file_lbp_ltp)
+    else:
         images, labels = preprocess_images(revised_dir)
-        features = extract_features(images)
-        save_features(features, labels, features_file)
+        features_lbp_ltp = extract_features_lbp_ltp(images)
+        save_features(features_lbp_ltp, labels, features_file_lbp_ltp)
 
-    if os.path.exists(classifier_file):
-        print(f"Loading classifier from {classifier_file}")
-        classifier = load_classifier(classifier_file)
-        with open(metrics_file, 'r') as f:
-            metrics = f.read()
-        print(f"Loaded metrics: \n{metrics}")
+    # FFT és ELTP jellemzők kezelése
+    if os.path.exists(features_file_fft_eltp):
+        print(f"Loading FFT-ELTP features from {features_file_fft_eltp}")
+        features_fft_eltp, labels = load_features(features_file_fft_eltp)
     else:
-        classifier, accuracy, recall = train_and_evaluate(features, labels)
-        print(f'Accuracy: {accuracy * 100:.2f}%')
-        print(f'Recall: {recall * 100:.2f}%')
-        save_classifier(classifier, classifier_file)
-        save_metrics(accuracy, recall, metrics_file)
-        plot_metrics(accuracy, recall, plot_file)
+        images, labels = preprocess_images(revised_dir)
+        features_fft_eltp = extract_features_fft_eltp(images)
+        save_features(features_fft_eltp, labels, features_file_fft_eltp)
+
+    # LBP-LTP osztályozó betanítása, értékelése
+    if os.path.exists(classifier_file_lbp_ltp):
+        print(f"Loading classifier from {classifier_file_lbp_ltp}")
+        classifier_lbp_ltp = load_classifier(classifier_file_lbp_ltp)
+    else:
+        classifier_lbp_ltp, accuracy_lbp_ltp, recall_lbp_ltp = train_and_evaluate(features_lbp_ltp, labels)
+        print(f'LBP-LTP Accuracy: {accuracy_lbp_ltp * 100:.2f}%')
+        print(f'LBP-LTP Recall: {recall_lbp_ltp * 100:.2f}%')
+        save_classifier(classifier_lbp_ltp, classifier_file_lbp_ltp)
+
+        save_metrics(accuracy_lbp_ltp, recall_lbp_ltp, metrics_file.replace('.txt', '_lbp_ltp.txt'))
+        plot_metrics(accuracy_lbp_ltp, recall_lbp_ltp, plot_file.replace('.png', '_lbp_ltp.png'))
+
+    # FFT-ELTP osztályozó betanítása, értékelése
+    if os.path.exists(classifier_file_fft_eltp):
+        print(f"Loading classifier from {classifier_file_fft_eltp}")
+        classifier_fft_eltp = load_classifier(classifier_file_fft_eltp)
+    else:
+        classifier_fft_eltp, accuracy_fft_eltp, recall_fft_eltp = train_and_evaluate(features_fft_eltp, labels)
+        print(f'FFT-ELTP Accuracy: {accuracy_fft_eltp * 100:.2f}%')
+        print(f'FFT-ELTP Recall: {recall_fft_eltp * 100:.2f}%')
+        save_classifier(classifier_fft_eltp, classifier_file_fft_eltp)
+
+        save_metrics(accuracy_fft_eltp, recall_fft_eltp, metrics_file.replace('.txt', '_fft_eltp.txt'))
+        plot_metrics(accuracy_fft_eltp, recall_fft_eltp, plot_file.replace('.png', '_fft_eltp.png'))
 
     # Adatok megoszlásának vizualizálása
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1)
-    plot_data_distribution(y_train, 'Training Set Distribution')
-    plot_data_distribution(y_test, 'Test Set Distribution')
+    plot_data_distribution(labels, 'Data Distribution for LBP-LTP')
+    plot_data_distribution(labels, 'Data Distribution for FFT-ELTP')

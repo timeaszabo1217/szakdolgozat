@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
 # Eredmények dokumentálása és összehasonlítása
-your_accuracy = 0.7792
-your_recall = 0.0
+your_accuracy = 0.6091
+your_recall = 0.820
 
 # Korábbi kutatásból származó eredmények
 previous_accuracy = 0.83
