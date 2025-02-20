@@ -32,6 +32,7 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
    
 2. **Adatok Letöltése**:
    [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
+   A projekt már tartalmazza az adatkészlet `revised` verzióját.
 
 ## Használat
 1. **Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
@@ -59,7 +60,7 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 
 **Pontosság (Accuracy)**: Az összes helyes előrejelzés aránya az összes előrejelzéshez képest.
 
-**Recall**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
+**Visszahívás (Recall)**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
 
 Az eredményeket a `results` mappában tároljuk:
 
@@ -77,7 +78,7 @@ A projekt könyvtárszerkezete a következő:
 │   ├── CASIA2.0_revised/
 │   │   ├── Au/
 │   │   └── Tp/
-│   └── CASIA2.0_Groundtruth/
+│   └── CASIA2.0_test/
 ├── scripts/
 │   ├── results/
 │   │   ├── classifier_model.pkl
