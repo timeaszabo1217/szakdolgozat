@@ -12,13 +12,13 @@ from preprocess import preprocess_images
 def train_and_evaluate(features, labels):
     if features.ndim == 1:
         features = features.reshape(-1, 1)
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
+    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, stratify=labels)
     param_grid = {
         'C': [0.1, 1, 10, 100],
-        'gamma': [1, 0.1, 0.01, 0.001],
+        'gamma': [1, 0.3, 0.1],
         'kernel': ['rbf']
     }
-    grid = GridSearchCV(svm.SVC(), param_grid, refit=True, verbose=2)
+    grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
     grid.fit(X_train, y_train)
     print(f"Best parameters: {grid.best_params_}")
     print(f"Best estimator: {grid.best_estimator_}")
@@ -132,6 +132,5 @@ if __name__ == "__main__":
         save_metrics(accuracy_fft_eltp, recall_fft_eltp, metrics_file.replace('.txt', '_fft_eltp.txt'))
         plot_metrics(accuracy_fft_eltp, recall_fft_eltp, plot_file.replace('.png', '_fft_eltp.png'))
 
-    # Adatok megoszlásának vizualizálása
     plot_data_distribution(labels, 'Data Distribution for LBP-LTP')
     plot_data_distribution(labels, 'Data Distribution for FFT-ELTP')
