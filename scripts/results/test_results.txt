@@ -1,0 +1,20 @@
+======= LBP-LTP Classification Report =======
+              precision    recall  f1-score   support
+
+   Authentic       0.51      0.98      0.67       112
+    Tampered       0.80      0.07      0.13       112
+
+    accuracy                           0.53       224
+   macro avg       0.66      0.53      0.40       224
+weighted avg       0.66      0.53      0.40       224
+
+
+======= FFT-ELTP Classification Report =======
+              precision    recall  f1-score   support
+
+   Authentic       0.50      1.00      0.67       112
+    Tampered       1.00      0.00      0.00       112
+
+    accuracy                           0.50       224
+   macro avg       0.75      0.50      0.33       224
+weighted avg       0.75      0.50      0.33       224

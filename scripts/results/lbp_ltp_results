@@ -1,0 +1,4 @@
+Best parameters: {'C': 100, 'gamma': 1, 'kernel': 'rbf'}
+Best estimator: SVC(C=100, gamma=1)
+LBP-LTP Accuracy: 60.43%
+LBP-LTP Recall: 6.05%

@@ -15,7 +15,6 @@ def preprocess_images(image_dir):
     images = []
     labels = []
 
-    # Ellenőrizzük az elérési utakat
     print(f"Checking directory: {image_dir}")
     au_tp_directories_exist = any(subdir in os.listdir(image_dir) for subdir in ['Au', 'Tp'])
 
@@ -58,6 +57,6 @@ def preprocess_images(image_dir):
 
 
 if __name__ == "__main__":
-    image_dir = os.path.abspath('../data/CASIA2.0_Groundtruth')
+    image_dir = os.path.abspath('../data/CASIA2.0_revised')
     images, labels = preprocess_images(image_dir)
     print(f"Number of loaded images: {len(images)}")

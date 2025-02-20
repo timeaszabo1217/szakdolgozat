@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 
-# Eredmények dokumentálása és összehasonlítása
-your_accuracy = 0.6091
-your_recall = 0.820
+# Eredmények
+your_accuracy = 0.61
+your_recall = 0.08
 
 # Korábbi kutatásból származó eredmények
-previous_accuracy = 0.83
+previous_accuracy = 0.97
 previous_recall = 0.78
 
-# Eredmények kiírása
 print(f"Current Accuracy: {your_accuracy}, Previous Accuracy: {previous_accuracy}")
 print(f"Current Recall: {your_recall}, Previous Recall: {previous_recall}")
 
@@ -23,7 +22,6 @@ else:
     print("Previous model has better recall.")
 
 
-# Eredmények összehasonlító diagramja
 def plot_comparison(your_accuracy, your_recall, previous_accuracy, previous_recall, output_file):
     metrics = ['Accuracy', 'Recall']
     your_scores = [your_accuracy, your_recall]
@@ -45,6 +43,5 @@ def plot_comparison(your_accuracy, your_recall, previous_accuracy, previous_reca
     print(f"Comparison plot saved to {output_file}")
 
 
-# Grafikon mentése a results mappába
 output_file = 'results/comparison_plot.png'
 plot_comparison(your_accuracy, your_recall, previous_accuracy, previous_recall, output_file)
