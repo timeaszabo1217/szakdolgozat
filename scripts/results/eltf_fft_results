@@ -1,4 +1,0 @@
-Best parameters: {'C': 0.1, 'gamma': 1, 'kernel': 'rbf'}
-Best estimator: SVC(C=0.1, gamma=1)
-FFT-ELTP Accuracy: 59.20%
-FFT-ELTP Recall: 0.00%

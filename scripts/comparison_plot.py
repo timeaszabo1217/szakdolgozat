@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-# Eredmények
+# Legjobb eredmények
 your_accuracy = 0.61
 your_recall = 0.08
 
