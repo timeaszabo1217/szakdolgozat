@@ -1,4 +1,4 @@
-Még folyamatban levő projekt, így kezeld kérlek.
+❕Még folyamatban lévő projekt.
 
 # Szakdolgozat
 
@@ -6,11 +6,15 @@ Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet ha
 
 ## Tartalomjegyzék
 - [Bevezetés](#bevezetés)
+- [Feladat szöveges leírása](#feladat-szöveges-leírása)
 - [Követelmények](#követelmények)
 - [Telepítés](#telepítés)
 - [Használat](#használat)
 - [Eredmények](#eredmények)
 - [Következtetések](#következtetések)
+- [Fájlstruktúra](#fájlstruktúra)
+- [Hibakeresés](#hibakeresés)
+- [Kapcsolat](#kapcsolat)
 
 ## Bevezetés
 A projekt célja, hogy egy gépi tanulási modellt fejlesszen ki a manipulált képek felismerésére. A projekt az alábbi fő lépéseket tartalmazza:
