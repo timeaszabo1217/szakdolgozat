@@ -15,7 +15,7 @@ def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, stratify=labels)
     param_grid = {
         'C': [0.1, 1, 10, 100],
-        'gamma': [1, 0.3, 0.1],
+        'gamma': [0.5, 0.3, 0.1],
         'kernel': ['rbf']
     }
     grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
@@ -119,6 +119,15 @@ if __name__ == "__main__":
         save_metrics(accuracy_lbp_ltp, recall_lbp_ltp, metrics_file.replace('.txt', '_lbp_ltp.txt'))
         plot_metrics(accuracy_lbp_ltp, recall_lbp_ltp, plot_file.replace('.png', '_lbp_ltp.png'))
 
+        result_file = os.path.join('results', 'results.txt')
+        with open(result_file, 'w', encoding="utf-8") as f:
+            f.write("LBP-LTP osztályozás eredményei:\n")
+            f.write(f"Képek száma: {len(labels)}\n")
+            f.write(f"Legjobb paraméterek: {classifier_lbp_ltp.get_params()}\n")
+            f.write(f"Modell típusa: {classifier_lbp_ltp}\n")
+            f.write(f"Pontosság: {accuracy_lbp_ltp * 100:.2f}%\n")
+            f.write(f"Visszahívási arány: {recall_lbp_ltp * 100:.2f}%\n\n")
+
     # FFT-ELTP osztályozó betanítása, értékelése
     if os.path.exists(classifier_file_fft_eltp):
         print(f"Loading classifier from {classifier_file_fft_eltp}")
@@ -131,6 +140,15 @@ if __name__ == "__main__":
 
         save_metrics(accuracy_fft_eltp, recall_fft_eltp, metrics_file.replace('.txt', '_fft_eltp.txt'))
         plot_metrics(accuracy_fft_eltp, recall_fft_eltp, plot_file.replace('.png', '_fft_eltp.png'))
+
+        result_file = os.path.join('results', 'results.txt')
+        with open(result_file, 'w', encoding="utf-8") as f:
+            f.write("FFT-ELTP osztályozás eredményei:\n")
+            f.write(f"Képek száma: {len(labels)}\n")
+            f.write(f"Legjobb paraméterek: {classifier_fft_eltp.get_params()}\n")
+            f.write(f"Modell típusa: {classifier_fft_eltp}\n")
+            f.write(f"Pontosság: {accuracy_fft_eltp * 100:.2f}%\n")
+            f.write(f"Visszahívási arány: {recall_fft_eltp * 100:.2f}%\n\n")
 
     plot_data_distribution(labels, 'Data Distribution for LBP-LTP')
     plot_data_distribution(labels, 'Data Distribution for FFT-ELTP')

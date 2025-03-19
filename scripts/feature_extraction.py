@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+from numpy.fft import fft2, fftshift
 from preprocess import preprocess_images
 
 
@@ -37,9 +38,9 @@ def calculate_ltp(image):
                     if r == 0 and c == 0:
                         continue
                     neighbor = image[row + r, col + c]
-                    if neighbor > center + threshold:
+                    if neighbor >= center + threshold:
                         binary_pattern.append(1)
-                    elif neighbor < center - threshold:
+                    elif neighbor <= center - threshold:
                         binary_pattern.append(-1)
                     else:
                         binary_pattern.append(0)
@@ -48,27 +49,23 @@ def calculate_ltp(image):
 
 
 def calculate_eltp(image):
-    image = np.real(image).astype(np.float32)
-    eltp_image = np.zeros_like(image, dtype=np.float32)
-    for row in range(1, image.shape[0] - 1):
-        for col in range(1, image.shape[1] - 1):
-            center = image[row, col]
-            binary_pattern = [
-                int(image[row - 1, col - 1] >= center),
-                int(image[row - 1, col] >= center),
-                int(image[row - 1, col + 1] >= center),
-                int(image[row, col + 1] >= center),
-                int(image[row + 1, col + 1] >= center),
-                int(image[row + 1, col] >= center),
-                int(image[row + 1, col - 1] >= center),
-                int(image[row, col - 1] >= center)
-            ]
-            eltp_image[row, col] = sum([val * (1 << i) for i, val in enumerate(binary_pattern)])
-    return eltp_image
+    g_t_e = np.mean(image)
+    t_e = np.mean(np.abs(image - g_t_e))
 
+    def s_e(g_x, g_t_e, t_e):
+        if g_x >= g_t_e + t_e:
+            return 1
+        elif g_x <= g_t_e - t_e:
+            return -1
+        else:
+            return 0
 
-def apply_dct(image):
-    return cv2.dct(np.float32(image))
+    s_matrix = s_e(image, g_t_e, t_e)
+    eltp_x = np.sum(s_matrix == 1, axis=1)
+    eltp_n = np.sum(s_matrix == -1, axis=1)
+
+    eltp = eltp_x * (image.shape[1] + 2) - 4 * (eltp_x * (eltp_x + 1)) / 2 + eltp_n
+    return eltp
 
 
 def extract_features_lbp_ltp(images, start_idx=0, end_idx=None):
@@ -79,8 +76,8 @@ def extract_features_lbp_ltp(images, start_idx=0, end_idx=None):
         print(f"Processing image {idx + 1}/{end_idx} for LBP-LTP")
         lbp_image = calculate_lbp(images[idx])
         ltp_image = calculate_ltp(images[idx])
-        dct_lbp = apply_dct(lbp_image)
-        dct_ltp = apply_dct(ltp_image)
+        dct_lbp = cv2.dct(np.float32(lbp_image))
+        dct_ltp = cv2.dct(np.float32(ltp_image))
         mean_val_lbp = np.mean(dct_lbp)
         mean_val_ltp = np.mean(dct_ltp)
         combined_features = np.array([mean_val_lbp, mean_val_ltp])
@@ -93,9 +90,10 @@ def extract_features_fft_eltp(images):
     features = []
     for idx, image in enumerate(images):
         print(f"Processing image {idx + 1}/{len(images)} for FFT-ELTP")
-        fft_image = np.fft.fft2(image)
-        eltp_image = calculate_eltp(fft_image)
-        dct_eltp = apply_dct(eltp_image)
+        fft_image = fft2(image)
+        fft_image_shifted = fftshift(fft_image)
+        eltp_image = calculate_eltp(np.abs(fft_image_shifted))
+        dct_eltp = cv2.dct(np.float32(eltp_image))
         mean_val_eltp = np.mean(dct_eltp)
         features.append(mean_val_eltp)
     print(f"Extracted features: {len(features)}")
