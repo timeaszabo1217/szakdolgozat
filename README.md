@@ -70,6 +70,8 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 
 Az eredményeket a `results` mappában tároljuk:
 
+- `results.txt`: Az összesített eredmények
+
 - `evaluation_metrics.txt`: A modell teljesítményének metrikái
 
 - `metrics_plot.png`: A teljesítménymutatók grafikonja
