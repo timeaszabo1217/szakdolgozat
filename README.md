@@ -43,22 +43,22 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
 ## Használat
 1. **Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
    ```bash
-   python scripts/preprocess.py
+   python src/preprocess.py
    ```
 
 2. **Jellemzők kinyerése**: Futtasuk a `feature_extraction.py` scriptet a jellemzők kinyeréséhez:
    ```bash
-   python scripts/feature_extraction.py
+   python src/feature_extraction.py
    ```
 
 3. **Modell Betanítása**: Futtasuk a `train_classifier.py` scriptet a modell betanításához:
    ```bash
-   python scripts/train_classifier.py
+   python src/train_classifier.py
    ```
    
 4. **Osztályozó Tesztelése**: Futtasuk a `test_classifier.py` scriptet az új adatkészleten történő teszteléshez:
    ```bash
-   python scripts/test_classifier.py
+   python src/test_classifier.py
    ```
 
 ## Eredmények
@@ -87,7 +87,7 @@ A projekt könyvtárszerkezete a következő:
 │   │   ├── Au/
 │   │   └── Tp/
 │   └── CASIA2.0_test/
-├── scripts/
+├── src/
 │   ├── results/
 │   │   ├── classifier_model.pkl
 │   │   ├── evaluation_metrics.txt
@@ -102,7 +102,7 @@ A projekt könyvtárszerkezete a következő:
 ```
 
 ## Hibakeresés
-Ha problémák merülnek fel a script futtatása közben, itt van néhány gyakori hiba és megoldás:
+Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gyakori hiba és megoldás:
 
 **Adatok Betöltési Hibája**:
 
