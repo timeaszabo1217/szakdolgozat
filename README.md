@@ -92,7 +92,8 @@ A projekt könyvtárszerkezete a következő:
 │   │   ├── classifier_model.pkl
 │   │   ├── evaluation_metrics.txt
 │   │   ├── features_labels.npz
-│   │   └── metrics_plot.png
+│   │   ├── metrics_plot.png
+│   │   └── results.txt
 │   ├── preprocess.py
 │   ├── feature_extraction.py
 │   ├── train_classifier.py
