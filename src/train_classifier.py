@@ -12,10 +12,10 @@ from preprocess import preprocess_images
 def train_and_evaluate(features, labels):
     if features.ndim == 1:
         features = features.reshape(-1, 1)
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, stratify=labels)
+    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
     param_grid = {
         'C': [0.1, 1, 10, 100],
-        'gamma': [0.5, 0.3, 0.1],
+        'gamma': [0.5, 0.3225, 0.3, 0.1],
         'kernel': ['rbf']
     }
     grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
@@ -31,21 +31,21 @@ def train_and_evaluate(features, labels):
 
 
 def save_classifier(classifier, output_file):
-    with open(output_file, 'wb') as f:
-        pickle.dump(classifier, f)
+    with open(output_file, 'wb') as file:
+        pickle.dump(classifier, file)
     print(f"Classifier saved to {output_file}")
 
 
 def save_metrics(accuracy, recall, output_file):
-    with open(output_file, 'w') as f:
-        f.write(f'Accuracy: {accuracy * 100:.2f}%\n')
-        f.write(f'Recall: {recall * 100:.2f}%\n')
+    with open(output_file, 'w') as file:
+        file.write(f'Accuracy: {accuracy * 100: .2f}%\n')
+        file.write(f'Recall: {recall * 100: .2f}%\n')
     print(f"Metrics saved to {output_file}")
 
 
 def load_classifier(file_path):
-    with open(file_path, 'rb') as f:
-        classifier = pickle.load(f)
+    with open(file_path, 'rb') as file:
+        classifier = pickle.load(file)
     print(f"Loaded classifier type: {type(classifier)}")
     return classifier
 
@@ -74,6 +74,7 @@ def plot_data_distribution(labels, title):
     plt.title(title)
     plt.xticks(unique, ['Authentic', 'Tampered'][:len(unique)])
     plt.show()
+    return unique, counts
 
 
 if __name__ == "__main__":
@@ -112,21 +113,25 @@ if __name__ == "__main__":
         classifier_lbp_ltp = load_classifier(classifier_file_lbp_ltp)
     else:
         classifier_lbp_ltp, accuracy_lbp_ltp, recall_lbp_ltp = train_and_evaluate(features_lbp_ltp, labels)
-        print(f'LBP-LTP Accuracy: {accuracy_lbp_ltp * 100:.2f}%')
-        print(f'LBP-LTP Recall: {recall_lbp_ltp * 100:.2f}%')
+        print(f'LBP-LTP Accuracy: {accuracy_lbp_ltp * 100: .2f}%')
+        print(f'LBP-LTP Recall: {recall_lbp_ltp * 100: .2f}%')
         save_classifier(classifier_lbp_ltp, classifier_file_lbp_ltp)
 
         save_metrics(accuracy_lbp_ltp, recall_lbp_ltp, metrics_file.replace('.txt', '_lbp_ltp.txt'))
         plot_metrics(accuracy_lbp_ltp, recall_lbp_ltp, plot_file.replace('.png', '_lbp_ltp.png'))
 
+        unique_labels, counts = plot_data_distribution(labels, "Data Distribution for LBP_LTP")
+
         result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'w', encoding="utf-8") as f:
-            f.write("LBP-LTP osztályozás eredményei:\n")
-            f.write(f"Képek száma: {len(labels)}\n")
-            f.write(f"Legjobb paraméterek: {classifier_lbp_ltp.get_params()}\n")
-            f.write(f"Modell típusa: {classifier_lbp_ltp}\n")
-            f.write(f"Pontosság: {accuracy_lbp_ltp * 100:.2f}%\n")
-            f.write(f"Visszahívási arány: {recall_lbp_ltp * 100:.2f}%\n\n")
+        with open(result_file, 'w', encoding="utf-8") as file:
+            file.write("LBP-LTP osztályozás eredményei:\n")
+            file.write(f"Képek száma: {len(labels)}\n")
+            file.write(f"Legjobb paraméterek: {classifier_lbp_ltp.get_params()}\n")
+            file.write(f"Modell típusa: {classifier_lbp_ltp}\n")
+            file.write(f"Autentikusnak vélt képek száma: {counts[0]}\n")
+            file.write(f"Hamisnak vélt képek száma: {counts[1]}\n\n")
+            file.write(f"Pontosság: {accuracy_lbp_ltp * 100: .2f}%\n")
+            file.write(f"Visszahívási arány: {recall_lbp_ltp * 100: .2f}%\n\n")
 
     # FFT-ELTP osztályozó betanítása, értékelése
     if os.path.exists(classifier_file_fft_eltp):
@@ -134,21 +139,25 @@ if __name__ == "__main__":
         classifier_fft_eltp = load_classifier(classifier_file_fft_eltp)
     else:
         classifier_fft_eltp, accuracy_fft_eltp, recall_fft_eltp = train_and_evaluate(features_fft_eltp, labels)
-        print(f'FFT-ELTP Accuracy: {accuracy_fft_eltp * 100:.2f}%')
-        print(f'FFT-ELTP Recall: {recall_fft_eltp * 100:.2f}%')
+        print(f'FFT-ELTP Accuracy: {accuracy_fft_eltp * 100: .2f}%')
+        print(f'FFT-ELTP Recall: {recall_fft_eltp * 100: .2f}%')
         save_classifier(classifier_fft_eltp, classifier_file_fft_eltp)
 
         save_metrics(accuracy_fft_eltp, recall_fft_eltp, metrics_file.replace('.txt', '_fft_eltp.txt'))
         plot_metrics(accuracy_fft_eltp, recall_fft_eltp, plot_file.replace('.png', '_fft_eltp.png'))
 
+        unique_labels, counts = plot_data_distribution(labels, "Data Distribution for FFT-ELTP")
+
         result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'w', encoding="utf-8") as f:
-            f.write("FFT-ELTP osztályozás eredményei:\n")
-            f.write(f"Képek száma: {len(labels)}\n")
-            f.write(f"Legjobb paraméterek: {classifier_fft_eltp.get_params()}\n")
-            f.write(f"Modell típusa: {classifier_fft_eltp}\n")
-            f.write(f"Pontosság: {accuracy_fft_eltp * 100:.2f}%\n")
-            f.write(f"Visszahívási arány: {recall_fft_eltp * 100:.2f}%\n\n")
+        with open(result_file, 'w', encoding="utf-8") as file:
+            file.write("FFT-ELTP osztályozás eredményei:\n")
+            file.write(f"Képek száma: {len(labels)}\n")
+            file.write(f"Legjobb paraméterek: {classifier_fft_eltp.get_params()}\n")
+            file.write(f"Modell típusa: {classifier_fft_eltp}\n")
+            file.write(f"Autentikusnak vélt képek száma: {counts[0]}\n")
+            file.write(f"Hamisnak vélt képek száma: {counts[1]}\n\n")
+            file.write(f"Pontosság: {accuracy_fft_eltp * 100: .2f}%\n")
+            file.write(f"Visszahívási arány: {recall_fft_eltp * 100: .2f}%\n\n")
 
     plot_data_distribution(labels, 'Data Distribution for LBP-LTP')
     plot_data_distribution(labels, 'Data Distribution for FFT-ELTP')
