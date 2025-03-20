@@ -75,9 +75,9 @@ if __name__ == "__main__":
 
     result_file = os.path.join('results', 'test_results.txt')
     with open(result_file, 'w', encoding="utf-8") as f:
-        f.write("======= LBP-LTP Classification Report =======\n")
+        f.write("LBP-LTP\n")
         f.write(report_lbp_ltp)
-        f.write("\n\n======= FFT-ELTP Classification Report =======\n")
+        f.write("\n\nFFT-ELTP\n")
         f.write(report_fft_eltp)
 
     print(f"Test results saved to {result_file}")

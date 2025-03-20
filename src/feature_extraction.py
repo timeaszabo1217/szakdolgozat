@@ -53,12 +53,7 @@ def calculate_eltp(image):
     t_e = np.mean(np.abs(image - g_t_e))
 
     def s_e(g_x, g_t_e, t_e):
-        if g_x >= g_t_e + t_e:
-            return 1
-        elif g_x <= g_t_e - t_e:
-            return -1
-        else:
-            return 0
+        return np.where(g_x >= g_t_e + t_e, 1, np.where(g_x <= g_t_e - t_e, -1, 0))
 
     s_matrix = s_e(image, g_t_e, t_e)
     eltp_x = np.sum(s_matrix == 1, axis=1)

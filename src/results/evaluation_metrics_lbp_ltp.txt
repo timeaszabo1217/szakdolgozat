@@ -1,2 +1,2 @@
-Accuracy: 60.43%
-Recall: 6.05%
+Accuracy:  60.59%
+Recall:  8.01%

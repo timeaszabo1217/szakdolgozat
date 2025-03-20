@@ -15,7 +15,7 @@ def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
     param_grid = {
         'C': [0.1, 1, 10, 100],
-        'gamma': [0.5, 0.3225, 0.3, 0.1],
+        'gamma': [1, 0.5, 0.3225, 0.3, 0.1],
         'kernel': ['rbf']
     }
     grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
@@ -123,15 +123,15 @@ if __name__ == "__main__":
         unique_labels, counts = plot_data_distribution(labels, "Data Distribution for LBP_LTP")
 
         result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'w', encoding="utf-8") as file:
-            file.write("LBP-LTP osztályozás eredményei:\n")
-            file.write(f"Képek száma: {len(labels)}\n")
-            file.write(f"Legjobb paraméterek: {classifier_lbp_ltp.get_params()}\n")
-            file.write(f"Modell típusa: {classifier_lbp_ltp}\n")
-            file.write(f"Autentikusnak vélt képek száma: {counts[0]}\n")
-            file.write(f"Hamisnak vélt képek száma: {counts[1]}\n\n")
-            file.write(f"Pontosság: {accuracy_lbp_ltp * 100: .2f}%\n")
-            file.write(f"Visszahívási arány: {recall_lbp_ltp * 100: .2f}%\n\n")
+        with open(result_file, 'a', encoding="utf-8") as file:
+            file.write("LBP-LTP classification results:\n")
+            file.write(f"Number of images: {len(labels)}\n")
+            file.write(f"Best parameters: {classifier_lbp_ltp.get_params()}\n")
+            file.write(f"Model type: {classifier_lbp_ltp}\n")
+            file.write(f"Number of images classified as authentic: {counts[0]}\n")
+            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
+            file.write(f"Accuracy: {accuracy_lbp_ltp * 100: .2f}%\n")
+            file.write(f"Recall rate: {recall_lbp_ltp * 100: .2f}%\n\n")
 
     # FFT-ELTP osztályozó betanítása, értékelése
     if os.path.exists(classifier_file_fft_eltp):
@@ -149,15 +149,12 @@ if __name__ == "__main__":
         unique_labels, counts = plot_data_distribution(labels, "Data Distribution for FFT-ELTP")
 
         result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'w', encoding="utf-8") as file:
-            file.write("FFT-ELTP osztályozás eredményei:\n")
-            file.write(f"Képek száma: {len(labels)}\n")
-            file.write(f"Legjobb paraméterek: {classifier_fft_eltp.get_params()}\n")
-            file.write(f"Modell típusa: {classifier_fft_eltp}\n")
-            file.write(f"Autentikusnak vélt képek száma: {counts[0]}\n")
-            file.write(f"Hamisnak vélt képek száma: {counts[1]}\n\n")
-            file.write(f"Pontosság: {accuracy_fft_eltp * 100: .2f}%\n")
-            file.write(f"Visszahívási arány: {recall_fft_eltp * 100: .2f}%\n\n")
-
-    plot_data_distribution(labels, 'Data Distribution for LBP-LTP')
-    plot_data_distribution(labels, 'Data Distribution for FFT-ELTP')
+        with open(result_file, 'a', encoding="utf-8") as file:
+            file.write("FFT-ELTP classification results:\n")
+            file.write(f"Number of images: {len(labels)}\n")
+            file.write(f"Best parameters: {classifier_fft_eltp.get_params()}\n")
+            file.write(f"Model type: {classifier_fft_eltp}\n")
+            file.write(f"Number of images classified as authentic: {counts[0]}\n")
+            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
+            file.write(f"Accuracy: {accuracy_fft_eltp * 100: .2f}%\n")
+            file.write(f"Recall rate: {recall_fft_eltp * 100: .2f}%\n\n")

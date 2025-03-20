@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 
 # Legjobb eredmények
-your_accuracy = 0.61
-your_recall = 0.08
+your_accuracy = 0.66
+your_recall = 0.4902
 
 # Korábbi kutatásból származó eredmények
-previous_accuracy = 0.97
+previous_accuracy = 0.8862
 previous_recall = 0.78
 
 print(f"Current Accuracy: {your_accuracy}, Previous Accuracy: {previous_accuracy}")

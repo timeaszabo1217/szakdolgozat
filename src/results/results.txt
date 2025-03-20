@@ -1,0 +1,20 @@
+LBP-LTP classification results:
+Number of images: 12560
+Best parameters: {'C': 100, 'break_ties': False, 'cache_size': 200, 'class_weight': None, 'coef0': 0.0, 'decision_function_shape': 'ovr', 'degree': 3, 'gamma': 1, 'kernel': 'rbf', 'max_iter': -1, 'probability': False, 'random_state': None, 'shrinking': True, 'tol': 0.001, 'verbose': False}
+Model type: SVC(C=100, gamma=1)
+Number of images classified as authentic: 7437
+Number of images classified as fake: 5123
+
+Accuracy:  60.59%
+Recall rate:  8.01%
+
+FFT-ELTP classification results:
+Number of images: 12560
+Best parameters: {'C': 0.1, 'break_ties': False, 'cache_size': 200, 'class_weight': None, 'coef0': 0.0, 'decision_function_shape': 'ovr', 'degree': 3, 'gamma': 0.1, 'kernel': 'rbf', 'max_iter': -1, 'probability': False, 'random_state': None, 'shrinking': True, 'tol': 0.001, 'verbose': False}
+Model type: SVC(C=0.1, gamma=0.1)
+Number of images classified as authentic: 7437
+Number of images classified as fake: 5123
+
+Accuracy:  66.00%
+Recall rate:  49.02%
+
