@@ -15,7 +15,7 @@ def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
     param_grid = {
         'C': [0.1, 1, 10, 100],
-        'gamma': [1, 0.5, 0.3225, 0.3, 0.1],
+        'gamma': [0.3225],
         'kernel': ['rbf']
     }
     grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
