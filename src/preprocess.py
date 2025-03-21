@@ -8,7 +8,9 @@ def convert_to_ycbcr(image_path):
         print(f"Could not read image: {image_path}")
         return None
     ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
-    return ycbcr_image[:, :, 1]  # Csak a Cb (krominancia) komponens kivétele
+    Y, Cb, Cr = cv2.split(ycbcr_image)
+    # return ycbcr_image[:, :, 1]  # Csak a Cb (krominancia) komponens kivétele
+    return Cb
 
 
 def preprocess_images(image_dir):
