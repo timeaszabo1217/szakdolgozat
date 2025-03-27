@@ -29,11 +29,12 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
 - NumPy
 - Matplotlib
 - Scikit-learn
+- Imbalanced-learn
 
 ## Telepítés
 1. **Könyvtárak Telepítése**: Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
    ```bash
-   pip install opencv-python numpy matplotlib scikit-learn
+   pip install opencv-python numpy matplotlib scikit-learn imbalanced-learn
    ```
    
 2. **Adatok Letöltése**:
