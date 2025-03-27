@@ -104,7 +104,7 @@ A projekt könyvtárszerkezete a következő:
 ## Hibakeresés
 Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gyakori hiba és megoldás:
 
-**Adatok Betöltési Hibája**:
+**Adat Betöltési Hiba**:
 
 Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges képek, és a fájlnevek helyesen vannak megadva.
 
@@ -115,6 +115,10 @@ Ellenőrizzük, hogy az OpenCV megfelelően telepítve van, és a képek elérhe
 **Modell Betöltési Hiba**:
 
 Győződjünk meg róla, hogy a `classifier_model.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
+
+**Memória Túlcsordulás, Lassú Futás Hiba**:
+
+Ha memória problémák merülnek fel, próbáljunk kisebb batch méretet választani (pl. `batch_size=500`).
 
 ## Kapcsolat
 Email: [timeaszabo1217@gmail.com](mailto:timeaszabo1217@gmail.com)
