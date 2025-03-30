@@ -119,7 +119,7 @@ Győződjünk meg róla, hogy a `classifier_model.pkl` fájl elérhető a `resul
 
 **Memória Túlcsordulás, Lassú Futás Hiba**:
 
-Ha memória problémák merülnek fel, próbáljunk kisebb batch méretet választani (pl. `batch_size=500`).
+Ha memória problémák merülnek fel, próbáljunk kisebb batch méretet választani (pl. `batch_size=200`).
 
 ## Kapcsolat
 Email: [timeaszabo1217@gmail.com](mailto:timeaszabo1217@gmail.com)
