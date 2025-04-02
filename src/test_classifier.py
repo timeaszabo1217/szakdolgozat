@@ -1,13 +1,35 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, ConfusionMatrixDisplay
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay, confusion_matrix
 from preprocess import preprocess_images
-from feature_extraction import extract_features_lbp_ltp, extract_features_fft_eltp
+from feature_extraction import extract_features
 from train_classifier import load_classifier
 
 
-def test_classifier(new_dataset_dir, classifier_file_lbp_ltp, classifier_file_fft_eltp):
+def evaluate_classifier(method, images, labels, classifier_file):
+    features = extract_features(images, method=method)
+    print(f"Number of {method.upper()} features extracted: {features.shape}")
+
+    if features.size == 0:
+        raise ValueError(f"Extracted {method.upper()} features are empty. Please check the feature extraction process.")
+
+    classifier = load_classifier(classifier_file)
+    print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
+
+    predictions = classifier.predict(features)
+    report = classification_report(labels, predictions, target_names=['Authentic', 'Tampered'], zero_division=1)
+    print(f"{method.upper()} Classification Report: \n", report)
+
+    cm = confusion_matrix(labels, predictions)
+    ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered']).plot()
+    plt.title(f'Confusion Matrix - {method.upper()}')
+    plt.show()
+
+    return report
+
+
+def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp):
     images, labels = preprocess_images(new_dataset_dir)
     print(f"Number of loaded images: {len(images)}")
     print(f"Number of labels loaded: {len(labels)}")
@@ -19,64 +41,28 @@ def test_classifier(new_dataset_dir, classifier_file_lbp_ltp, classifier_file_ff
         raise ValueError(
             "Only one class is present in the dataset. Please ensure both 'Authentic' and 'Tampered' exist.")
 
-    # LBP-LTP jellemzők kinyerése
-    features_lbp_ltp = extract_features_lbp_ltp(images)
-    print(f"Number of LBP-LTP features extracted: {features_lbp_ltp.shape}")
+    report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp)
+    report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)
+    report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp)
 
-    if features_lbp_ltp.size == 0:
-        raise ValueError("Extracted LBP-LTP features are empty. Please check the feature extraction process.")
-
-    classifier_lbp_ltp = load_classifier(classifier_file_lbp_ltp)
-    print("LBP-LTP Classifier parameters:", classifier_lbp_ltp.get_params())
-
-    predictions_lbp_ltp = classifier_lbp_ltp.predict(features_lbp_ltp)
-    report_lbp_ltp = classification_report(labels, predictions_lbp_ltp, target_names=['Authentic', 'Tampered'],
-                                           zero_division=1)
-    print("LBP-LTP Classification Report:\n", report_lbp_ltp)
-
-    ConfusionMatrixDisplay.from_estimator(classifier_lbp_ltp, features_lbp_ltp, labels,
-                                          display_labels=['Authentic', 'Tampered'])
-    plt.title('Confusion Matrix - LBP-LTP')
-    plt.show()
-
-    # FFT-ELTP jellemzők kinyerése
-    features_fft_eltp = extract_features_fft_eltp(images)
-    print(f"Number of FFT-ELTP features extracted: {features_fft_eltp.shape}")
-
-    if features_fft_eltp.size == 0:
-        raise ValueError("Extracted FFT-ELTP features are empty. Please check the feature extraction process.")
-
-    if features_fft_eltp.ndim == 1:
-        features_fft_eltp = features_fft_eltp.reshape(-1, 1)
-
-    classifier_fft_eltp = load_classifier(classifier_file_fft_eltp)
-    print("FFT-ELTP Classifier parameters:", classifier_fft_eltp.get_params())
-
-    predictions_fft_eltp = classifier_fft_eltp.predict(features_fft_eltp)
-    report_fft_eltp = classification_report(labels, predictions_fft_eltp, target_names=['Authentic', 'Tampered'],
-                                            zero_division=1)
-    print("FFT-ELTP Classification Report:\n", report_fft_eltp)
-
-    ConfusionMatrixDisplay.from_estimator(classifier_fft_eltp, features_fft_eltp, labels,
-                                          display_labels=['Authentic', 'Tampered'])
-    plt.title('Confusion Matrix - FFT-ELTP')
-    plt.show()
-
-    return report_lbp_ltp, report_fft_eltp
+    return report_lbp, report_ltp, report_fft_eltp
 
 
 if __name__ == "__main__":
     new_dataset_dir = os.path.abspath('../data/CASIA2.0_test')
-    classifier_file_lbp_ltp = os.path.join('results', 'classifier_lbp_ltp.pkl')
-    classifier_file_fft_eltp = os.path.join('results', 'classifier_fft_eltp.pkl')
+    classifier_file_lbp = os.path.join('results', 'lbp_classifier.pkl')
+    classifier_file_ltp = os.path.join('results', 'ltp_classifier.pkl')
+    classifier_file_fft_eltp = os.path.join('results', 'fft_eltp_classifier.pkl')
 
-    report_lbp_ltp, report_fft_eltp = test_classifier(new_dataset_dir, classifier_file_lbp_ltp,
-                                                      classifier_file_fft_eltp)
+    report_lbp, report_ltp, report_fft_eltp = test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp,
+                                                              classifier_file_fft_eltp)
 
     result_file = os.path.join('results', 'test_results.txt')
     with open(result_file, 'w', encoding="utf-8") as f:
-        f.write("LBP-LTP\n")
-        f.write(report_lbp_ltp)
+        f.write("LBP\n")
+        f.write(report_lbp)
+        f.write("\n\nLTP\n")
+        f.write(report_ltp)
         f.write("\n\nFFT-ELTP\n")
         f.write(report_fft_eltp)
 

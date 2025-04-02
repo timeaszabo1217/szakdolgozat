@@ -1,5 +1,7 @@
 import os
 import cv2
+import numpy as np
+from numpy.fft import fft2, fftshift
 
 
 def convert_to_ycbcr(image_path):
@@ -7,58 +9,92 @@ def convert_to_ycbcr(image_path):
     if image is None:
         print(f"Could not read image: {image_path}")
         return None
+
+    h, w = image.shape[:2]
+    if w > h:
+        image = cv2.transpose(image)
+        image = cv2.flip(image, flipCode=1)
+
     ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
+    return ycbcr_image
+
+
+def resize_image(image, target_size=(256, 384)):
+    return cv2.resize(image, target_size)
+
+
+def get_chrominance_component(image):
+    ycbcr_image = convert_to_ycbcr(image)
     Y, Cb, Cr = cv2.split(ycbcr_image)
-    # return ycbcr_image[:, :, 1]  # Csak a Cb (krominancia) komponens kivétele
     return Cb
 
 
-def preprocess_images(image_dir):
-    images = []
-    labels = []
+def split_into_overlapping_blocks(image, block_size=3, overlap=1):
+    blocks = []
+    h, w = image.shape
 
-    print(f"Checking directory: {image_dir}")
-    au_tp_directories_exist = any(subdir in os.listdir(image_dir) for subdir in ['Au', 'Tp'])
+    for i in range(0, h - block_size + 1, block_size - overlap):
+        for j in range(0, w - block_size + 1, block_size - overlap):
+            block = image[i:i + block_size, j:j + block_size]
+            blocks.append(block)
 
-    if au_tp_directories_exist:
-        for subdir in ['Au', 'Tp']:
-            full_dir = os.path.join(image_dir, subdir)
-            print(f"Checking subdirectory: {full_dir}")
-            if not os.path.exists(full_dir):
-                print(f"Directory not found: {full_dir}")
-                continue
-            for filename in os.listdir(full_dir):
-                if filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.tif'):
-                    file_path = os.path.join(full_dir, filename)
-                    print(f"Processing Revised file: {file_path}")
-                    ycbcr_image = convert_to_ycbcr(file_path)
-                    if ycbcr_image is not None:
-                        images.append(ycbcr_image)
-                        labels.append(0 if subdir == 'Au' else 1)  # Au képek eredetiek, Tp képek hamisítottak
-    else:
-        for filename in os.listdir(image_dir):
-            file_path = os.path.join(image_dir, filename)
-            if filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.tif'):
+    return blocks
+
+
+def fft_on_blocks(blocks):
+    fft_features = []
+
+    for block in blocks:
+        fft_image = fft2(block)
+        fft_image_shifted = fftshift(fft_image)
+        fft_features.append(np.mean(np.abs(fft_image_shifted)))
+
+    return fft_features
+
+
+def preprocess_images(image_dir, target_size=(256, 384)):
+    images, labels = [], []
+
+    subdirs = ['Au', 'Tp']
+    subdir_exists = any(subdir in os.listdir(image_dir) for subdir in subdirs)
+
+    for subdir in (subdirs if subdir_exists else [image_dir]):
+        for file in os.listdir(os.path.join(image_dir, subdir) if subdir_exists else [image_dir]):
+            if file.endswith(('.jpg', '.png', '.tif')):
+                file_path = os.path.join(image_dir, subdir, file) if subdir_exists else os.path.join(image_dir, file)
                 print(f"Processing file: {file_path}")
-                ycbcr_image = convert_to_ycbcr(file_path)
-                if ycbcr_image is not None:
-                    images.append(ycbcr_image)
-                    if 'Au' in filename:
-                        labels.append(0)  # Au képek eredetiek
-                    elif 'Tp' in filename:
-                        labels.append(1)  # Tp képek hamisítottak
-                    else:
-                        print(f"Could not determine label for file: {file_path}")
+                cb_component = get_chrominance_component(file_path)
+                if cb_component is not None:
+                    cb_component_resized = resize_image(cb_component, target_size)
+                    images.append(cb_component_resized)
+                    label = 0 if 'Au' in (subdir if subdir_exists else file) else 1
+                    labels.append(label)
 
-    if not images or not labels:
-        print(f"No images or labels found in the directory: {image_dir}")
-    else:
-        print(f"Number of images: {len(images)}, Number of labels: {len(labels)}")
-
+    print(f"Number of images: {len(images)}, Number of labels: {len(labels)}")
     return images, labels
 
 
+def save_preprocessed_data(images, labels, output_file):
+    np.savez(output_file, images=images, labels=labels, allow_pickle=True)
+    print(f"Processed data saved to {output_file}")
+
+
+def load_preprocessed_data(file_path):
+    data = np.load(file_path, allow_pickle=True)
+    return data['images'], data['labels']
+
+
 if __name__ == "__main__":
-    image_dir = os.path.abspath('../data/CASIA2.0_revised')
-    images, labels = preprocess_images(image_dir)
-    print(f"Number of loaded images: {len(images)}")
+    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
+    result_dir = 'results'
+    os.makedirs(result_dir, exist_ok=True)
+
+    output_file = os.path.join(result_dir, 'preprocessed_data.npz')
+
+    if os.path.exists(output_file):
+        print("Loading existing preprocessed data...")
+        images, labels = load_preprocessed_data(output_file)
+    else:
+        print("Processing images...")
+        images, labels = preprocess_images(revised_dir)
+        save_preprocessed_data(images, labels, output_file)

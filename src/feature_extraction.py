@@ -1,8 +1,7 @@
 import os
 import cv2
 import numpy as np
-from numpy.fft import fft2, fftshift
-from preprocess import preprocess_images
+from preprocess import load_preprocessed_data, split_into_overlapping_blocks, fft_on_blocks
 
 
 def calculate_lbp(image):
@@ -63,36 +62,43 @@ def calculate_eltp(image):
     return eltp
 
 
-def extract_features_lbp_ltp(images, start_idx=0, end_idx=None):
-    if end_idx is None:
-        end_idx = len(images)
+def extract_features(images, method, batch_size=200):
     features = []
-    for idx in range(start_idx, end_idx):
-        print(f"Processing image {idx + 1}/{end_idx} for LBP-LTP")
-        lbp_image = calculate_lbp(images[idx])
-        ltp_image = calculate_ltp(images[idx])
-        dct_lbp = cv2.dct(np.float32(lbp_image))
-        dct_ltp = cv2.dct(np.float32(ltp_image))
-        mean_val_lbp = np.mean(dct_lbp)
-        mean_val_ltp = np.mean(dct_ltp)
-        combined_features = np.array([mean_val_lbp, mean_val_ltp])
-        features.append(combined_features)
-    print(f"Extracted features from {start_idx} to {end_idx}: {len(features)}")
-    return np.array(features)
 
+    for i in range(0, len(images), batch_size):
+        batch_images = images[i:i + batch_size]
+        batch_features = []
 
-def extract_features_fft_eltp(images):
-    features = []
-    for idx, image in enumerate(images):
-        print(f"Processing image {idx + 1}/{len(images)} for FFT-ELTP")
-        fft_image = fft2(image)
-        fft_image_shifted = fftshift(fft_image)
-        eltp_image = calculate_eltp(np.abs(fft_image_shifted))
-        dct_eltp = cv2.dct(np.float32(eltp_image))
-        mean_val_eltp = np.mean(dct_eltp)
-        features.append(mean_val_eltp)
-    print(f"Extracted features: {len(features)}")
-    return np.array(features)
+        print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}")
+
+        for j, image in enumerate(batch_images):
+            print(f"Processing image {i + j + 1} of {len(images)}")
+
+            image_features = []
+            blocks = split_into_overlapping_blocks(image)
+
+            if method == 'lbp':
+                lbp_blocks = [calculate_lbp(block) for block in blocks]
+                lbp_dct_features = [np.mean(cv2.dct(np.float32(lbp))) for lbp in lbp_blocks]
+                image_features.append(np.mean(lbp_dct_features))
+
+            elif method == 'ltp':
+                ltp_blocks = [calculate_ltp(block) for block in blocks]
+                ltp_dct_features = [np.mean(cv2.dct(np.float32(ltp))) for ltp in ltp_blocks]
+                image_features.append(np.mean(ltp_dct_features))
+
+            elif method == 'fft_eltp':
+                eltp_blocks = [calculate_eltp(block) for block in blocks]
+                fft_eltp_blocks = fft_on_blocks(eltp_blocks)
+                fft_eltp_features = [np.mean(fft_eltp) for fft_eltp in fft_eltp_blocks]
+
+                image_features.append(np.mean(fft_eltp_features))
+
+            batch_features.append(np.array(image_features))
+
+        features.append(np.array(batch_features))
+
+    return np.concatenate(features, axis=0)
 
 
 def save_features(features, labels, output_file):
@@ -106,48 +112,23 @@ def load_features(file_path):
 
 
 if __name__ == "__main__":
-    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
-    output_file_lbp_ltp = os.path.join(result_dir, 'lbp_ltp_features_labels.npz')
-    output_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_features_labels.npz')
 
-    # LBP és LTP jellemzők feldolgozása és mentése
-    if os.path.exists(output_file_lbp_ltp):
-        print(f"Loading LBP and LTP features from {output_file_lbp_ltp}")
-        lbp_ltp_features, labels = load_features(output_file_lbp_ltp)
-    else:
-        images, labels = preprocess_images(revised_dir)
-        print(f"Images loaded: {len(images)}")
-        # Képek feldolgozása részenként
-        batch_size = 1000
-        lbp_ltp_features = []
-        for i in range(0, len(images), batch_size):
-            print(f"Processing batch {i + 1} to {min(i + batch_size, len(images))} for LBP-LTP")
-            features = extract_features_lbp_ltp(images, start_idx=i, end_idx=min(i + batch_size, len(images)))
-            lbp_ltp_features.extend(features)
+    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.npz')
+    images, labels = load_preprocessed_data(preprocessed_data)
 
-        lbp_ltp_features = np.array(lbp_ltp_features)
-        save_features(lbp_ltp_features, labels, output_file_lbp_ltp)
+    output_files = {
+        'lbp': os.path.join(result_dir, 'lbp_features_labels.npz'),
+        'ltp': os.path.join(result_dir, 'ltp_features_labels.npz'),
+        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.npz')
+    }
 
-    print(f"LBP-LTP feature extraction completed. Number of features: {len(lbp_ltp_features)}")
-
-    # FFT és ELTP jellemzők feldolgozása és mentése
-    if os.path.exists(output_file_fft_eltp):
-        print(f"Loading FFT and ELTP features from {output_file_fft_eltp}")
-        fft_eltp_features, labels = load_features(output_file_fft_eltp)
-    else:
-        images, labels = preprocess_images(revised_dir)
-        print(f"Images loaded: {len(images)}")
-        # Képek feldolgozása részenként
-        batch_size = 500
-        fft_eltp_features = []
-        for i in range(0, len(images), batch_size):
-            print(f"Processing batch {i + 1} to {min(i + batch_size, len(images))} for FFT-ELTP")
-            features = extract_features_fft_eltp(images[i:min(i + batch_size, len(images))])
-            fft_eltp_features.extend(features)
-
-        fft_eltp_features = np.array(fft_eltp_features)
-        save_features(fft_eltp_features, labels, output_file_fft_eltp)
-
-    print(f"FFT-ELTP feature extraction completed. Number of features: {len(fft_eltp_features)}")
+    for method in ['lbp', 'ltp', 'fft_eltp']:
+        if os.path.exists(output_files[method]):
+            print(f"Loading {method.upper()} features from {output_files[method]}")
+            features, labels = load_features(output_files[method])
+        else:
+            print(f"Extracting {method.upper()} features")
+            features = extract_features(images, method, batch_size=200)
+            save_features(features, labels, output_files[method])

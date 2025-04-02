@@ -1,32 +1,40 @@
 import os
 import pickle
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn import svm
+from matplotlib import pyplot as plt
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
-from feature_extraction import load_features, extract_features_lbp_ltp, extract_features_fft_eltp, save_features
+from feature_extraction import load_features, extract_features, save_features
 from preprocess import preprocess_images
 
 
 def train_and_evaluate(features, labels):
     if features.ndim == 1:
         features = features.reshape(-1, 1)
+
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
+
     param_grid = {
-        'C': [0.1, 1, 10, 100],
+        'C': [0.1, 1, 10, 100, 1000],
         'gamma': [0.3225],
-        'kernel': ['rbf']
+        'kernel': ['rbf'],
+        'class_weight': ['balanced']
     }
-    grid = GridSearchCV(svm.SVC(), param_grid, cv=10, refit=True, verbose=2)
+
+    grid = GridSearchCV(SVC(), param_grid, cv=10, refit=True, verbose=2)
     grid.fit(X_train, y_train)
+
     print(f"Best parameters: {grid.best_params_}")
     print(f"Best estimator: {grid.best_estimator_}")
 
     classifier = grid.best_estimator_
+
     y_pred = classifier.predict(X_test)
+
     accuracy = accuracy_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred, zero_division=1)
+
     return classifier, accuracy, recall
 
 
@@ -38,8 +46,8 @@ def save_classifier(classifier, output_file):
 
 def save_metrics(accuracy, recall, output_file):
     with open(output_file, 'w') as file:
-        file.write(f'Accuracy: {accuracy * 100: .2f}%\n')
-        file.write(f'Recall: {recall * 100: .2f}%\n')
+        file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
+        file.write(f"Recall: {recall * 100: .2f}%\n")
     print(f"Metrics saved to {output_file}")
 
 
@@ -77,84 +85,62 @@ def plot_data_distribution(labels, title):
     return unique, counts
 
 
+def process_features(revised_dir, result_dir, methods, batch_size=50):
+    for method in methods:
+        features_file = os.path.join(result_dir, f'{method}_features_labels.npz')
+        classifier_file = os.path.join(result_dir, f'{method}_classifier.pkl')
+        metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
+        plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
+
+        if os.path.exists(classifier_file):
+            print(f"Loading classifier from {classifier_file}")
+            accuracy, recall = load_classifier(classifier_file)
+            print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
+            print(f'{method.upper()} Recall: {recall * 100: .2f}%')
+        else:
+            if os.path.exists(features_file):
+                print(f"Loading {method.upper()} features from {features_file}")
+                features, labels = load_features(features_file)
+            else:
+                images, labels = preprocess_images(revised_dir)
+                features = []
+
+                for i in range(0, len(images), batch_size):
+                    batch_images = images[i:i + batch_size]
+                    print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}...")
+                    batch_features = extract_features(batch_images, method)
+                    features.append(batch_features)
+
+                features = np.concatenate(features, axis=0)
+                save_features(features, labels, features_file)
+
+            classifier, accuracy, recall = train_and_evaluate(features, labels)
+            print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
+            print(f'{method.upper()} Recall: {recall * 100: .2f}%')
+            save_classifier(classifier, classifier_file)
+
+            save_metrics(accuracy, recall, metrics_file)
+            plot_metrics(accuracy, recall, plot_file)
+
+            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()}")
+
+            result_file = os.path.join(result_dir, 'results.txt')
+            with open(result_file, 'a', encoding="utf-8") as file:
+                file.write(f"{method.upper()} classification results: \n")
+                file.write(f"Number of images: {len(labels)}\n")
+                file.write(f"Best parameters: {classifier.get_params()}\n")
+                file.write(f"Model type: {classifier}\n")
+                file.write(f"Number of images classified as authentic: {counts[0]}\n")
+                file.write(f"Number of images classified as fake: {counts[1]}\n\n")
+                file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
+                file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
+
+
 if __name__ == "__main__":
+    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
-    features_file_lbp_ltp = os.path.join(result_dir, 'lbp_ltp_features_labels.npz')
-    features_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_features_labels.npz')
-    classifier_file_lbp_ltp = os.path.join(result_dir, 'classifier_lbp_ltp.pkl')
-    classifier_file_fft_eltp = os.path.join(result_dir, 'classifier_fft_eltp.pkl')
-    metrics_file = os.path.join(result_dir, 'evaluation_metrics.txt')
-    plot_file = os.path.join(result_dir, 'metrics_plot.png')
 
-    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
+    methods = ['lbp', 'ltp', 'fft_eltp']
 
-    # LBP és LTP jellemzők kezelése
-    if os.path.exists(features_file_lbp_ltp):
-        print(f"Loading LBP and LTP features from {features_file_lbp_ltp}")
-        features_lbp_ltp, labels = load_features(features_file_lbp_ltp)
-    else:
-        images, labels = preprocess_images(revised_dir)
-        features_lbp_ltp = extract_features_lbp_ltp(images)
-        save_features(features_lbp_ltp, labels, features_file_lbp_ltp)
-
-    # FFT és ELTP jellemzők kezelése
-    if os.path.exists(features_file_fft_eltp):
-        print(f"Loading FFT-ELTP features from {features_file_fft_eltp}")
-        features_fft_eltp, labels = load_features(features_file_fft_eltp)
-    else:
-        images, labels = preprocess_images(revised_dir)
-        features_fft_eltp = extract_features_fft_eltp(images)
-        save_features(features_fft_eltp, labels, features_file_fft_eltp)
-
-    # LBP-LTP osztályozó betanítása, értékelése
-    if os.path.exists(classifier_file_lbp_ltp):
-        print(f"Loading classifier from {classifier_file_lbp_ltp}")
-        classifier_lbp_ltp = load_classifier(classifier_file_lbp_ltp)
-    else:
-        classifier_lbp_ltp, accuracy_lbp_ltp, recall_lbp_ltp = train_and_evaluate(features_lbp_ltp, labels)
-        print(f'LBP-LTP Accuracy: {accuracy_lbp_ltp * 100: .2f}%')
-        print(f'LBP-LTP Recall: {recall_lbp_ltp * 100: .2f}%')
-        save_classifier(classifier_lbp_ltp, classifier_file_lbp_ltp)
-
-        save_metrics(accuracy_lbp_ltp, recall_lbp_ltp, metrics_file.replace('.txt', '_lbp_ltp.txt'))
-        plot_metrics(accuracy_lbp_ltp, recall_lbp_ltp, plot_file.replace('.png', '_lbp_ltp.png'))
-
-        unique_labels, counts = plot_data_distribution(labels, "Data Distribution for LBP_LTP")
-
-        result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'a', encoding="utf-8") as file:
-            file.write("LBP-LTP classification results:\n")
-            file.write(f"Number of images: {len(labels)}\n")
-            file.write(f"Best parameters: {classifier_lbp_ltp.get_params()}\n")
-            file.write(f"Model type: {classifier_lbp_ltp}\n")
-            file.write(f"Number of images classified as authentic: {counts[0]}\n")
-            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
-            file.write(f"Accuracy: {accuracy_lbp_ltp * 100: .2f}%\n")
-            file.write(f"Recall rate: {recall_lbp_ltp * 100: .2f}%\n\n")
-
-    # FFT-ELTP osztályozó betanítása, értékelése
-    if os.path.exists(classifier_file_fft_eltp):
-        print(f"Loading classifier from {classifier_file_fft_eltp}")
-        classifier_fft_eltp = load_classifier(classifier_file_fft_eltp)
-    else:
-        classifier_fft_eltp, accuracy_fft_eltp, recall_fft_eltp = train_and_evaluate(features_fft_eltp, labels)
-        print(f'FFT-ELTP Accuracy: {accuracy_fft_eltp * 100: .2f}%')
-        print(f'FFT-ELTP Recall: {recall_fft_eltp * 100: .2f}%')
-        save_classifier(classifier_fft_eltp, classifier_file_fft_eltp)
-
-        save_metrics(accuracy_fft_eltp, recall_fft_eltp, metrics_file.replace('.txt', '_fft_eltp.txt'))
-        plot_metrics(accuracy_fft_eltp, recall_fft_eltp, plot_file.replace('.png', '_fft_eltp.png'))
-
-        unique_labels, counts = plot_data_distribution(labels, "Data Distribution for FFT-ELTP")
-
-        result_file = os.path.join('results', 'results.txt')
-        with open(result_file, 'a', encoding="utf-8") as file:
-            file.write("FFT-ELTP classification results:\n")
-            file.write(f"Number of images: {len(labels)}\n")
-            file.write(f"Best parameters: {classifier_fft_eltp.get_params()}\n")
-            file.write(f"Model type: {classifier_fft_eltp}\n")
-            file.write(f"Number of images classified as authentic: {counts[0]}\n")
-            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
-            file.write(f"Accuracy: {accuracy_fft_eltp * 100: .2f}%\n")
-            file.write(f"Recall rate: {recall_fft_eltp * 100: .2f}%\n\n")
+    process_features(revised_dir, result_dir, methods, batch_size=50)
