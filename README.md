@@ -17,7 +17,9 @@ Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet ha
 - [Kapcsolat](#kapcsolat)
 
 ## Bevezetés
-A projekt célja, hogy egy gépi tanulási modellt fejlesszen ki a manipulált képek felismerésére. A projekt az alábbi fő lépéseket tartalmazza:
+A projekt célja egy gépi tanulási modell kifejlesztése, amely képes azonosítani a módosított képeket.
+
+A projekt az alábbi fő lépéseket tartalmazza:
 1. Az adatok előfeldolgozása és jellemzők kinyerése
 2. A modell betanítása és értékelése
 3. Az osztályozó tesztelése új adatkészleteken
