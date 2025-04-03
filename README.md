@@ -2,7 +2,7 @@
 
 # Szakdolgozat
 
-Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet használatával különböző képfeldolgozási és gépi tanulási technikákat vizsgál a manipulált képek felismerésére, a **Detection of Digital Image Forgery using Fast FourierTransform and Local Features** nevű kutatásra alapozva. A kutatás célja a digitális képhamisítás kimutatása gyors Fourier-transzformáció (FFT) és helyi textúra-leírók (LBP, LTP és ELTP) alkalmazásával.
+Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet használatával különböző képfeldolgozási és gépi tanulási technikákat vizsgál a manipulált képek felismerésére, a **Detection of Digital Image Forgery using Fast FourierTransform and Local Features** nevű kutatásra alapozva. A kutatás célja a digitális képhamisítás kimutatása Fast Fourier-transzformáció (FFT) és helyi textúra-leírók (LBP, LTP és ELTP) alkalmazásával.
 
 ## Tartalomjegyzék
 - [Bevezetés](#bevezetés)
@@ -38,6 +38,7 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
    
 2. **Adatok Letöltése**:
    [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
+   
    A projekt már tartalmazza az adatkészlet `revised` verzióját.
 
 ## Futtatás
@@ -78,14 +79,16 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 
 Az eredményeket a `results` mappában tároljuk:
 
-- `results.txt`: Az összesített eredmények
+- `{method}_evaluation_metrics.txt`: A modell teljesítményének metrikái az adott módszer alapján
 
-- `evaluation_metrics.txt`: A modell teljesítményének metrikái
+- `{method}_metrics_plot.png`: A teljesítménymutatók grafikonja az adott módszer alapján
 
-- `metrics_plot.png`: A teljesítménymutatók grafikonja
+- `results.txt`: Az összesített eredmények a `revised` adatkészleten alapján
+
+- `test_results.txt`: Az összesített eredmények a `test` adatkészlet alapján
 
 ## Következtetések
-További munkák és kutatások szükségesek a modell pontosságának és visszahívás értékének növelése érdekében.
+További munkák és kutatások szükségesek a modell pontosságának növelése érdekében.
 
 ## Fájlstruktúra
 A projekt könyvtárszerkezete a következő:
@@ -99,15 +102,20 @@ A projekt könyvtárszerkezete a következő:
 │   │   └── Tp/
 ├── src/
 │   ├── results/
-│   │   ├── classifier_model.pkl
-│   │   ├── evaluation_metrics.txt
-│   │   ├── features_labels.npz
-│   │   ├── metrics_plot.png
-│   │   └── results.txt
-│   ├── preprocess.py
+│   │   ├── {method}_classifier.pkl
+│   │   ├── {method}_evaluation_metrics.txt
+│   │   ├── {method}_features_labels.npz
+│   │   ├── {method}_metrics_plot.png
+│   │   ├── preprocessed_data.npz
+│   │   ├── results.txt
+│   │   └── test_results.txt
 │   ├── feature_extraction.py
-│   ├── train_classifier.py
-│   └── test_classifier.py
+│   ├── preprocess.py
+│   ├── run_scripts.py
+│   ├── test_classifier.py
+│   └── train_classifier.py
+├── .gitattributes
+├── .gitignore
 └── README.md
 ```
 
@@ -116,15 +124,15 @@ Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gya
 
 **Adat Betöltési Hiba**:
 
-Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges Au és Tp mappák, és a fájlnevek helyesen vannak megadva.
+Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges `Au` és `Tp` mappák, és a fájlnevek helyesen vannak megadva.
 
 **Kép Konvertálási Hiba**:
 
-Ellenőrizzük, hogy az OpenCV megfelelően telepítve van, és a képek elérhetők-e.
+Ellenőrizzük, hogy az `OpenCV` megfelelően telepítve van, és a képek elérhetők-e.
 
 **Import Hiba**:
 
-Ha valamely csomag nem megfelelően töltödött le, próbáljuk frissíteni, vagy újra letölteni.
+Ha valamely csomag nem megfelelően töltödött le, próbáljuk frissíteni, vagy újra letölteni a `pip` segítségével.
 
 **Virtuális Környezet Hiba**:
 
