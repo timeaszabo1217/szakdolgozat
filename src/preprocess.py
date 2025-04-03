@@ -1,4 +1,6 @@
 import os
+import pickle
+
 import cv2
 import numpy as np
 from numpy.fft import fft2, fftshift
@@ -17,10 +19,6 @@ def convert_to_ycbcr(image_path):
 
     ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     return ycbcr_image
-
-
-# def resize_image(image, target_size=(256, 384)):
-#     return cv2.resize(image, target_size)
 
 
 def get_chrominance_component(image):
@@ -45,6 +43,20 @@ def split_into_overlapping_blocks(image, block_size=3, overlap=1):
             block = image[i:i + block_size, j:j + block_size]
             blocks.append(block)
 
+    if h % block_size != 0:
+        for j in range(0, w - block_size + 1, block_size - overlap):
+            block = image[h - block_size:h, j:j + block_size]
+            blocks.append(block)
+
+    if w % block_size != 0:
+        for i in range(0, h - block_size + 1, block_size - overlap):
+            block = image[i:i + block_size, w - block_size:w]
+            blocks.append(block)
+
+    if h % block_size != 0 and w % block_size != 0:
+        block = image[h - block_size:h, w - block_size:w]
+        blocks.append(block)
+
     return blocks
 
 
@@ -61,7 +73,6 @@ def preprocess_images(image_dir):
                 print(f"Processing file: {file_path}")
                 cb_component = get_chrominance_component(file_path)
                 if cb_component is not None:
-                    # cb_component_resized = resize_image(cb_component, target_size)
                     images.append(cb_component)
                     label = 0 if 'Au' in (subdir if subdir_exists else file) else 1
                     labels.append(label)
@@ -71,12 +82,15 @@ def preprocess_images(image_dir):
 
 
 def save_preprocessed_data(images, labels, output_file):
-    np.savez(output_file, images=images, labels=labels, allow_pickle=True)
+    with open(output_file, 'wb') as f:
+        pickle.dump({'images': images, 'labels': labels}, f)
     print(f"Processed data saved to {output_file}")
 
 
 def load_preprocessed_data(file_path):
-    data = np.load(file_path, allow_pickle=True)
+    import pickle
+    with open(file_path, 'rb') as f:
+        data = pickle.load(f)
     return data['images'], data['labels']
 
 
