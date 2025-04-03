@@ -34,14 +34,22 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
 ## Telepítés
 1. **Könyvtárak Telepítése**: Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
    ```bash
-   pip install opencv-python numpy matplotlib scikit-learn imbalanced-learn
+   pip install opencv-python numpy matplotlib scikit-learn
    ```
    
 2. **Adatok Letöltése**:
    [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
    A projekt már tartalmazza az adatkészlet `revised` verzióját.
 
-## Használat
+## Futtatás
+
+### Futtatás egyben: 
+   Futtasuk az `run_scripts.py` scriptet:
+   ```bash
+   python src/run_scripts.py
+   ```
+
+### Futtatás külön-külön:
 1. **Adatok Előfeldolgozása**: Futtasuk az `preprocess.py` scriptet az adatok előfeldolgozásához:
    ```bash
    python src/preprocess.py
@@ -78,7 +86,7 @@ Az eredményeket a `results` mappában tároljuk:
 - `metrics_plot.png`: A teljesítménymutatók grafikonja
 
 ## Következtetések
-További munkák és kutatások szükségesek a modell pontosságának és recall értékének növelése érdekében.
+További munkák és kutatások szükségesek a modell pontosságának és visszahívás értékének növelése érdekében.
 
 ## Fájlstruktúra
 A projekt könyvtárszerkezete a következő:
@@ -88,6 +96,8 @@ A projekt könyvtárszerkezete a következő:
 │   │   ├── Au/
 │   │   └── Tp/
 │   └── CASIA2.0_test/
+│   │   ├── Au/
+│   │   └── Tp/
 ├── src/
 │   ├── results/
 │   │   ├── classifier_model.pkl
@@ -107,19 +117,27 @@ Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gya
 
 **Adat Betöltési Hiba**:
 
-Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges képek, és a fájlnevek helyesen vannak megadva.
+Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges Au és Tp mappák, és a fájlnevek helyesen vannak megadva.
 
 **Kép Konvertálási Hiba**:
 
 Ellenőrizzük, hogy az OpenCV megfelelően telepítve van, és a képek elérhetők-e.
 
+**Import Hiba**
+
+Ha valamely csomag nem megfelelően töltödött le, próbáljuk frissíteni, vagy újra letölteni.
+
+**Virtuális Környezet Hiba**
+
+Ha a vituális környezetben nem fut le megfeleleően, töröljük és hozzuk újra létre a `venv`-et.
+
 **Modell Betöltési Hiba**:
 
-Győződjünk meg róla, hogy a `classifier_model.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
+Győződjünk meg róla, hogy a `{method}_classifier.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
 
 **Memória Túlcsordulás, Lassú Futás Hiba**:
 
-Ha memória problémák merülnek fel, próbáljunk kisebb batch méretet választani (pl. `batch_size=200`).
+Ha memória problémák merülnek fel, próbáljunk kisebb batch méretet választani (pl. `batch_size=100`).
 
 ## Kapcsolat
 Email: [timeaszabo1217@gmail.com](mailto:timeaszabo1217@gmail.com)
