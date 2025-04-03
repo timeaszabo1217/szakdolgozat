@@ -123,11 +123,11 @@ Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükség
 
 Ellenőrizzük, hogy az OpenCV megfelelően telepítve van, és a képek elérhetők-e.
 
-**Import Hiba**
+**Import Hiba**:
 
 Ha valamely csomag nem megfelelően töltödött le, próbáljuk frissíteni, vagy újra letölteni.
 
-**Virtuális Környezet Hiba**
+**Virtuális Környezet Hiba**:
 
 Ha a vituális környezetben nem fut le megfeleleően, töröljük és hozzuk újra létre a `venv`-et.
 
