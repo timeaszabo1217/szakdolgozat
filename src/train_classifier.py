@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
 from feature_extraction import load_features, extract_features, save_features
 from preprocess import preprocess_images
 
@@ -15,14 +17,19 @@ def train_and_evaluate(features, labels):
 
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
+    pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('svm', SVC())
+    ])
+
     param_grid = {
-        'C': [0.1, 1, 10, 100, 1000],
-        'gamma': [0.3225],
-        'kernel': ['rbf'],
-        'class_weight': ['balanced']
+        'svm__C': [0.1, 1, 10, 100, 1000],
+        'svm__gamma': [0.3225],
+        'svm__kernel': ['rbf'],
+        'svm__class_weight': ['balanced']
     }
 
-    grid = GridSearchCV(SVC(), param_grid, cv=10, refit=True, verbose=2)
+    grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=2)
     grid.fit(X_train, y_train)
 
     print(f"Best parameters: {grid.best_params_}")
@@ -92,48 +99,56 @@ def process_features(revised_dir, result_dir, methods, batch_size=50):
         metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
         plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
 
+        if os.path.exists(features_file):
+            print(f"Loading {method.upper()} features from {features_file}")
+            features, labels = load_features(features_file)
+        else:
+            images, labels = preprocess_images(revised_dir)
+            features = []
+
+            for i in range(0, len(images), batch_size):
+                batch_images = images[i:i + batch_size]
+                print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}...")
+                batch_features = extract_features(batch_images, method)
+                features.append(batch_features)
+
+            features = np.concatenate(features, axis=0)
+            save_features(features, labels, features_file)
+
         if os.path.exists(classifier_file):
             print(f"Loading classifier from {classifier_file}")
-            accuracy, recall = load_classifier(classifier_file)
+            classifier = load_classifier(classifier_file)
+
+            X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1,
+                                                                stratify=labels)
+
+            y_pred = classifier.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred)
+            recall = recall_score(y_test, y_pred)
+
             print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} Recall: {recall * 100: .2f}%')
         else:
-            if os.path.exists(features_file):
-                print(f"Loading {method.upper()} features from {features_file}")
-                features, labels = load_features(features_file)
-            else:
-                images, labels = preprocess_images(revised_dir)
-                features = []
-
-                for i in range(0, len(images), batch_size):
-                    batch_images = images[i:i + batch_size]
-                    print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}...")
-                    batch_features = extract_features(batch_images, method)
-                    features.append(batch_features)
-
-                features = np.concatenate(features, axis=0)
-                save_features(features, labels, features_file)
-
             classifier, accuracy, recall = train_and_evaluate(features, labels)
             print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} Recall: {recall * 100: .2f}%')
             save_classifier(classifier, classifier_file)
 
-            save_metrics(accuracy, recall, metrics_file)
-            plot_metrics(accuracy, recall, plot_file)
+        save_metrics(accuracy, recall, metrics_file)
+        plot_metrics(accuracy, recall, plot_file)
 
-            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()}")
+        unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()}")
 
-            result_file = os.path.join(result_dir, 'results.txt')
-            with open(result_file, 'a', encoding="utf-8") as file:
-                file.write(f"{method.upper()} classification results: \n")
-                file.write(f"Number of images: {len(labels)}\n")
-                file.write(f"Best parameters: {classifier.get_params()}\n")
-                file.write(f"Model type: {classifier}\n")
-                file.write(f"Number of images classified as authentic: {counts[0]}\n")
-                file.write(f"Number of images classified as fake: {counts[1]}\n\n")
-                file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
-                file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
+        result_file = os.path.join(result_dir, 'results.txt')
+        with open(result_file, 'a', encoding="utf-8") as file:
+            file.write(f"{method.upper()} classification results: \n")
+            file.write(f"Number of images: {len(labels)}\n")
+            file.write(f"Best parameters: {classifier.get_params()}\n")
+            file.write(f"Model type: {classifier}\n")
+            file.write(f"Number of images classified as authentic: {counts[0]}\n")
+            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
+            file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
+            file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
 
 
 if __name__ == "__main__":

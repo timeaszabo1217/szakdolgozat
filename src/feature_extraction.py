@@ -1,53 +1,63 @@
 import os
 import cv2
 import numpy as np
-from preprocess import load_preprocessed_data, split_into_overlapping_blocks, fft_on_blocks
+from preprocess import load_preprocessed_data, split_into_overlapping_blocks, apply_fft
 
 
 def calculate_lbp(image):
     image = image.astype(np.float32)
     lbp_image = np.zeros_like(image, dtype=np.float32)
-    for row in range(1, image.shape[0] - 1):
-        for col in range(1, image.shape[1] - 1):
-            center = image[row, col]
-            binary_pattern = [
-                int(image[row - 1, col - 1] >= center),
-                int(image[row - 1, col] >= center),
-                int(image[row - 1, col + 1] >= center),
-                int(image[row, col + 1] >= center),
-                int(image[row + 1, col + 1] >= center),
-                int(image[row + 1, col] >= center),
-                int(image[row + 1, col - 1] >= center),
-                int(image[row, col - 1] >= center)
+
+    for x in range(1, image.shape[0] - 1):
+        for y in range(1, image.shape[1] - 1):
+            g_t = image[x, y]
+            binary_pattern = []
+
+            neighbors = [
+                image[x - 1, y - 1], image[x - 1, y], image[x - 1, y + 1],
+                image[x, y + 1], image[x + 1, y + 1], image[x + 1, y],
+                image[x + 1, y - 1], image[x, y - 1]
             ]
-            lbp_image[row, col] = sum([val * (1 << i) for i, val in enumerate(binary_pattern)])
+
+            for g_x in neighbors:
+                binary_pattern.append(1 if g_x >= g_t else 0)
+
+            lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])  # type: ignore
+
     return lbp_image
 
 
-def calculate_ltp(image):
+def calculate_ltp(image, th=5):
     image = image.astype(np.float32)
     ltp_image = np.zeros_like(image, dtype=np.float32)
-    threshold = 5
-    for row in range(1, image.shape[0] - 1):
-        for col in range(1, image.shape[1] - 1):
-            center = image[row, col]
-            binary_pattern = []
-            for r in [-1, 0, 1]:
-                for c in [-1, 0, 1]:
-                    if r == 0 and c == 0:
-                        continue
-                    neighbor = image[row + r, col + c]
-                    if neighbor >= center + threshold:
-                        binary_pattern.append(1)
-                    elif neighbor <= center - threshold:
-                        binary_pattern.append(-1)
-                    else:
-                        binary_pattern.append(0)
-            ltp_image[row, col] = sum([val * (3 ** i) for i, val in enumerate(binary_pattern)])
+
+    for x in range(1, image.shape[0] - 1):
+        for y in range(1, image.shape[1] - 1):
+            g_t = image[x, y]
+            ternary_pattern = []
+
+            neighbors = [
+                image[x - 1, y - 1], image[x - 1, y], image[x - 1, y + 1],
+                image[x, y + 1], image[x + 1, y + 1], image[x + 1, y],
+                image[x + 1, y - 1], image[x, y - 1]
+            ]
+
+            for g_x in neighbors:
+                if g_x >= g_t + th:
+                    ternary_pattern.append(1)
+                elif g_x <= g_t - th:
+                    ternary_pattern.append(-1)
+                else:
+                    ternary_pattern.append(0)
+
+            ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])  # type: ignore
+
     return ltp_image
 
 
 def calculate_eltp(image):
+    image = image.astype(np.float32)
+
     g_t_e = np.mean(image)
     t_e = np.mean(np.abs(image - g_t_e))
 
@@ -55,10 +65,12 @@ def calculate_eltp(image):
         return np.where(g_x >= g_t_e + t_e, 1, np.where(g_x <= g_t_e - t_e, -1, 0))
 
     s_matrix = s_e(image, g_t_e, t_e)
-    eltp_x = np.sum(s_matrix == 1, axis=1)
-    eltp_n = np.sum(s_matrix == -1, axis=1)
+
+    eltp_x = np.sum(s_matrix == 1, axis=None)
+    eltp_n = np.sum(s_matrix == -1, axis=None)
 
     eltp = eltp_x * (image.shape[1] + 2) - 4 * (eltp_x * (eltp_x + 1)) / 2 + eltp_n
+
     return eltp
 
 
@@ -88,11 +100,11 @@ def extract_features(images, method, batch_size=200):
                 image_features.append(np.mean(ltp_dct_features))
 
             elif method == 'fft_eltp':
-                eltp_blocks = [calculate_eltp(block) for block in blocks]
-                fft_eltp_blocks = fft_on_blocks(eltp_blocks)
-                fft_eltp_features = [np.mean(fft_eltp) for fft_eltp in fft_eltp_blocks]
-
-                image_features.append(np.mean(fft_eltp_features))
+                fft_image = apply_fft(image)
+                fft_blocks = split_into_overlapping_blocks(fft_image)
+                eltp_blocks = [calculate_eltp(block) for block in fft_blocks]
+                eltp_features = [np.mean(eltp) for eltp in eltp_blocks]
+                image_features.append(np.mean(eltp_features))
 
             batch_features.append(np.array(image_features))
 

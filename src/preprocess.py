@@ -19,14 +19,21 @@ def convert_to_ycbcr(image_path):
     return ycbcr_image
 
 
-def resize_image(image, target_size=(256, 384)):
-    return cv2.resize(image, target_size)
+# def resize_image(image, target_size=(256, 384)):
+#     return cv2.resize(image, target_size)
 
 
 def get_chrominance_component(image):
     ycbcr_image = convert_to_ycbcr(image)
     Y, Cb, Cr = cv2.split(ycbcr_image)
     return Cb
+
+
+def apply_fft(image):
+    fft_image = fft2(image)
+    fft_image_shifted = fftshift(fft_image)
+    fft_magnitude = np.abs(fft_image_shifted)
+    return fft_magnitude
 
 
 def split_into_overlapping_blocks(image, block_size=3, overlap=1):
@@ -41,18 +48,7 @@ def split_into_overlapping_blocks(image, block_size=3, overlap=1):
     return blocks
 
 
-def fft_on_blocks(blocks):
-    fft_features = []
-
-    for block in blocks:
-        fft_image = fft2(block)
-        fft_image_shifted = fftshift(fft_image)
-        fft_features.append(np.mean(np.abs(fft_image_shifted)))
-
-    return fft_features
-
-
-def preprocess_images(image_dir, target_size=(256, 384)):
+def preprocess_images(image_dir):
     images, labels = [], []
 
     subdirs = ['Au', 'Tp']
@@ -65,8 +61,8 @@ def preprocess_images(image_dir, target_size=(256, 384)):
                 print(f"Processing file: {file_path}")
                 cb_component = get_chrominance_component(file_path)
                 if cb_component is not None:
-                    cb_component_resized = resize_image(cb_component, target_size)
-                    images.append(cb_component_resized)
+                    # cb_component_resized = resize_image(cb_component, target_size)
+                    images.append(cb_component)
                     label = 0 if 'Au' in (subdir if subdir_exists else file) else 1
                     labels.append(label)
 
