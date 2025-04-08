@@ -8,11 +8,11 @@ from train_classifier import load_classifier
 
 
 def evaluate_classifier(method, images, labels, classifier_file):
-    features = extract_features(images, method=method)
+    features = extract_features(images, labels, method=method, output_file=None)
     print(f"Number of {method.upper()} features extracted: {features.shape}")
 
     if features.size == 0:
-        raise ValueError(f"Extracted {method.upper()} features are empty. Please check the feature extraction process.")
+        raise ValueError(f"Extracted {method.upper()} features are empty.")
 
     classifier = load_classifier(classifier_file)
     print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
@@ -39,7 +39,7 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
 
     if len(unique_labels) < 2:
         raise ValueError(
-            "Only one class is present in the dataset. Please ensure both 'Authentic' and 'Tampered' exist.")
+            "Only one class is present in the dataset.")
 
     report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp)
     report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)

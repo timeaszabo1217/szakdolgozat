@@ -3,7 +3,7 @@ import time
 
 RED = "\033[91m"
 GREEN = "\033[92m"
-BLUE = "\033[94m"
+PURPLE = "\033[38;5;141m"
 RESET = "\033[0m"
 
 start_time = time.time()
@@ -11,7 +11,7 @@ start_time = time.time()
 scripts = ["preprocess.py", "feature_extraction.py", "train_classifier.py", "test_classifier.py"]
 
 for script in scripts:
-    print(f"{BLUE}➜ Running {script}...{RESET}", flush=True)
+    print(f"{PURPLE}➜ Running {script}...{RESET}", flush=True)
     time.sleep(3)
 
     try:

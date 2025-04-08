@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from feature_extraction import load_features, extract_features, save_features
+from feature_extraction import load_features, extract_features
 from preprocess import preprocess_images
 
 
@@ -92,9 +92,9 @@ def plot_data_distribution(labels, title):
     return unique, counts
 
 
-def process_features(revised_dir, result_dir, methods, batch_size=50):
+def process_features(revised_dir, result_dir, methods, batch_size=200):
     for method in methods:
-        features_file = os.path.join(result_dir, f'{method}_features_labels.npz')
+        features_file = os.path.join(result_dir, f'{method}_features_labels.pkl')
         classifier_file = os.path.join(result_dir, f'{method}_classifier.pkl')
         metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
         plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
@@ -103,17 +103,10 @@ def process_features(revised_dir, result_dir, methods, batch_size=50):
             print(f"Loading {method.upper()} features from {features_file}")
             features, labels = load_features(features_file)
         else:
+            print(f"Extracting {method.upper()} features")
             images, labels = preprocess_images(revised_dir)
-            features = []
-
-            for i in range(0, len(images), batch_size):
-                batch_images = images[i:i + batch_size]
-                print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}...")
-                batch_features = extract_features(batch_images, method)
-                features.append(batch_features)
-
-            features = np.concatenate(features, axis=0)
-            save_features(features, labels, features_file)
+            extract_features(images, labels, method, features_file, batch_size=batch_size)
+            features, labels = load_features(features_file)
 
         if os.path.exists(classifier_file):
             print(f"Loading classifier from {classifier_file}")
@@ -121,18 +114,15 @@ def process_features(revised_dir, result_dir, methods, batch_size=50):
 
             X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1,
                                                                 stratify=labels)
-
             y_pred = classifier.predict(X_test)
             accuracy = accuracy_score(y_test, y_pred)
             recall = recall_score(y_test, y_pred)
-
-            print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
-            print(f'{method.upper()} Recall: {recall * 100: .2f}%')
         else:
             classifier, accuracy, recall = train_and_evaluate(features, labels)
-            print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
-            print(f'{method.upper()} Recall: {recall * 100: .2f}%')
             save_classifier(classifier, classifier_file)
+
+        print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
+        print(f'{method.upper()} Recall: {recall * 100: .2f}%')
 
         save_metrics(accuracy, recall, metrics_file)
         plot_metrics(accuracy, recall, plot_file)
@@ -158,4 +148,4 @@ if __name__ == "__main__":
 
     methods = ['lbp', 'ltp', 'fft_eltp']
 
-    process_features(revised_dir, result_dir, methods, batch_size=50)
+    process_features(revised_dir, result_dir, methods, batch_size=200)

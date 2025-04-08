@@ -1,4 +1,5 @@
 import os
+import pickle
 import cv2
 import numpy as np
 from preprocess import load_preprocessed_data, split_into_overlapping_blocks, apply_fft
@@ -74,11 +75,10 @@ def calculate_eltp(image):
     return eltp
 
 
-def extract_features(images, method, batch_size=200):
-    features = []
-
+def extract_features(images, labels, method, output_file, batch_size=200):
     for i in range(0, len(images), batch_size):
         batch_images = images[i:i + batch_size]
+        batch_labels = labels[i:i + batch_size]
         batch_features = []
 
         print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}")
@@ -87,53 +87,69 @@ def extract_features(images, method, batch_size=200):
             print(f"Processing image {i + j + 1} of {len(images)}")
 
             image_features = []
-            blocks = split_into_overlapping_blocks(image)
 
-            if method == 'lbp':
-                lbp_blocks = [calculate_lbp(block) for block in blocks]
-                lbp_dct_features = [np.mean(cv2.dct(np.float32(lbp))) for lbp in lbp_blocks]
-                image_features.append(np.mean(lbp_dct_features))
+            if method in ['lbp', 'ltp']:
+                blocks = split_into_overlapping_blocks(image, block_size=(3, 3))
 
-            elif method == 'ltp':
-                ltp_blocks = [calculate_ltp(block) for block in blocks]
-                ltp_dct_features = [np.mean(cv2.dct(np.float32(ltp))) for ltp in ltp_blocks]
-                image_features.append(np.mean(ltp_dct_features))
+                if method == 'lbp':
+                    lbp_blocks = [calculate_lbp(block) for block in blocks]
+                    lbp_features = [np.mean(cv2.dct(lbp)) for lbp in lbp_blocks]
+                    image_features.extend(lbp_features)
+
+                elif method == 'ltp':
+                    ltp_blocks = [calculate_ltp(block) for block in blocks]
+                    ltp_features = [np.mean(cv2.dct(ltp)) for ltp in ltp_blocks]
+                    image_features.extend(ltp_features)
 
             elif method == 'fft_eltp':
                 fft_image = apply_fft(image)
-                fft_blocks = split_into_overlapping_blocks(fft_image)
-                eltp_blocks = [calculate_eltp(block) for block in fft_blocks]
-                eltp_features = [np.mean(eltp) for eltp in eltp_blocks]
-                image_features.append(np.mean(eltp_features))
+                blocks = split_into_overlapping_blocks(fft_image, block_size=(3, 3))
+                eltp_features = [calculate_eltp(block) for block in blocks]
+                image_features.extend(eltp_features)
 
-            batch_features.append(np.array(image_features))
+            batch_features.append(image_features)
 
-        features.append(np.array(batch_features))
-
-    return np.concatenate(features, axis=0)
+        save_features(batch_features, batch_labels, output_file, append=(i > 0))
 
 
-def save_features(features, labels, output_file):
-    np.savez(output_file, features=features, labels=labels)
-    print(f"Features saved to {output_file}")
+def save_features(batch_features, batch_labels, output_file, append=False):
+    mode = 'ab' if append else 'wb'
+    saved = 0
+
+    with open(output_file, mode) as file:
+        for feature, label in zip(batch_features, batch_labels):
+            pickle.dump({'feature': feature, 'label': label}, file)
+            saved += 1
+
+    print(f"Saved {saved} new samples to {output_file}")
 
 
 def load_features(file_path):
-    data = np.load(file_path)
-    return data['features'], data['labels']
+    features = []
+    labels = []
+    with open(file_path, 'rb') as file:
+        while True:
+            try:
+                entry = pickle.load(file)
+                features.append(entry['feature'])
+                labels.append(entry['label'])
+            except EOFError:
+                break
+    print(f"Loaded {len(features)} feature from {file_path}")
+    return features, labels
 
 
 if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
 
-    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.npz')
+    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.pkl')
     images, labels = load_preprocessed_data(preprocessed_data)
 
     output_files = {
-        'lbp': os.path.join(result_dir, 'lbp_features_labels.npz'),
-        'ltp': os.path.join(result_dir, 'ltp_features_labels.npz'),
-        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.npz')
+        'lbp': os.path.join(result_dir, 'lbp_features_labels.pkl'),
+        'ltp': os.path.join(result_dir, 'ltp_features_labels.pkl'),
+        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.pkl')
     }
 
     for method in ['lbp', 'ltp', 'fft_eltp']:
@@ -142,5 +158,4 @@ if __name__ == "__main__":
             features, labels = load_features(output_files[method])
         else:
             print(f"Extracting {method.upper()} features")
-            features = extract_features(images, method, batch_size=200)
-            save_features(features, labels, output_files[method])
+            extract_features(images, labels, method, output_files[method], batch_size=200)

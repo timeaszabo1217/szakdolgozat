@@ -1,6 +1,5 @@
 import os
 import pickle
-
 import cv2
 import numpy as np
 from numpy.fft import fft2, fftshift
@@ -34,27 +33,28 @@ def apply_fft(image):
     return fft_magnitude
 
 
-def split_into_overlapping_blocks(image, block_size=3, overlap=1):
+def split_into_overlapping_blocks(image, block_size=(3, 3), overlap=1):
     blocks = []
     h, w = image.shape
+    block_h, block_w = block_size
 
-    for i in range(0, h - block_size + 1, block_size - overlap):
-        for j in range(0, w - block_size + 1, block_size - overlap):
-            block = image[i:i + block_size, j:j + block_size]
+    for i in range(0, h - block_h + 1, block_h - overlap):
+        for j in range(0, w - block_w + 1, block_w - overlap):
+            block = image[i:i + block_h, j:j + block_w]
             blocks.append(block)
 
-    if h % block_size != 0:
-        for j in range(0, w - block_size + 1, block_size - overlap):
-            block = image[h - block_size:h, j:j + block_size]
+    if h % block_h != 0:
+        for j in range(0, w - block_w + 1, block_w - overlap):
+            block = image[h - block_h:h, j:j + block_w]
             blocks.append(block)
 
-    if w % block_size != 0:
-        for i in range(0, h - block_size + 1, block_size - overlap):
-            block = image[i:i + block_size, w - block_size:w]
+    if w % block_w != 0:
+        for i in range(0, h - block_h + 1, block_h - overlap):
+            block = image[i:i + block_h, w - block_w:w]
             blocks.append(block)
 
-    if h % block_size != 0 and w % block_size != 0:
-        block = image[h - block_size:h, w - block_size:w]
+    if h % block_h != 0 and w % block_w != 0:
+        block = image[h - block_h:h, w - block_w:w]
         blocks.append(block)
 
     return blocks
@@ -99,12 +99,12 @@ if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
 
-    output_file = os.path.join(result_dir, 'preprocessed_data.npz')
+    output_file = os.path.join(result_dir, 'preprocessed_data.pkl')
 
     if os.path.exists(output_file):
-        print("Loading existing preprocessed data...")
+        print("Loading existing preprocessed data")
         images, labels = load_preprocessed_data(output_file)
     else:
-        print("Processing images...")
+        print("Processing images")
         images, labels = preprocess_images(revised_dir)
         save_preprocessed_data(images, labels, output_file)
