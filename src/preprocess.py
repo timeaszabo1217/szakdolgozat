@@ -1,5 +1,5 @@
 import os
-import pickle
+import joblib
 import cv2
 import numpy as np
 from numpy.fft import fft2, fftshift
@@ -82,15 +82,13 @@ def preprocess_images(image_dir):
 
 
 def save_preprocessed_data(images, labels, output_file):
-    with open(output_file, 'wb') as f:
-        pickle.dump({'images': images, 'labels': labels}, f)
+    joblib.dump({'images': images, 'labels': labels}, output_file)
     print(f"Processed data saved to {output_file}")
 
 
 def load_preprocessed_data(file_path):
-    import pickle
-    with open(file_path, 'rb') as f:
-        data = pickle.load(f)
+    data = joblib.load(file_path)
+    print(f"Loaded {len(data['images'])} feature from {file_path}")
     return data['images'], data['labels']
 
 
@@ -99,7 +97,7 @@ if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
 
-    output_file = os.path.join(result_dir, 'preprocessed_data.pkl')
+    output_file = os.path.join(result_dir, 'preprocessed_data.joblib')
 
     if os.path.exists(output_file):
         print("Loading existing preprocessed data")

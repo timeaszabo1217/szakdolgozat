@@ -1,5 +1,5 @@
 import os
-import pickle
+import joblib
 import cv2
 import numpy as np
 from preprocess import load_preprocessed_data, split_into_overlapping_blocks, apply_fft
@@ -23,7 +23,7 @@ def calculate_lbp(image):
             for g_x in neighbors:
                 binary_pattern.append(1 if g_x >= g_t else 0)
 
-            lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])  # type: ignore
+            lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])
 
     return lbp_image
 
@@ -51,7 +51,7 @@ def calculate_ltp(image, th=5):
                 else:
                     ternary_pattern.append(0)
 
-            ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])  # type: ignore
+            ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])
 
     return ltp_image
 
@@ -118,9 +118,8 @@ def save_features(batch_features, batch_labels, output_file, append=False):
 
     with open(output_file, mode) as file:
         for feature, label in zip(batch_features, batch_labels):
-            pickle.dump({'feature': feature, 'label': label}, file)
+            joblib.dump({'feature': feature, 'label': label}, file)
             saved += 1
-
     print(f"Saved {saved} new samples to {output_file}")
 
 
@@ -130,7 +129,7 @@ def load_features(file_path):
     with open(file_path, 'rb') as file:
         while True:
             try:
-                entry = pickle.load(file)
+                entry = joblib.load(file)
                 features.append(entry['feature'])
                 labels.append(entry['label'])
             except EOFError:
@@ -143,13 +142,13 @@ if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
 
-    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.pkl')
+    preprocessed_data = os.path.join('results/preprocessed_data.joblib')
     images, labels = load_preprocessed_data(preprocessed_data)
 
     output_files = {
-        'lbp': os.path.join(result_dir, 'lbp_features_labels.pkl'),
-        'ltp': os.path.join(result_dir, 'ltp_features_labels.pkl'),
-        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.pkl')
+        'lbp': os.path.join(result_dir, 'lbp_features_labels.joblib'),
+        'ltp': os.path.join(result_dir, 'ltp_features_labels.joblib'),
+        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.joblib')
     }
 
     for method in ['lbp', 'ltp', 'fft_eltp']:

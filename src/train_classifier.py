@@ -1,5 +1,5 @@
 import os
-import pickle
+import joblib
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.svm import SVC
@@ -12,8 +12,7 @@ from preprocess import preprocess_images
 
 
 def train_and_evaluate(features, labels):
-    if features.ndim == 1:
-        features = features.reshape(-1, 1)
+    print("Feature vector lengths:", [len(feature) for feature in features])
 
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
@@ -32,9 +31,6 @@ def train_and_evaluate(features, labels):
     grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=2)
     grid.fit(X_train, y_train)
 
-    print(f"Best parameters: {grid.best_params_}")
-    print(f"Best estimator: {grid.best_estimator_}")
-
     classifier = grid.best_estimator_
 
     y_pred = classifier.predict(X_test)
@@ -46,8 +42,7 @@ def train_and_evaluate(features, labels):
 
 
 def save_classifier(classifier, output_file):
-    with open(output_file, 'wb') as file:
-        pickle.dump(classifier, file)
+    joblib.dump(classifier, output_file)
     print(f"Classifier saved to {output_file}")
 
 
@@ -59,8 +54,7 @@ def save_metrics(accuracy, recall, output_file):
 
 
 def load_classifier(file_path):
-    with open(file_path, 'rb') as file:
-        classifier = pickle.load(file)
+    classifier = joblib.load(file_path)
     print(f"Loaded classifier type: {type(classifier)}")
     return classifier
 
@@ -94,8 +88,8 @@ def plot_data_distribution(labels, title):
 
 def process_features(revised_dir, result_dir, methods, batch_size=200):
     for method in methods:
-        features_file = os.path.join(result_dir, f'{method}_features_labels.pkl')
-        classifier_file = os.path.join(result_dir, f'{method}_classifier.pkl')
+        features_file = os.path.join(result_dir, f'{method}_features_labels.joblib')
+        classifier_file = os.path.join(result_dir, f'{method}_classifier.joblib')
         metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
         plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
 
