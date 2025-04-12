@@ -61,6 +61,8 @@ def split_into_overlapping_blocks(image, block_size=(3, 3), overlap_ratio=0.5):
         block = image[h - block_h:h, w - block_w:w]
         blocks.append(block)
 
+    return blocks
+
 
 def preprocess_images(image_dir):
     images, labels = [], []
