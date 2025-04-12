@@ -29,7 +29,13 @@ def evaluate_classifier(method, images, labels, classifier_file):
     return report
 
 
-def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp):
+def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file):
+    if os.path.exists(result_file):
+        print(f"Test results already exist at {result_file}. Skipping re-execution.")
+        with open(result_file, 'r', encoding="utf-8") as f:
+            print(f.read())
+        return
+
     images, labels = preprocess_images(new_dataset_dir)
     print(f"Number of loaded images: {len(images)}")
     print(f"Number of labels loaded: {len(labels)}")
@@ -44,24 +50,6 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
     report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)
     report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp)
 
-    return report_lbp, report_ltp, report_fft_eltp
-
-
-if __name__ == "__main__":
-    new_dataset_dir = os.path.abspath('../data/CASIA2.0_test')
-    result_dir = 'results'
-    classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
-    classifier_file_ltp = os.path.join(result_dir, 'ltp_classifier.joblib')
-    classifier_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_classifier.joblib')
-
-    report_lbp, report_ltp, report_fft_eltp = test_classifier(
-        new_dataset_dir,
-        classifier_file_lbp,
-        classifier_file_ltp,
-        classifier_file_fft_eltp
-    )
-
-    result_file = os.path.join(result_dir, 'test_results.txt')
     with open(result_file, 'w', encoding="utf-8") as f:
         f.write("LBP\n")
         f.write(report_lbp)
@@ -71,3 +59,21 @@ if __name__ == "__main__":
         f.write(report_fft_eltp)
 
     print(f"Test results saved to {result_file}")
+
+
+if __name__ == "__main__":
+    new_dataset_dir = os.path.abspath('../data/CASIA2.0_test')
+    result_dir = 'results'
+    result_file = os.path.join(result_dir, 'test_results.txt')
+
+    classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
+    classifier_file_ltp = os.path.join(result_dir, 'ltp_classifier.joblib')
+    classifier_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_classifier.joblib')
+
+    test_classifier(
+        new_dataset_dir,
+        classifier_file_lbp,
+        classifier_file_ltp,
+        classifier_file_fft_eltp,
+        result_file
+    )
