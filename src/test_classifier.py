@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, ConfusionMatrixDisplay, confusion_matrix
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay, confusion_matrix, accuracy_score, recall_score
 from preprocess import preprocess_images
 from feature_extraction import extract_features
 from train_classifier import load_classifier
@@ -18,8 +18,15 @@ def evaluate_classifier(method, images, labels, classifier_file):
     print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
 
     predictions = classifier.predict(features)
+
     report = classification_report(labels, predictions, target_names=['Authentic', 'Tampered'], zero_division=1)
     print(f"{method.upper()} Classification Report: \n", report)
+
+    accuracy = accuracy_score(labels, predictions)
+    recall = recall_score(labels, predictions, pos_label='Tampered')
+
+    print(f"{method.upper()} Accuracy: {accuracy:.4f}")
+    print(f"{method.upper()} Recall (Tampered): {recall:.4f}")
 
     cm = confusion_matrix(labels, predictions)
     ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered']).plot()

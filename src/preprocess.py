@@ -30,34 +30,36 @@ def apply_fft(image):
     fft_image = fft2(image)
     fft_image_shifted = fftshift(fft_image)
     fft_magnitude = np.abs(fft_image_shifted)
-    return fft_magnitude
+    normalized_fft = fft_magnitude / np.max(fft_magnitude)
+    return normalized_fft
 
 
-def split_into_overlapping_blocks(image, block_size=(3, 3), overlap=1):
+def split_into_overlapping_blocks(image, block_size=(3, 3), overlap_ratio=0.5):
     blocks = []
     h, w = image.shape
     block_h, block_w = block_size
 
-    for i in range(0, h - block_h + 1, block_h - overlap):
-        for j in range(0, w - block_w + 1, block_w - overlap):
+    step_h = max(1, int(block_h * (1 - overlap_ratio)))
+    step_w = max(1, int(block_w * (1 - overlap_ratio)))
+
+    for i in range(0, h - block_h + 1, step_h):
+        for j in range(0, w - block_w + 1, step_w):
             block = image[i:i + block_h, j:j + block_w]
             blocks.append(block)
 
-    if h % block_h != 0:
-        for j in range(0, w - block_w + 1, block_w - overlap):
+    if h % step_h != 0:
+        for j in range(0, w - block_w + 1, step_w):
             block = image[h - block_h:h, j:j + block_w]
             blocks.append(block)
 
-    if w % block_w != 0:
-        for i in range(0, h - block_h + 1, block_h - overlap):
+    if w % step_w != 0:
+        for i in range(0, h - block_h + 1, step_h):
             block = image[i:i + block_h, w - block_w:w]
             blocks.append(block)
 
-    if h % block_h != 0 and w % block_w != 0:
+    if h % step_h != 0 and w % step_w != 0:
         block = image[h - block_h:h, w - block_w:w]
         blocks.append(block)
-
-    return blocks
 
 
 def preprocess_images(image_dir):
