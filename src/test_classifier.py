@@ -62,7 +62,7 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
 
 
 if __name__ == "__main__":
-    new_dataset_dir = os.path.abspath('../data/CASIA2.0_test')
+    new_dataset_dir = os.path.abspath('../data/CASIA1.0')
     result_dir = 'results'
     result_file = os.path.join(result_dir, 'test_results.txt')
 
