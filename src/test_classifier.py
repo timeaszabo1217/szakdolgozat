@@ -38,7 +38,7 @@ def evaluate_classifier(method, images, labels, classifier_file):
 
 def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file):
     if os.path.exists(result_file):
-        print(f"Test results already exist at {result_file}. Skipping re-execution.")
+        print(f"Test results already exist at {result_file}. Skipping testing.")
         with open(result_file, 'r', encoding="utf-8") as f:
             print(f.read())
         return
@@ -51,7 +51,7 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
     print("Unique labels and their counts:", dict(zip(unique_labels, counts)))
 
     if len(unique_labels) < 2:
-        raise ValueError("Only one class is present in the dataset.")
+        raise ValueError("Warning: Only one class is present in the dataset.")
 
     report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp)
     report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)

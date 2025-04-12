@@ -8,7 +8,7 @@ from numpy.fft import fft2, fftshift
 def convert_to_ycbcr(image_path):
     image = cv2.imread(image_path)
     if image is None:
-        print(f"Could not read image: {image_path}")
+        print(f"Warning: Could not read image {image_path} image")
         return None
 
     h, w = image.shape[:2]
