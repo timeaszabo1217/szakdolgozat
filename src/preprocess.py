@@ -88,7 +88,7 @@ def save_preprocessed_data(images, labels, output_file):
 
 def load_preprocessed_data(file_path):
     data = joblib.load(file_path)
-    print(f"Loaded {len(data['images'])} feature from {file_path}")
+    print(f"Loaded {len(data['images'])} images from {file_path}")
     return data['images'], data['labels']
 
 
@@ -100,8 +100,7 @@ if __name__ == "__main__":
     output_file = os.path.join(result_dir, 'preprocessed_data.joblib')
 
     if os.path.exists(output_file):
-        print("Loading existing preprocessed data")
-        images, labels = load_preprocessed_data(output_file)
+        print("Preprocessed data already exists. Skipping preprocessing.")
     else:
         print("Processing images")
         images, labels = preprocess_images(revised_dir)

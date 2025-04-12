@@ -23,7 +23,7 @@ def calculate_lbp(image):
             for g_x in neighbors:
                 binary_pattern.append(1 if g_x >= g_t else 0)
 
-            lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])
+            lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])  # type: ignore
 
     return lbp_image
 
@@ -51,7 +51,7 @@ def calculate_ltp(image, th=5):
                 else:
                     ternary_pattern.append(0)
 
-            ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])
+            ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])  # type: ignore
 
     return ltp_image
 
@@ -93,19 +93,19 @@ def extract_features(images, labels, method, output_file, batch_size=200):
 
                 if method == 'lbp':
                     lbp_blocks = [calculate_lbp(block) for block in blocks]
-                    lbp_features = [np.mean(cv2.dct(lbp)) for lbp in lbp_blocks]
-                    image_features.extend(lbp_features)
+                    lbp_features = [cv2.dct(lbp) for lbp in lbp_blocks]
+                    image_features.append(np.mean(lbp_features))
 
                 elif method == 'ltp':
                     ltp_blocks = [calculate_ltp(block) for block in blocks]
-                    ltp_features = [np.mean(cv2.dct(ltp)) for ltp in ltp_blocks]
-                    image_features.extend(ltp_features)
+                    ltp_features = [cv2.dct(ltp) for ltp in ltp_blocks]
+                    image_features.append(np.mean(ltp_features))
 
             elif method == 'fft_eltp':
                 fft_image = apply_fft(image)
                 blocks = split_into_overlapping_blocks(fft_image, block_size=(3, 3))
                 eltp_features = [calculate_eltp(block) for block in blocks]
-                image_features.extend(eltp_features)
+                image_features.append(np.mean(eltp_features))
 
             batch_features.append(image_features)
 
@@ -126,24 +126,27 @@ def save_features(batch_features, batch_labels, output_file, append=False):
 def load_features(file_path):
     features = []
     labels = []
+    count = 0
+
     with open(file_path, 'rb') as file:
         while True:
             try:
                 entry = joblib.load(file)
                 features.append(entry['feature'])
                 labels.append(entry['label'])
+                count += 1
+                if count % 200 == 0:
+                    print(f"Loaded {count} feature")
             except EOFError:
                 break
-    print(f"Loaded {len(features)} feature from {file_path}")
+
+    print(f"Loaded {len(features)} feature")
     return features, labels
 
 
 if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
-
-    preprocessed_data = os.path.join('results/preprocessed_data.joblib')
-    images, labels = load_preprocessed_data(preprocessed_data)
 
     output_files = {
         'lbp': os.path.join(result_dir, 'lbp_features_labels.joblib'),
@@ -153,8 +156,9 @@ if __name__ == "__main__":
 
     for method in ['lbp', 'ltp', 'fft_eltp']:
         if os.path.exists(output_files[method]):
-            print(f"Loading {method.upper()} features from {output_files[method]}")
-            features, labels = load_features(output_files[method])
+            print(f"{method.upper()} features already exist at {output_files[method]}. Skipping extraction.")
         else:
+            preprocessed_data = os.path.join(result_dir, 'preprocessed_data.joblib')
+            images, labels = load_preprocessed_data(preprocessed_data)
             print(f"Extracting {method.upper()} features")
             extract_features(images, labels, method, output_files[method], batch_size=200)

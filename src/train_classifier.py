@@ -7,13 +7,10 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from feature_extraction import load_features, extract_features
-from preprocess import preprocess_images
+from feature_extraction import load_features
 
 
 def train_and_evaluate(features, labels):
-    print("Feature vector lengths:", [len(feature) for feature in features])
-
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
     pipeline = Pipeline([
@@ -28,7 +25,7 @@ def train_and_evaluate(features, labels):
         'svm__class_weight': ['balanced']
     }
 
-    grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=2)
+    grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=3, return_train_score=True)
     grid.fit(X_train, y_train)
 
     classifier = grid.best_estimator_
@@ -86,7 +83,7 @@ def plot_data_distribution(labels, title):
     return unique, counts
 
 
-def process_features(revised_dir, result_dir, methods, batch_size=200):
+def process_features(result_dir, methods):
     for method in methods:
         features_file = os.path.join(result_dir, f'{method}_features_labels.joblib')
         classifier_file = os.path.join(result_dir, f'{method}_classifier.joblib')
@@ -97,10 +94,7 @@ def process_features(revised_dir, result_dir, methods, batch_size=200):
             print(f"Loading {method.upper()} features from {features_file}")
             features, labels = load_features(features_file)
         else:
-            print(f"Extracting {method.upper()} features")
-            images, labels = preprocess_images(revised_dir)
-            extract_features(images, labels, method, features_file, batch_size=batch_size)
-            features, labels = load_features(features_file)
+            features, labels = None, None
 
         if os.path.exists(classifier_file):
             print(f"Loading classifier from {classifier_file}")
@@ -142,4 +136,4 @@ if __name__ == "__main__":
 
     methods = ['lbp', 'ltp', 'fft_eltp']
 
-    process_features(revised_dir, result_dir, methods, batch_size=200)
+    process_features(result_dir, methods)
