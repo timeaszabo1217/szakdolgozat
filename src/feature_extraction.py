@@ -76,6 +76,7 @@ def calculate_eltp(image):
 
 
 def extract_features(images, labels, method, output_file, batch_size=200):
+    all_features = []
     for i in range(0, len(images), batch_size):
         batch_images = images[i:i + batch_size]
         batch_labels = labels[i:i + batch_size]
@@ -107,9 +108,19 @@ def extract_features(images, labels, method, output_file, batch_size=200):
                 eltp_features = [calculate_eltp(block) for block in blocks]
                 image_features.append(np.mean(eltp_features))
 
-            batch_features.append(image_features)
+            if image_features:
+                batch_features.append(image_features)
+            else:
+                print(f"Warning: No valid features found for image {i + j + 1}.")
 
-        save_features(batch_features, batch_labels, output_file, append=(i > 0))
+        if batch_features:
+            all_features.extend(batch_features)
+            if output_file is not None:
+                save_features(batch_features, batch_labels, output_file, append=(i > 0))
+        else:
+            print(f"Warning: No valid features in batch {i // batch_size + 1}.")
+
+    return np.array(all_features)
 
 
 def save_features(batch_features, batch_labels, output_file, append=False):

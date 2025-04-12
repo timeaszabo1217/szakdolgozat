@@ -38,8 +38,7 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
     print("Unique labels and their counts:", dict(zip(unique_labels, counts)))
 
     if len(unique_labels) < 2:
-        raise ValueError(
-            "Only one class is present in the dataset.")
+        raise ValueError("Only one class is present in the dataset.")
 
     report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp)
     report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)
@@ -50,14 +49,19 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
 
 if __name__ == "__main__":
     new_dataset_dir = os.path.abspath('../data/CASIA2.0_test')
-    classifier_file_lbp = os.path.join('results', 'lbp_classifier.pkl')
-    classifier_file_ltp = os.path.join('results', 'ltp_classifier.pkl')
-    classifier_file_fft_eltp = os.path.join('results', 'fft_eltp_classifier.pkl')
+    result_dir = 'results'
+    classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
+    classifier_file_ltp = os.path.join(result_dir, 'ltp_classifier.joblib')
+    classifier_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_classifier.joblib')
 
-    report_lbp, report_ltp, report_fft_eltp = test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp,
-                                                              classifier_file_fft_eltp)
+    report_lbp, report_ltp, report_fft_eltp = test_classifier(
+        new_dataset_dir,
+        classifier_file_lbp,
+        classifier_file_ltp,
+        classifier_file_fft_eltp
+    )
 
-    result_file = os.path.join('results', 'test_results.txt')
+    result_file = os.path.join(result_dir, 'test_results.txt')
     with open(result_file, 'w', encoding="utf-8") as f:
         f.write("LBP\n")
         f.write(report_lbp)
