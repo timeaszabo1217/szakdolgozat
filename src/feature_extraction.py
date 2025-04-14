@@ -81,7 +81,7 @@ def extract_features(images, labels, methods, components, output_file_base, batc
     for method in methods:
         for comp_name in components:
             print(f"Extracting {method.upper()} features from {comp_name} component")
-            output_file = output_file_base.replace('.joblib', f'_{method}_{comp_name}.joblib')
+            output_file = output_file_base.replace('.joblib', f'_{comp_name}.joblib')
 
             for i in range(0, len(images), batch_size):
                 batch_images = images[i:i + batch_size]
