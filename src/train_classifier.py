@@ -143,7 +143,7 @@ def process_features(result_dir, methods, components):
                 print(f"Loading {method.upper()} features ({comp}) from {features_file}")
                 features, labels = load_features(features_file)
             else:
-                print(f"Missing features file for {method.upper()} ({comp}). Skipping.")
+                print(f"Missing features file for {method.upper()} ({comp}). Skipping loading.")
                 continue
 
             if os.path.exists(classifier_file):
