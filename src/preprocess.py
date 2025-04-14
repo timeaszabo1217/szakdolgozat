@@ -11,10 +11,10 @@ def convert_to_ycbcr(image_path):
         print(f"Warning: Could not read image {image_path} image")
         return None
 
-    h, w = image.shape[:2]
-    if w > h:
-        image = cv2.transpose(image)
-        image = cv2.flip(image, flipCode=1)
+    # h, w = image.shape[:2]
+    # if w > h:
+    #     image = cv2.transpose(image)
+    #     image = cv2.flip(image, flipCode=1)
 
     ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     return ycbcr_image
@@ -23,15 +23,20 @@ def convert_to_ycbcr(image_path):
 def get_chrominance_component(image):
     ycbcr_image = convert_to_ycbcr(image)
     Y, Cb, Cr = cv2.split(ycbcr_image)
-    return Cb
+    return Cr
 
 
 def apply_fft(image):
     fft_image = fft2(image)
     fft_image_shifted = fftshift(fft_image)
     fft_magnitude = np.abs(fft_image_shifted)
-    normalized_fft = fft_magnitude / np.max(fft_magnitude)
-    return normalized_fft
+
+    log_magnitude = np.log1p(fft_magnitude)
+    max_val = np.max(log_magnitude)
+
+    if max_val == 0:
+        return log_magnitude
+    return log_magnitude / max_val
 
 
 def split_into_overlapping_blocks(image, block_size=(3, 3), overlap_ratio=0.5):

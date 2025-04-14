@@ -7,7 +7,7 @@ from feature_extraction import extract_features
 from train_classifier import load_classifier
 
 
-def evaluate_classifier(method, images, labels, classifier_file):
+def evaluate_classifier(method, images, labels, classifier_file, result_dir):
     features = extract_features(images, labels, method=method, output_file=None)
     print(f"Number of {method.upper()} features extracted: {features.shape}")
 
@@ -29,14 +29,21 @@ def evaluate_classifier(method, images, labels, classifier_file):
     print(f'{method.upper()} Recall: {recall * 100: .2f}%')
 
     cm = confusion_matrix(labels, predictions)
-    ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered']).plot()
+
+    cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered'])
+    cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}.png')
+    cm_display.plot(cmap='Blues')
     plt.title(f'Confusion Matrix - {method.upper()}')
-    plt.show()
+    plt.savefig(cm_plot_file)
+    plt.close()
+
+    print(f"Confusion matrix saved to {cm_plot_file}")
 
     return report
 
 
-def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file):
+def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file,
+                    result_dir):
     if os.path.exists(result_file):
         print(f"Test results already exist at {result_file}. Skipping testing.")
         with open(result_file, 'r', encoding="utf-8") as f:
@@ -53,9 +60,9 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
     if len(unique_labels) < 2:
         raise ValueError("Warning: Only one class is present in the dataset.")
 
-    report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp)
-    report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp)
-    report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp)
+    report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp, result_dir)
+    report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp, result_dir)
+    report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp, result_dir)
 
     with open(result_file, 'w', encoding="utf-8") as f:
         f.write("LBP\n")
@@ -71,6 +78,7 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
 if __name__ == "__main__":
     new_dataset_dir = os.path.abspath('../data/CASIA1.0')
     result_dir = 'results'
+    os.makedirs(result_dir, exist_ok=True)
     result_file = os.path.join(result_dir, 'test_results.txt')
 
     classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
@@ -82,5 +90,6 @@ if __name__ == "__main__":
         classifier_file_lbp,
         classifier_file_ltp,
         classifier_file_fft_eltp,
-        result_file
+        result_file,
+        result_dir
     )

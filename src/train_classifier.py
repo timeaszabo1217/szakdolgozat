@@ -3,8 +3,8 @@ import joblib
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score, recall_score
+from sklearn.model_selection import train_test_split, GridSearchCV, learning_curve
+from sklearn.metrics import accuracy_score, recall_score, roc_curve, auc
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
@@ -13,14 +13,19 @@ from feature_extraction import load_features
 def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
+    variance = np.var(X_train, axis=0)
+    gamma = 1 / (X_train.shape[1] * np.mean(variance))
+
+    print(f"Calculated gamma: {gamma}")
+
     pipeline = Pipeline([
         ('scaler', StandardScaler()),
-        ('svm', SVC())
+        ('svm', SVC(probability=True))
     ])
 
     param_grid = {
-        'svm__C': [0.1, 1, 10, 100, 1000],
-        'svm__gamma': [0.3225],
+        'svm__C': [0.001, 0.1, 1, 10, 100, 1000],
+        'svm__gamma': [gamma],
         'svm__kernel': ['rbf'],
         'svm__class_weight': ['balanced']
     }
@@ -30,12 +35,50 @@ def train_and_evaluate(features, labels):
 
     classifier = grid.best_estimator_
 
-    y_pred = classifier.predict(X_test)
+    print("Best parameters found: ", grid.best_params_)
 
+    y_pred = classifier.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred, zero_division=1)
 
-    return classifier, accuracy, recall
+    return classifier, accuracy, recall, X_train, X_test, y_train, y_test
+
+
+def plot_roc_curve(y_test, y_pred_prob, output_file):
+    fpr, tpr, _ = roc_curve(y_test, y_pred_prob)
+    roc_auc = auc(fpr, tpr)
+
+    plt.figure()
+    plt.plot(fpr, tpr, color='purple', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic')
+    plt.legend(loc='lower right')
+    plt.savefig(output_file)
+    plt.close()
+
+    print(f"ROC Curve saved to {output_file}")
+
+
+def plot_learning_curve(classifier, X_train, y_train, output_file):
+    train_sizes, train_scores, test_scores = learning_curve(classifier, X_train, y_train, cv=10, n_jobs=-1)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+
+    plt.figure()
+    plt.plot(train_sizes, train_scores_mean, label='Training score', color='purple')  # type: ignore
+    plt.plot(train_sizes, test_scores_mean, label='Cross-validation score', color='green')  # type: ignore
+    plt.xlabel('Training Set Size')
+    plt.ylabel('Score')
+    plt.title('Learning Curve')
+    plt.legend(loc='best')
+    plt.savefig(output_file)
+    plt.close()
+
+    print(f"Learning Curve saved to {output_file}")
 
 
 def save_classifier(classifier, output_file):
@@ -89,6 +132,8 @@ def process_features(result_dir, methods):
         classifier_file = os.path.join(result_dir, f'{method}_classifier.joblib')
         metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
         plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
+        roc_file = os.path.join(result_dir, f'{method}_roc_curve.png')
+        learning_curve_file = os.path.join(result_dir, f'{method}_learning_curve.png')
 
         if os.path.exists(features_file):
             print(f"Loading {method.upper()} features from {features_file}")
@@ -106,7 +151,7 @@ def process_features(result_dir, methods):
             accuracy = accuracy_score(y_test, y_pred)
             recall = recall_score(y_test, y_pred)
         else:
-            classifier, accuracy, recall = train_and_evaluate(features, labels)
+            classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
             save_classifier(classifier, classifier_file)
 
         print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
@@ -114,6 +159,11 @@ def process_features(result_dir, methods):
 
         save_metrics(accuracy, recall, metrics_file)
         plot_metrics(accuracy, recall, plot_file)
+
+        y_pred_prob = classifier.predict_proba(X_test)[:, 1]
+        plot_roc_curve(y_test, y_pred_prob, roc_file)
+
+        plot_learning_curve(classifier, X_train, y_train, learning_curve_file)
 
         unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()}")
 
