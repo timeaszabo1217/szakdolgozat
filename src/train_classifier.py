@@ -126,57 +126,58 @@ def plot_data_distribution(labels, title):
     return unique, counts
 
 
-def process_features(result_dir, methods):
+def process_features(result_dir, methods, components):
     for method in methods:
-        features_file = os.path.join(result_dir, f'{method}_features_labels.joblib')
-        classifier_file = os.path.join(result_dir, f'{method}_classifier.joblib')
-        metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics.txt')
-        plot_file = os.path.join(result_dir, f'{method}_metrics_plot.png')
-        roc_file = os.path.join(result_dir, f'{method}_roc_curve.png')
-        learning_curve_file = os.path.join(result_dir, f'{method}_learning_curve.png')
+        for comp in components:
+            comp_suffix = f"_{comp}"
+            features_file = os.path.join(result_dir, f'{method}_features_labels{comp_suffix}.joblib')
+            classifier_file = os.path.join(result_dir, f'{method}_classifier{comp_suffix}.joblib')
+            metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics{comp_suffix}.txt')
+            plot_file = os.path.join(result_dir, f'{method}_metrics_plot{comp_suffix}.png')
+            roc_file = os.path.join(result_dir, f'{method}_roc_curve{comp_suffix}.png')
+            learning_curve_file = os.path.join(result_dir, f'{method}_learning_curve{comp_suffix}.png')
 
-        if os.path.exists(features_file):
-            print(f"Loading {method.upper()} features from {features_file}")
-            features, labels = load_features(features_file)
-        else:
-            features, labels = None, None
+            if os.path.exists(features_file):
+                print(f"Loading {method.upper()} features ({comp}) from {features_file}")
+                features, labels = load_features(features_file)
+            else:
+                print(f"Missing features file for {method.upper()} ({comp}). Skipping.")
+                continue
 
-        if os.path.exists(classifier_file):
-            print(f"Loading classifier from {classifier_file}")
-            classifier = load_classifier(classifier_file)
+            if os.path.exists(classifier_file):
+                print(f"Loading classifier from {classifier_file}")
+                classifier = load_classifier(classifier_file)
+                X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
+                y_pred = classifier.predict(X_test)
+                accuracy = accuracy_score(y_test, y_pred)
+                recall = recall_score(y_test, y_pred)
+            else:
+                classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
+                save_classifier(classifier, classifier_file)
 
-            X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1,
-                                                                stratify=labels)
-            y_pred = classifier.predict(X_test)
-            accuracy = accuracy_score(y_test, y_pred)
-            recall = recall_score(y_test, y_pred)
-        else:
-            classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
-            save_classifier(classifier, classifier_file)
+            print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
+            print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
-        print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
-        print(f'{method.upper()} Recall: {recall * 100: .2f}%')
+            save_metrics(accuracy, recall, metrics_file)
+            plot_metrics(accuracy, recall, plot_file)
 
-        save_metrics(accuracy, recall, metrics_file)
-        plot_metrics(accuracy, recall, plot_file)
+            y_pred_prob = classifier.predict_proba(X_test)[:, 1]
+            plot_roc_curve(y_test, y_pred_prob, roc_file)
 
-        y_pred_prob = classifier.predict_proba(X_test)[:, 1]
-        plot_roc_curve(y_test, y_pred_prob, roc_file)
+            plot_learning_curve(classifier, X_train, y_train, learning_curve_file)
 
-        plot_learning_curve(classifier, X_train, y_train, learning_curve_file)
+            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()} ({comp})")
 
-        unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()}")
-
-        result_file = os.path.join(result_dir, 'results.txt')
-        with open(result_file, 'a', encoding="utf-8") as file:
-            file.write(f"{method.upper()} classification results: \n")
-            file.write(f"Number of images: {len(labels)}\n")
-            file.write(f"Best parameters: {classifier.get_params()}\n")
-            file.write(f"Model type: {classifier}\n")
-            file.write(f"Number of images classified as authentic: {counts[0]}\n")
-            file.write(f"Number of images classified as fake: {counts[1]}\n\n")
-            file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
-            file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
+            result_file = os.path.join(result_dir, 'results.txt')
+            with open(result_file, 'a', encoding="utf-8") as file:
+                file.write(f"{method.upper()} ({comp}) classification results: \n")
+                file.write(f"Number of images: {len(labels)}\n")
+                file.write(f"Best parameters: {classifier.get_params()}\n")
+                file.write(f"Model type: {classifier}\n")
+                file.write(f"Number of images classified as authentic: {counts[0]}\n")
+                file.write(f"Number of images classified as fake: {counts[1]}\n\n")
+                file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
+                file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
 
 
 if __name__ == "__main__":
@@ -185,5 +186,5 @@ if __name__ == "__main__":
     os.makedirs(result_dir, exist_ok=True)
 
     methods = ['lbp', 'ltp', 'fft_eltp']
-
-    process_features(result_dir, methods)
+    components = ['Cb', 'Cr', 'CbCr']
+    process_features(result_dir, methods, components)

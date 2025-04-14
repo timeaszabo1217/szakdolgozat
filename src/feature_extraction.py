@@ -75,50 +75,60 @@ def calculate_eltp(image):
     return eltp
 
 
-def extract_features(images, labels, method, output_file, batch_size=200):
-    all_features = []
-    for i in range(0, len(images), batch_size):
-        batch_images = images[i:i + batch_size]
-        batch_labels = labels[i:i + batch_size]
-        batch_features = []
+def extract_features(images, labels, method, output_file_base, batch_size=200):
+    for comp_name in ['Cb', 'Cr', 'CbCr']:
+        print(f"Extracting {method.upper()} features from {comp_name} component")
+        output_file = output_file_base.replace('.joblib', f'_{comp_name}.joblib')
+        all_features = []
 
-        print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}")
+        for i in range(0, len(images), batch_size):
+            batch_images = images[i:i + batch_size]
+            batch_labels = labels[i:i + batch_size]
+            batch_features = []
 
-        for j, image in enumerate(batch_images):
-            print(f"Processing image {i + j + 1} of {len(images)}")
+            print(f"Processing batch {i // batch_size + 1} of {len(images) // batch_size + 1}")
 
-            image_features = []
+            for j, image in enumerate(batch_images):
+                print(f"Processing image {i + j + 1} of {len(images)}")
 
-            if method in ['lbp', 'ltp']:
-                blocks = split_into_overlapping_blocks(image, block_size=(3, 3))
+                Cb, Cr = image
+                if comp_name == 'CbCr':
+                    image = (Cb.astype(np.float32) + Cr.astype(np.float32)) / 2
+                elif comp_name == 'Cb':
+                    image = Cb
+                elif comp_name == 'Cr':
+                    image = Cr
 
-                if method == 'lbp':
-                    lbp_blocks = [calculate_lbp(block) for block in blocks]
-                    lbp_features = [cv2.dct(lbp) for lbp in lbp_blocks]
-                    image_features.append(np.mean(lbp_features))
+                image_features = []
 
-                elif method == 'ltp':
-                    ltp_blocks = [calculate_ltp(block) for block in blocks]
-                    ltp_features = [cv2.dct(ltp) for ltp in ltp_blocks]
-                    image_features.append(np.mean(ltp_features))
+                if method in ['lbp', 'ltp']:
+                    blocks = split_into_overlapping_blocks(image, block_size=(3, 3))
+                    if method == 'lbp':
+                        lbp_blocks = [calculate_lbp(block) for block in blocks]
+                        lbp_features = [cv2.dct(lbp) for lbp in lbp_blocks]
+                        image_features.append(np.mean(lbp_features))
 
-            elif method == 'fft_eltp':
-                fft_image = apply_fft(image)
-                blocks = split_into_overlapping_blocks(fft_image, block_size=(3, 3))
-                eltp_features = [calculate_eltp(block) for block in blocks]
-                image_features.append(np.mean(eltp_features))
+                    elif method == 'ltp':
+                        ltp_blocks = [calculate_ltp(block) for block in blocks]
+                        ltp_features = [cv2.dct(ltp) for ltp in ltp_blocks]
+                        image_features.append(np.mean(ltp_features))
 
-            if image_features:
-                batch_features.append(image_features)
-            else:
-                print(f"Warning: No valid features found for image {i + j + 1}.")
+                elif method == 'fft_eltp':
+                    fft_image = apply_fft(image)
+                    blocks = split_into_overlapping_blocks(fft_image, block_size=(3, 3))
+                    eltp_features = [calculate_eltp(block) for block in blocks]
+                    image_features.append(np.mean(eltp_features))
 
-        if batch_features:
-            all_features.extend(batch_features)
-            if output_file is not None:
+                if image_features:
+                    batch_features.append(image_features)
+                else:
+                    print(f"Warning: No valid features found for image {i + j + 1}.")
+
+            if batch_features:
+                all_features.extend(batch_features)
                 save_features(batch_features, batch_labels, output_file, append=(i > 0))
-        else:
-            print(f"Warning: No valid features in batch {i // batch_size + 1}.")
+            else:
+                print(f"Warning: No valid features in batch {i // batch_size + 1}.")
 
     return np.array(all_features)
 
@@ -159,17 +169,20 @@ if __name__ == "__main__":
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
 
-    output_files = {
-        'lbp': os.path.join(result_dir, 'lbp_features_labels.joblib'),
-        'ltp': os.path.join(result_dir, 'ltp_features_labels.joblib'),
-        'fft_eltp': os.path.join(result_dir, 'fft_eltp_features_labels.joblib')
-    }
+    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.joblib')
+    images, labels = load_preprocessed_data(preprocessed_data)
 
     for method in ['lbp', 'ltp', 'fft_eltp']:
-        if os.path.exists(output_files[method]):
-            print(f"{method.upper()} features already exist at {output_files[method]}. Skipping extraction.")
+
+        skip_method = True
+        for comp_name in ['Cb', 'Cr', 'CbCr']:
+            output_file = os.path.join(result_dir, f"{method}_features_labels_{comp_name}.joblib")
+            if not os.path.exists(output_file):
+                skip_method = False
+                break
+
+        if skip_method:
+            print(f"All {method.upper()} features already exist. Skipping.")
         else:
-            preprocessed_data = os.path.join(result_dir, 'preprocessed_data.joblib')
-            images, labels = load_preprocessed_data(preprocessed_data)
-            print(f"Extracting {method.upper()} features")
-            extract_features(images, labels, method, output_files[method], batch_size=200)
+            output_file_base = os.path.join(result_dir, f"{method}_features_labels.joblib")
+            extract_features(images, labels, method, output_file_base, batch_size=200)

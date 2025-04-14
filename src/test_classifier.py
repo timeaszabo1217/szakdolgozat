@@ -7,39 +7,45 @@ from feature_extraction import extract_features
 from train_classifier import load_classifier
 
 
-def evaluate_classifier(method, images, labels, classifier_file, result_dir):
-    features = extract_features(images, labels, method=method, output_file=None)
-    print(f"Number of {method.upper()} features extracted: {features.shape}")
+def evaluate_classifier(method, images, labels, classifier_file, result_dir, components):
+    reports = []
+    for component in components:
+        print(f"Processing {method.upper()} with {component} component")
 
-    if features.size == 0:
-        raise ValueError(f"Extracted {method.upper()} features are empty.")
+        features = extract_features(images, labels, method=method, output_file_base=None)
+        print(f"Number of {method.upper()} features extracted for {component}: {features.shape}")
 
-    classifier = load_classifier(classifier_file)
-    print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
+        if features.size == 0:
+            raise ValueError(f"Extracted {method.upper()} features for {component} are empty.")
 
-    predictions = classifier.predict(features)
+        classifier = load_classifier(classifier_file)
+        print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
 
-    report = classification_report(labels, predictions, target_names=['Authentic', 'Tampered'], zero_division=1)
-    print(f"{method.upper()} Classification Report: \n", report)
+        predictions = classifier.predict(features)
 
-    accuracy = accuracy_score(labels, predictions)
-    recall = recall_score(labels, predictions, pos_label=1)
+        report = classification_report(labels, predictions, target_names=['Authentic', 'Tampered'], zero_division=1)
+        print(f"{method.upper()} Classification Report for {component}: \n", report)
 
-    print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
-    print(f'{method.upper()} Recall: {recall * 100: .2f}%')
+        accuracy = accuracy_score(labels, predictions)
+        recall = recall_score(labels, predictions, pos_label=1)
 
-    cm = confusion_matrix(labels, predictions)
+        print(f'{method.upper()} Accuracy for {component}: {accuracy * 100: .2f}%')
+        print(f'{method.upper()} Recall for {component}: {recall * 100: .2f}%')
 
-    cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered'])
-    cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}.png')
-    cm_display.plot(cmap='Blues')
-    plt.title(f'Confusion Matrix - {method.upper()}')
-    plt.savefig(cm_plot_file)
-    plt.close()
+        cm = confusion_matrix(labels, predictions)
 
-    print(f"Confusion matrix saved to {cm_plot_file}")
+        cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered'])
+        cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}_{component}.png')
+        cm_display.plot(cmap='Blues')
+        plt.title(f'Confusion Matrix - {method.upper()} ({component})')
+        plt.savefig(cm_plot_file)
+        plt.close()
 
-    return report
+        print(f"Confusion matrix for {component} saved to {cm_plot_file}")
+
+        reports.append(f"Report for {component}:\n{report}")
+
+    return "\n\n".join(reports)
 
 
 def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file,
@@ -60,9 +66,10 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
     if len(unique_labels) < 2:
         raise ValueError("Warning: Only one class is present in the dataset.")
 
-    report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp, result_dir)
-    report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp, result_dir)
-    report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp, result_dir)
+    components = ['Cb', 'Cr', 'CbCr']
+    report_lbp = evaluate_classifier('lbp', images, labels, classifier_file_lbp, result_dir, components)
+    report_ltp = evaluate_classifier('ltp', images, labels, classifier_file_ltp, result_dir, components)
+    report_fft_eltp = evaluate_classifier('fft_eltp', images, labels, classifier_file_fft_eltp, result_dir, components)
 
     with open(result_file, 'w', encoding="utf-8") as f:
         f.write("LBP\n")
