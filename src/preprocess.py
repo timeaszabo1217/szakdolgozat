@@ -11,19 +11,14 @@ def convert_to_ycbcr(image_path):
         print(f"Warning: Could not read image {image_path} image")
         return None
 
-    # h, w = image.shape[:2]
-    # if w > h:
-    #     image = cv2.transpose(image)
-    #     image = cv2.flip(image, flipCode=1)
-
     ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     return ycbcr_image
 
 
-def get_chrominance_component(image):
+def get_chrominance_components(image):
     ycbcr_image = convert_to_ycbcr(image)
     Y, Cb, Cr = cv2.split(ycbcr_image)
-    return Cr
+    return Cb, Cr
 
 
 def apply_fft(image):
@@ -80,9 +75,9 @@ def preprocess_images(image_dir):
             if file.endswith(('.jpg', '.png', '.tif')):
                 file_path = os.path.join(image_dir, subdir, file) if subdir_exists else os.path.join(image_dir, file)
                 print(f"Processing file: {file_path}")
-                cb_component = get_chrominance_component(file_path)
-                if cb_component is not None:
-                    images.append(cb_component)
+                Cb, Cr = get_chrominance_components(file_path)
+                if Cb is not None and Cr is not None:
+                    images.append((Cb, Cr))
                     label = 0 if 'Au' in (subdir if subdir_exists else file) else 1
                     labels.append(label)
 
