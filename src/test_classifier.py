@@ -25,8 +25,8 @@ def evaluate_classifier(method, images, labels, classifier_file):
     accuracy = accuracy_score(labels, predictions)
     recall = recall_score(labels, predictions, pos_label=1)
 
-    print(f"{method.upper()} Accuracy: {accuracy:  .4f}")
-    print(f"{method.upper()} Recall (Tampered): {recall: .4f}")
+    print(f'{method.upper()} Accuracy: {accuracy * 100: .2f}%')
+    print(f'{method.upper()} Recall: {recall * 100: .2f}%')
 
     cm = confusion_matrix(labels, predictions)
     ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered']).plot()
