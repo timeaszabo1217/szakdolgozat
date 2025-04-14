@@ -113,7 +113,7 @@ def plot_metrics(accuracy, recall, output_file):
     print(f"Plot saved to {output_file}")
 
 
-def plot_data_distribution(labels, title):
+def plot_data_distribution(labels, title, output_file):
     unique, counts = np.unique(labels, return_counts=True)
     print(f"Unique labels: {unique}, Counts: {counts}")
     plt.figure()
@@ -122,7 +122,8 @@ def plot_data_distribution(labels, title):
     plt.ylabel('Number of Samples')
     plt.title(title)
     plt.xticks(unique, ['Authentic', 'Tampered'][:len(unique)])
-    plt.show()
+    plt.savefig(output_file)
+    plt.close()
     return unique, counts
 
 
@@ -132,10 +133,11 @@ def process_features(result_dir, methods, components):
             comp_suffix = f"_{comp}"
             features_file = os.path.join(result_dir, f'{method}_features_labels{comp_suffix}.joblib')
             classifier_file = os.path.join(result_dir, f'{method}_classifier{comp_suffix}.joblib')
-            metrics_file = os.path.join(result_dir, f'{method}_evaluation_metrics{comp_suffix}.txt')
-            plot_file = os.path.join(result_dir, f'{method}_metrics_plot{comp_suffix}.png')
-            roc_file = os.path.join(result_dir, f'{method}_roc_curve{comp_suffix}.png')
-            learning_curve_file = os.path.join(result_dir, f'{method}_learning_curve{comp_suffix}.png')
+            evaluation_metrics_text_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics{comp_suffix}.txt')
+            distribution_plot_file = os.path.join(plots_dir, 'data_distribution.png')
+            metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot{comp_suffix}.png')
+            roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve{comp_suffix}.png')
+            learning_curve_plot_file = os.path.join(plots_dir, f'{method}_learning_curve{comp_suffix}.png')
 
             if os.path.exists(features_file):
                 print(f"Loading {method.upper()} features ({comp}) from {features_file}")
@@ -158,15 +160,15 @@ def process_features(result_dir, methods, components):
             print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
-            save_metrics(accuracy, recall, metrics_file)
-            plot_metrics(accuracy, recall, plot_file)
+            save_metrics(accuracy, recall, evaluation_metrics_text_file)
+            plot_metrics(accuracy, recall, metrics_plot_file)
 
             y_pred_prob = classifier.predict_proba(X_test)[:, 1]
-            plot_roc_curve(y_test, y_pred_prob, roc_file)
+            plot_roc_curve(y_test, y_pred_prob, roc_plot_file)
 
-            plot_learning_curve(classifier, X_train, y_train, learning_curve_file)
+            plot_learning_curve(classifier, X_train, y_train, learning_curve_plot_file)
 
-            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()} ({comp})")
+            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()} ({comp})", distribution_plot_file)
 
             result_file = os.path.join(result_dir, 'results.txt')
             with open(result_file, 'a', encoding="utf-8") as file:
@@ -184,6 +186,10 @@ if __name__ == "__main__":
     revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
+    metrics_dir = os.path.join(result_dir, 'evaluation_metrics')
+    os.makedirs(metrics_dir, exist_ok=True)
+    plots_dir = os.path.join(result_dir, 'plots')
+    os.makedirs(plots_dir, exist_ok=True)
 
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
