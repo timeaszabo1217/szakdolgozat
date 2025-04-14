@@ -186,7 +186,7 @@ if __name__ == "__main__":
     revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
-    metrics_dir = os.path.join(result_dir, 'evaluation_metrics')
+    metrics_dir = os.path.join(result_dir, 'metrics')
     os.makedirs(metrics_dir, exist_ok=True)
     plots_dir = os.path.join(result_dir, 'plots')
     os.makedirs(plots_dir, exist_ok=True)
