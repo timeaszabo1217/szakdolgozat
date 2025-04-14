@@ -23,10 +23,10 @@ def evaluate_classifier(method, images, labels, classifier_file):
     print(f"{method.upper()} Classification Report: \n", report)
 
     accuracy = accuracy_score(labels, predictions)
-    recall = recall_score(labels, predictions, pos_label='Tampered')
+    recall = recall_score(labels, predictions, pos_label=1)
 
-    print(f"{method.upper()} Accuracy: {accuracy:.4f}")
-    print(f"{method.upper()} Recall (Tampered): {recall:.4f}")
+    print(f"{method.upper()} Accuracy: {accuracy:  .4f}")
+    print(f"{method.upper()} Recall (Tampered): {recall: .4f}")
 
     cm = confusion_matrix(labels, predictions)
     ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered']).plot()
