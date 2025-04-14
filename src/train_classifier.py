@@ -186,5 +186,6 @@ if __name__ == "__main__":
     os.makedirs(result_dir, exist_ok=True)
 
     methods = ['lbp', 'ltp', 'fft_eltp']
-    components = ['Cb', 'Cr', 'CbCr']
+    components = ['CbCr', 'Cb', 'Cr']
+
     process_features(result_dir, methods, components)
