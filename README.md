@@ -96,19 +96,24 @@ További munkák és kutatások szükségesek a modell pontosságának növelés
 A projekt könyvtárszerkezete a következő:
 ```
 ├── data/
-│   ├── CASIA2.0_revised/
+│   ├── CASIA1.0/
 │   │   ├── Au/
 │   │   └── Tp/
-│   └── CASIA2.0_test/
+│   └── CASIA2.0_revised/
 │   │   ├── Au/
 │   │   └── Tp/
 ├── src/
 │   ├── results/
-│   │   ├── {method}_classifier.pkl
-│   │   ├── {method}_evaluation_metrics.txt
-│   │   ├── {method}_features_labels.npz
-│   │   ├── {method}_metrics_plot.png
-│   │   ├── preprocessed_data.npz
+│   │   ├── plots/
+│   │   │   ├── data_distribution.png
+│   │   │   ├── metrics_plot.png
+│   │   │   ├── roc_curve.png
+│   │   │   ├── learning_curve.png
+│   │   ├── metrics/
+│   │   │   ├── evaluation_metrics.txt
+│   │   ├── classifier.joblib
+│   │   ├── features_labels.joblib
+│   │   ├── preprocessed_data.joblib
 │   │   ├── results.txt
 │   │   └── test_results.txt
 │   ├── feature_extraction.py
@@ -142,7 +147,7 @@ Ha a vituális környezetben nem fut le megfeleleően, töröljük és hozzuk ú
 
 **Modell Betöltési Hiba**:
 
-Győződjünk meg róla, hogy a `{method}_classifier.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
+Győződjünk meg róla, hogy a `classifier.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
 
 **Memória Túlcsordulás, Lassú Futás Hiba**:
 
