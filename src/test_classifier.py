@@ -9,14 +9,14 @@ from train_classifier import load_classifier
 
 def evaluate_classifier(method, images, labels, classifier_file, result_dir, components):
     reports = []
-    for component in components:
-        print(f"Processing {method.upper()} with {component} component")
+    for comp in components:
+        print(f"Processing {method.upper()} with {comp} component")
 
-        features = extract_features(images, labels, method=method, output_file_base=None)
-        print(f"Number of {method.upper()} features extracted for {component}: {features.shape}")
+        features = extract_features(images, labels, methods, components, output_file_base=None)
+        print(f"Number of {method.upper()} features extracted for {comp}: {features.shape}")
 
         if features.size == 0:
-            raise ValueError(f"Extracted {method.upper()} features for {component} are empty.")
+            raise ValueError(f"Extracted {method.upper()} features for {comp} are empty.")
 
         classifier = load_classifier(classifier_file)
         print(f"{method.upper()} Classifier parameters: ", classifier.get_params())
@@ -24,32 +24,31 @@ def evaluate_classifier(method, images, labels, classifier_file, result_dir, com
         predictions = classifier.predict(features)
 
         report = classification_report(labels, predictions, target_names=['Authentic', 'Tampered'], zero_division=1)
-        print(f"{method.upper()} Classification Report for {component}: \n", report)
+        print(f"{method.upper()} Classification Report for {comp}: \n", report)
 
         accuracy = accuracy_score(labels, predictions)
         recall = recall_score(labels, predictions, pos_label=1)
 
-        print(f'{method.upper()} Accuracy for {component}: {accuracy * 100: .2f}%')
-        print(f'{method.upper()} Recall for {component}: {recall * 100: .2f}%')
+        print(f'{method.upper()} Accuracy for {comp}: {accuracy * 100: .2f}%')
+        print(f'{method.upper()} Recall for {comp}: {recall * 100: .2f}%')
 
         cm = confusion_matrix(labels, predictions)
 
         cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered'])
-        cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}_{component}.png')
+        cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}_{comp}.png')
         cm_display.plot(cmap='Blues')
-        plt.title(f'Confusion Matrix - {method.upper()} ({component})')
+        plt.title(f'Confusion Matrix - {method.upper()} ({comp})')
         plt.savefig(cm_plot_file)
         plt.close()
 
-        print(f"Confusion matrix for {component} saved to {cm_plot_file}")
+        print(f"Confusion matrix for {comp} saved to {cm_plot_file}")
 
-        reports.append(f"Report for {component}:\n{report}")
+        reports.append(f"Report for {comp}:\n{report}")
 
     return "\n\n".join(reports)
 
 
-def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file,
-                    result_dir):
+def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file, result_dir):
     if os.path.exists(result_file):
         print(f"Test results already exist at {result_file}. Skipping testing.")
         with open(result_file, 'r', encoding="utf-8") as f:
@@ -91,6 +90,9 @@ if __name__ == "__main__":
     classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
     classifier_file_ltp = os.path.join(result_dir, 'ltp_classifier.joblib')
     classifier_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_classifier.joblib')
+
+    methods = ['lbp', 'ltp', 'fft_eltp']
+    components = ['CbCr', 'Cb', 'Cr']
 
     test_classifier(
         new_dataset_dir,
