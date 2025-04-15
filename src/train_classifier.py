@@ -130,14 +130,13 @@ def plot_data_distribution(labels, title, output_file):
 def process_features(result_dir, methods, components):
     for method in methods:
         for comp in components:
-            comp_suffix = f"_{comp}"
-            features_file = os.path.join(result_dir, f'{method}_features_labels_{comp_suffix}.joblib')
-            classifier_file = os.path.join(result_dir, f'{method}_classifier_{comp_suffix}.joblib')
-            evaluation_metrics_text_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp_suffix}.txt')
+            features_file = os.path.join(result_dir, f'{method}_features_labels_{comp}.joblib')
+            classifier_file = os.path.join(result_dir, f'{method}_classifier_{comp}.joblib')
+            evaluation_metrics_text_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
             distribution_plot_file = os.path.join(plots_dir, 'data_distribution.png')
-            metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp_suffix}.png')
-            roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp_suffix}.png')
-            learning_curve_plot_file = os.path.join(plots_dir, f'{method}_learning_curve_{comp_suffix}.png')
+            metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp}.png')
+            roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp}.png')
+            learning_curve_plot_file = os.path.join(plots_dir, f'{method}_learning_curve_{comp}.png')
 
             if os.path.exists(features_file):
                 print(f"Loading {method.upper()} features ({comp}) from {features_file}")
