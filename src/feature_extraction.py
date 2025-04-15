@@ -81,7 +81,10 @@ def extract_features(images, labels, methods, components, output_file_base, batc
     for method in methods:
         for comp in components:
             print(f"Extracting {method.upper()} features from {comp} component")
-            output_file = output_file_base.replace('.joblib', f'_{comp}.joblib')
+
+            output_file = None
+            if output_file_base is not None:
+                output_file = output_file_base.replace('.joblib', f'_{comp}.joblib')
 
             if os.path.exists(output_file):
                 print(f"Features for {method.upper()} ({comp}) already exist. Skipping extraction.")
@@ -181,6 +184,6 @@ if __name__ == "__main__":
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
-    output_file_base = os.path.join(result_dir, f"{methods[0]}_features_labels.joblib")
-
-    extract_features(images, labels, methods, components, output_file_base, batch_size=200)
+    for method in methods:
+        output_file_base = os.path.join(result_dir, f"{method}_features_labels.joblib")
+        extract_features(images, labels, [method], components, output_file_base, batch_size=200)
