@@ -1,13 +1,13 @@
 import os
 import joblib
 import numpy as np
-from matplotlib import pyplot as plt
 from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split, GridSearchCV, learning_curve
-from sklearn.metrics import accuracy_score, recall_score, roc_curve, auc
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
+from plot_utils import plot_data_distribution, plot_metrics, plot_pca_comparison, plot_learning_curve, plot_roc_curve
 
 
 def train_and_evaluate(features, labels):
@@ -18,10 +18,7 @@ def train_and_evaluate(features, labels):
 
     print(f"Calculated gamma: {gamma}")
 
-    pipeline = Pipeline([
-        ('scaler', StandardScaler()),
-        ('svm', SVC(probability=True))
-    ])
+    pipeline = Pipeline([('scaler', StandardScaler()), ('svm', SVC(probability=True))])
 
     param_grid = {
         'svm__C': [0.001, 0.1, 1, 10, 100, 1000],
@@ -44,43 +41,6 @@ def train_and_evaluate(features, labels):
     return classifier, accuracy, recall, X_train, X_test, y_train, y_test
 
 
-def plot_roc_curve(y_test, y_pred_prob, output_file):
-    fpr, tpr, _ = roc_curve(y_test, y_pred_prob)
-    roc_auc = auc(fpr, tpr)
-
-    plt.figure()
-    plt.plot(fpr, tpr, color='purple', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver Operating Characteristic')
-    plt.legend(loc='lower right')
-    plt.savefig(output_file)
-    plt.close()
-
-    print(f"ROC Curve saved to {output_file}")
-
-
-def plot_learning_curve(classifier, X_train, y_train, output_file):
-    train_sizes, train_scores, test_scores = learning_curve(classifier, X_train, y_train, cv=10, n_jobs=-1)
-    train_scores_mean = np.mean(train_scores, axis=1)
-    test_scores_mean = np.mean(test_scores, axis=1)
-
-    plt.figure()
-    plt.plot(train_sizes, train_scores_mean, label='Training score', color='purple')  # type: ignore
-    plt.plot(train_sizes, test_scores_mean, label='Cross-validation score', color='green')  # type: ignore
-    plt.xlabel('Training Set Size')
-    plt.ylabel('Score')
-    plt.title('Learning Curve')
-    plt.legend(loc='best')
-    plt.savefig(output_file)
-    plt.close()
-
-    print(f"Learning Curve saved to {output_file}")
-
-
 def save_classifier(classifier, output_file):
     joblib.dump(classifier, output_file)
     print(f"Classifier saved to {output_file}")
@@ -99,40 +59,12 @@ def load_classifier(file_path):
     return classifier
 
 
-def plot_metrics(accuracy, recall, output_file):
-    plt.figure()
-    metrics = ['Accuracy', 'Recall']
-    values = [accuracy * 100, recall * 100]
-    plt.bar(metrics, values, color=['green', 'purple'])
-    plt.xlabel('Metrics')
-    plt.ylabel('Scores (%)')
-    plt.title('Classifier Performance Metrics')
-    plt.ylim(0, 100)
-    plt.savefig(output_file)
-    plt.close()
-    print(f"Plot saved to {output_file}")
-
-
-def plot_data_distribution(labels, title, output_file):
-    unique, counts = np.unique(labels, return_counts=True)
-    print(f"Unique labels: {unique}, Counts: {counts}")
-    plt.figure()
-    plt.bar(unique, counts, color=['green', 'purple'])
-    plt.xlabel('Classes')
-    plt.ylabel('Number of Samples')
-    plt.title(title)
-    plt.xticks(unique, ['Authentic', 'Tampered'][:len(unique)])
-    plt.savefig(output_file)
-    plt.close()
-    return unique, counts
-
-
-def process_features(result_dir, methods, components):
+def process_features(methods, components, output_dir):
     for method in methods:
         for comp in components:
-            features_file = os.path.join(result_dir, f'{method}_features_labels_{comp}.joblib')
-            classifier_file = os.path.join(result_dir, f'{method}_classifier_{comp}.joblib')
-            evaluation_metrics_text_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
+            features_file = os.path.join(output_dir, f'{method}_features_labels_{comp}.joblib')
+            classifier_file = os.path.join(output_dir, f'{method}_classifier_{comp}.joblib')
+            metrics_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
             distribution_plot_file = os.path.join(plots_dir, 'data_distribution.png')
             metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp}.png')
             roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp}.png')
@@ -141,6 +73,7 @@ def process_features(result_dir, methods, components):
             if os.path.exists(features_file):
                 print(f"Loading {method.upper()} features ({comp}) from {features_file}")
                 features, labels = load_features(features_file)
+                plot_pca_comparison(output_dir, components, methods, plots_dir)
             else:
                 print(f"Missing features file for {method.upper()} ({comp}). Skipping loading.")
                 continue
@@ -159,17 +92,17 @@ def process_features(result_dir, methods, components):
             print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
-            save_metrics(accuracy, recall, evaluation_metrics_text_file)
-            plot_metrics(accuracy, recall, metrics_plot_file)
+            save_metrics(accuracy, recall, metrics_file)
+            plot_metrics(accuracy, recall, method, comp, metrics_plot_file, test=False)
 
             y_pred_prob = classifier.predict_proba(X_test)[:, 1]
-            plot_roc_curve(y_test, y_pred_prob, roc_plot_file)
+            plot_roc_curve(y_test, y_pred_prob, method, comp, roc_plot_file)
 
-            plot_learning_curve(classifier, X_train, y_train, learning_curve_plot_file)
+            plot_learning_curve(classifier, X_train, y_train, method, comp, learning_curve_plot_file)
 
-            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution for {method.upper()} ({comp})", distribution_plot_file)
+            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution", distribution_plot_file)
 
-            result_file = os.path.join(result_dir, 'results.txt')
+            result_file = os.path.join(output_dir, 'results.txt')
             with open(result_file, 'a', encoding="utf-8") as file:
                 file.write(f"{method.upper()} ({comp}) classification results: \n")
                 file.write(f"Number of images: {len(labels)}\n")
@@ -182,7 +115,6 @@ def process_features(result_dir, methods, components):
 
 
 if __name__ == "__main__":
-    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
     result_dir = 'results'
     os.makedirs(result_dir, exist_ok=True)
     metrics_dir = os.path.join(result_dir, 'metrics')
@@ -193,4 +125,4 @@ if __name__ == "__main__":
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
-    process_features(result_dir, methods, components)
+    process_features(methods, components, result_dir)

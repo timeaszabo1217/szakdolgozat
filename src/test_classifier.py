@@ -1,10 +1,10 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, ConfusionMatrixDisplay, confusion_matrix, accuracy_score, recall_score
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, recall_score
 from preprocess import preprocess_images
 from feature_extraction import extract_features
 from train_classifier import load_classifier
+from plot_utils import plot_confusion_matrix, plot_classification_report, plot_metrics
 
 
 def evaluate_classifier(method, images, labels, classifier_file, result_dir, components):
@@ -12,7 +12,7 @@ def evaluate_classifier(method, images, labels, classifier_file, result_dir, com
     for comp in components:
         print(f"Processing {method.upper()} with {comp} component")
 
-        features = extract_features(images, labels, methods, components, output_file_base=None)
+        features = extract_features(images, labels, method, [comp], output_file_base=None)
         print(f"Number of {method.upper()} features extracted for {comp}: {features.shape}")
 
         if features.size == 0:
@@ -34,21 +34,17 @@ def evaluate_classifier(method, images, labels, classifier_file, result_dir, com
 
         cm = confusion_matrix(labels, predictions)
 
-        cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Authentic', 'Tampered'])
-        cm_plot_file = os.path.join(result_dir, f'confusion_matrix_{method}_{comp}.png')
-        cm_display.plot(cmap='Blues')
-        plt.title(f'Confusion Matrix - {method.upper()} ({comp})')
-        plt.savefig(cm_plot_file)
-        plt.close()
+        plot_confusion_matrix(cm, method, comp, result_dir)
+        plot_classification_report(report, method, comp, result_dir)
+        plot_metrics(accuracy, recall, method, comp, result_dir, test=True)
 
-        print(f"Confusion matrix for {comp} saved to {cm_plot_file}")
-
-        reports.append(f"Report for {comp}:\n{report}")
+        reports.append(f"Report for {comp}: \n{report}")
 
     return "\n\n".join(reports)
 
 
-def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file, result_dir):
+def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, classifier_file_fft_eltp, result_file,
+                    result_dir):
     if os.path.exists(result_file):
         print(f"Test results already exist at {result_file}. Skipping testing.")
         with open(result_file, 'r', encoding="utf-8") as f:
@@ -79,26 +75,3 @@ def test_classifier(new_dataset_dir, classifier_file_lbp, classifier_file_ltp, c
         f.write(report_fft_eltp)
 
     print(f"Test results saved to {result_file}")
-
-
-if __name__ == "__main__":
-    new_dataset_dir = os.path.abspath('../data/CASIA1.0')
-    result_dir = 'results'
-    os.makedirs(result_dir, exist_ok=True)
-    result_file = os.path.join(result_dir, 'test_results.txt')
-
-    classifier_file_lbp = os.path.join(result_dir, 'lbp_classifier.joblib')
-    classifier_file_ltp = os.path.join(result_dir, 'ltp_classifier.joblib')
-    classifier_file_fft_eltp = os.path.join(result_dir, 'fft_eltp_classifier.joblib')
-
-    methods = ['lbp', 'ltp', 'fft_eltp']
-    components = ['CbCr', 'Cb', 'Cr']
-
-    test_classifier(
-        new_dataset_dir,
-        classifier_file_lbp,
-        classifier_file_ltp,
-        classifier_file_fft_eltp,
-        result_file,
-        result_dir
-    )
