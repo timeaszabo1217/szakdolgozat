@@ -1,11 +1,8 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
 from sklearn.metrics import roc_curve, auc, ConfusionMatrixDisplay
 from sklearn.model_selection import learning_curve
-from sklearn.preprocessing import StandardScaler
-from feature_extraction import load_features
 
 
 def plot_confusion_matrix(cm, method, comp, output_dir):
@@ -41,44 +38,6 @@ def plot_metrics(accuracy, recall, method, comp, output_dir, test):
     plt.savefig(metrics_plot_file)
     plt.close()
     print(f"Metrics plot for {method.upper()} ({comp}) saved to {metrics_plot_file}")
-
-
-def plot_pca_comparison(result_dir, components, methods, output_dir):
-    os.makedirs(output_dir, exist_ok=True)
-
-    method_colors = {
-        'lbp': 'green',
-        'ltp': 'blue',
-        'fft_eltp': 'purple'
-    }
-
-    for comp in components:
-        plt.figure(figsize=(8, 6))
-        for method in methods:
-            features_file = os.path.join(result_dir, f'{method}_features_labels_{comp}.joblib')
-            if not os.path.exists(features_file):
-                print(f"Missing: {features_file}")
-                continue
-
-            features, labels = load_features(features_file)
-            features = StandardScaler().fit_transform(features)
-
-            pca = PCA(n_components=2)
-            reduced = pca.fit_transform(features)
-
-            label = method.upper()
-            color = method_colors[method]
-            plt.scatter(reduced[:, 0], reduced[:, 1], label=label, alpha=0.5, s=15, color=color)
-
-        plt.xlabel("PC1")
-        plt.ylabel("PC2")
-        plt.title(f"PCA Projection - Component: {comp}")
-        plt.legend()
-        plt.grid(True)
-        plt.tight_layout()
-        plt.savefig(os.path.join(output_dir, f'pca_{comp}.png'))
-        plt.close()
-        print(f"PCA plot saved for {comp} to {os.path.join(output_dir, f'pca_{comp}.png')}")
 
 
 def plot_roc_curve(y_test, y_pred_prob, method, comp, output_dir):

@@ -1,20 +1,29 @@
 import os
 import joblib
-import numpy as np
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
-from plot_utils import plot_data_distribution, plot_metrics, plot_pca_comparison, plot_learning_curve, plot_roc_curve
+from plot_utils import plot_data_distribution, plot_metrics, plot_learning_curve, plot_roc_curve
 
 
 def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
-    variance = np.var(X_train, axis=0)
-    gamma = 1 / (X_train.shape[1] * np.mean(variance))
+    num_features = len(X_train[0])
+    num_samples = len(X_train)
+
+    means = [sum(row[i] for row in X_train) / num_samples for i in range(num_features)]
+
+    variances = [
+        sum((row[i] - means[i]) ** 2 for row in X_train) / num_samples
+        for i in range(num_features)
+    ]
+
+    avg_variance = sum(variances) / len(variances)
+    gamma = 1 / (num_features * avg_variance)
 
     print(f"Calculated gamma: {gamma}")
 
@@ -70,13 +79,12 @@ def process_features(methods, components, output_dir):
             roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp}.png')
             learning_curve_plot_file = os.path.join(plots_dir, f'{method}_learning_curve_{comp}.png')
 
-            if os.path.exists(features_file):
-                print(f"Loading {method.upper()} features ({comp}) from {features_file}")
-                features, labels = load_features(features_file)
-                plot_pca_comparison(output_dir, components, methods, plots_dir)
-            else:
-                print(f"Missing features file for {method.upper()} ({comp}). Skipping loading.")
+            if not os.path.exists(features_file):
+                print(f"Missing features file for {method.upper()} ({comp}). Skipping.")
                 continue
+
+            print(f"Loading {method.upper()} features ({comp}) from {features_file}")
+            features, labels = load_features(features_file)
 
             if os.path.exists(classifier_file):
                 print(f"Loading classifier from {classifier_file}")
@@ -97,10 +105,10 @@ def process_features(methods, components, output_dir):
 
             y_pred_prob = classifier.predict_proba(X_test)[:, 1]
             plot_roc_curve(y_test, y_pred_prob, method, comp, roc_plot_file)
-
             plot_learning_curve(classifier, X_train, y_train, method, comp, learning_curve_plot_file)
 
-            unique_labels, counts = plot_data_distribution(labels, f"Data Distribution", distribution_plot_file)
+            if not os.path.exists(distribution_plot_file):
+                plot_data_distribution(labels, f"Data Distribution", distribution_plot_file)
 
             result_file = os.path.join(output_dir, 'results.txt')
             with open(result_file, 'a', encoding="utf-8") as file:
@@ -108,8 +116,6 @@ def process_features(methods, components, output_dir):
                 file.write(f"Number of images: {len(labels)}\n")
                 file.write(f"Best parameters: {classifier.get_params()}\n")
                 file.write(f"Model type: {classifier}\n")
-                file.write(f"Number of images classified as authentic: {counts[0]}\n")
-                file.write(f"Number of images classified as fake: {counts[1]}\n\n")
                 file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
                 file.write(f"Recall rate: {recall * 100: .2f}%\n\n")
 
