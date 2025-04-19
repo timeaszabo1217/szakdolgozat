@@ -1,35 +1,22 @@
 import os
 import joblib
-import numpy as np
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score, recall_score, pairwise_distances
+from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
 from plot_utils import plot_data_distribution, plot_metrics, plot_roc_curve
 
 
-def calculate_gamma(X_train):
-    distances = pairwise_distances(X_train, metric='euclidean')
-
-    avg_distance = np.mean(distances)
-
-    gamma = 1 / (2 * avg_distance ** 2)
-
-    return gamma
-
-
-def train_and_evaluate(features, labels, gamma):
+def train_and_evaluate(features, labels):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
-
-    print(f"Using provided gamma: {gamma}")
 
     pipeline = Pipeline([('scaler', StandardScaler()), ('svm', SVC(probability=True))])
 
     param_grid = {
         'svm__C': [0.001, 0.1, 1, 10, 100, 1000],
-        'svm__gamma': [gamma, 0.3325, 'auto', 'scale'],
+        'svm__gamma': ['scale', 'auto', 0.1, 0.2, 0.3, 0.3225, 0.5, 0.7, 1],
         'svm__kernel': ['rbf'],
         'svm__class_weight': ['balanced']
     }
@@ -74,8 +61,7 @@ def process_features(methods, components, results_dir, metrics_dir, plots_dir):
             features_file = os.path.join(results_dir, f'{method}_features_labels_{comp}.joblib')
             classifier_file = os.path.join(results_dir, f'{method}_classifier_{comp}.joblib')
             metrics_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
-            distribution_plot_file = os.path.join(plots_dir, f'{method}_data_distribution_{comp}.png')
-            metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp}.png')
+            distribution_plot_file = os.path.join(plots_dir, f'data_distribution.png')
             roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp}.png')
 
             if not os.path.exists(features_file):
@@ -85,8 +71,6 @@ def process_features(methods, components, results_dir, metrics_dir, plots_dir):
             print(f"Loading {method.upper()} features ({comp}) from {features_file}")
             features, labels = load_features(features_file)
 
-            gamma = calculate_gamma(features)
-
             if os.path.exists(classifier_file):
                 print(f"Loading classifier from {classifier_file}")
                 classifier = load_classifier(classifier_file)
@@ -95,14 +79,14 @@ def process_features(methods, components, results_dir, metrics_dir, plots_dir):
                 accuracy = accuracy_score(y_test, y_pred)
                 recall = recall_score(y_test, y_pred, zero_division=1)
             else:
-                classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels, gamma)
+                classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
                 save_classifier(classifier, classifier_file)
 
             print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
             save_metrics(accuracy, recall, metrics_file)
-            plot_metrics(accuracy, recall, method, comp, metrics_plot_file, test=False)
+            plot_metrics(accuracy, recall, method, comp, plots_dir, test=False)
 
             y_pred_prob = classifier.predict_proba(X_test)[:, 1]
             plot_roc_curve(y_test, y_pred_prob, method, comp, roc_plot_file)
