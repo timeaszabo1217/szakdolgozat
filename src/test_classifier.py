@@ -46,7 +46,7 @@ def evaluate_classifier(images, labels, methods, components, classifier_dir, plo
     return "\n\n".join(all_reports)
 
 
-def test_classifier(dataset_dir, methods, components, result_file):
+def test_classifier(dataset_dir, methods, components, result_file, classifier_dir, plots_dir):
     if os.path.exists(result_file):
         print(f"Test results already exist at {result_file}. Skipping testing.")
         with open(result_file, 'r', encoding="utf-8") as f:
@@ -62,9 +62,6 @@ def test_classifier(dataset_dir, methods, components, result_file):
 
     if len(unique_labels) < 2:
         raise ValueError("Warning: Only one class is present in the dataset.")
-
-    classifier_dir = 'results'
-    plots_dir = os.path.join(classifier_dir, 'plots')
 
     all_reports = evaluate_classifier(images, labels, methods, components, classifier_dir, plots_dir)
 
@@ -85,4 +82,4 @@ if __name__ == "__main__":
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
-    test_classifier(test_dir, methods, components, result_file)
+    test_classifier(test_dir, methods, components, result_file, results_dir, plots_dir)
