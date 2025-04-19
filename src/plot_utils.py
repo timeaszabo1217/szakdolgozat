@@ -22,7 +22,14 @@ def plot_classification_report(report, method, comp, output_dir):
     print(f"Classification report for {method.upper()} ({comp}) saved to {report_file}")
 
 
-def plot_metrics(accuracy, recall, method, comp, output_dir, test):
+def plot_metrics(accuracy, recall, method, comp, output_file, test):
+    if test:
+        directory = os.path.dirname(output_file)
+        filename = os.path.basename(output_file)
+        output_file = os.path.join(directory, f'test_{filename}')
+
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
     plt.figure()
     metrics = ['Accuracy', 'Recall']
     values = [accuracy * 100, recall * 100]
@@ -31,16 +38,13 @@ def plot_metrics(accuracy, recall, method, comp, output_dir, test):
     plt.ylabel('Scores (%)')
     plt.title(f'{method.upper()} ({comp}) Classifier Performance Metrics')
     plt.ylim(0, 100)
-    if test:
-        metrics_plot_file = os.path.join(output_dir, f'test_{method}_{comp}_metrics.png')
-    else:
-        metrics_plot_file = os.path.join(output_dir, f'{method}_{comp}_metrics.png')
-    plt.savefig(metrics_plot_file)
+    plt.savefig(output_file)
     plt.close()
-    print(f"Metrics plot for {method.upper()} ({comp}) saved to {metrics_plot_file}")
+
+    print(f"Metrics plot for {method.upper()} ({comp}) saved to {output_file}")
 
 
-def plot_roc_curve(y_test, y_pred_prob, method, comp, output_dir):
+def plot_roc_curve(y_test, y_pred_prob, method, comp, output_file):
     fpr, tpr, _ = roc_curve(y_test, y_pred_prob)
     roc_auc = auc(fpr, tpr)
 
@@ -53,35 +57,14 @@ def plot_roc_curve(y_test, y_pred_prob, method, comp, output_dir):
     plt.ylabel('True Positive Rate')
     plt.title(f'{method.upper()} - ROC Curve ({comp})')
     plt.legend(loc='lower right')
-
-    roc_curve_file = os.path.join(output_dir, f'{method}_roc_curve_{comp}.png')
-    plt.savefig(roc_curve_file)
+    plt.savefig(output_file)
     plt.close()
 
-    print(f"ROC Curve for {method.upper()} ({comp}) saved to {roc_curve_file}")
-
-
-def plot_learning_curve(classifier, X_train, y_train, method, comp, output_dir):
-    train_sizes, train_scores, test_scores = learning_curve(classifier, X_train, y_train, cv=10, n_jobs=-1)
-    train_scores_mean = np.mean(train_scores, axis=1)
-    test_scores_mean = np.mean(test_scores, axis=1)
-
-    plt.figure()
-    plt.plot(train_sizes, train_scores_mean, label='Training score', color='purple')  # type: ignore
-    plt.plot(train_sizes, test_scores_mean, label='Cross-validation score', color='green')  # type: ignore
-    plt.xlabel('Training Set Size')
-    plt.ylabel('Score')
-    plt.title(f'{method.upper()} - Learning Curve ({comp})')
-    plt.legend(loc='best')
-
-    learning_curve_file = os.path.join(output_dir, f'{method}_learning_curve_{comp}.png')
-    plt.savefig(learning_curve_file)
-    plt.close()
-
-    print(f"Learning Curve for {method.upper()} ({comp}) saved to {learning_curve_file}")
+    print(f"ROC Curve for {method.upper()} ({comp}) saved to {output_file}")
 
 
 def plot_data_distribution(labels, title, output_file):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     unique, counts = np.unique(labels, return_counts=True)
     print(f"Unique labels: {unique}, Counts: {counts}")
     plt.figure()

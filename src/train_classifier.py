@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
-from plot_utils import plot_data_distribution, plot_metrics, plot_learning_curve, plot_roc_curve
+from plot_utils import plot_data_distribution, plot_metrics, plot_roc_curve
 
 
 def train_and_evaluate(features, labels):
@@ -51,11 +51,13 @@ def train_and_evaluate(features, labels):
 
 
 def save_classifier(classifier, output_file):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     joblib.dump(classifier, output_file)
     print(f"Classifier saved to {output_file}")
 
 
 def save_metrics(accuracy, recall, output_file):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as file:
         file.write(f"Accuracy: {accuracy * 100: .2f}%\n")
         file.write(f"Recall: {recall * 100: .2f}%\n")
@@ -68,16 +70,15 @@ def load_classifier(file_path):
     return classifier
 
 
-def process_features(methods, components, output_dir):
+def process_features(methods, components, output_dir, metrics_dir, plots_dir):
     for method in methods:
         for comp in components:
             features_file = os.path.join(output_dir, f'{method}_features_labels_{comp}.joblib')
             classifier_file = os.path.join(output_dir, f'{method}_classifier_{comp}.joblib')
             metrics_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
-            distribution_plot_file = os.path.join(plots_dir, 'data_distribution.png')
+            distribution_plot_file = os.path.join(plots_dir, f'{method}_data_distribution_{comp}.png')
             metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp}.png')
             roc_plot_file = os.path.join(plots_dir, f'{method}_roc_curve_{comp}.png')
-            learning_curve_plot_file = os.path.join(plots_dir, f'{method}_learning_curve_{comp}.png')
 
             if not os.path.exists(features_file):
                 print(f"Missing features file for {method.upper()} ({comp}). Skipping.")
@@ -92,7 +93,7 @@ def process_features(methods, components, output_dir):
                 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
                 y_pred = classifier.predict(X_test)
                 accuracy = accuracy_score(y_test, y_pred)
-                recall = recall_score(y_test, y_pred)
+                recall = recall_score(y_test, y_pred, zero_division=1)
             else:
                 classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
                 save_classifier(classifier, classifier_file)
@@ -105,7 +106,6 @@ def process_features(methods, components, output_dir):
 
             y_pred_prob = classifier.predict_proba(X_test)[:, 1]
             plot_roc_curve(y_test, y_pred_prob, method, comp, roc_plot_file)
-            plot_learning_curve(classifier, X_train, y_train, method, comp, learning_curve_plot_file)
 
             if not os.path.exists(distribution_plot_file):
                 plot_data_distribution(labels, f"Data Distribution", distribution_plot_file)
@@ -131,4 +131,4 @@ if __name__ == "__main__":
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
-    process_features(methods, components, result_dir)
+    process_features(methods, components, result_dir, metrics_dir, plots_dir)

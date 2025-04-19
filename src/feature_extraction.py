@@ -75,7 +75,7 @@ def calculate_eltp(image):
     return eltp
 
 
-def extract_features(images, labels, methods, components, output_file_base, batch_size=200):
+def extract_features(images, labels, methods, components, output_file_base=None, batch_size=200):
     all_features = []
 
     for method in methods:
@@ -83,10 +83,9 @@ def extract_features(images, labels, methods, components, output_file_base, batc
             output_file = None
             if output_file_base is not None:
                 output_file = output_file_base.replace('.joblib', f'_{comp}.joblib')
-
-            if os.path.exists(output_file):
-                print(f"Features for {method.upper()} ({comp}) already exist. Skipping extraction.")
-                continue
+                if os.path.exists(output_file):
+                    print(f"Features for {method.upper()} ({comp}) already exist. Skipping extraction.")
+                    continue
 
             print(f"Extracting {method.upper()} features from {comp} component")
 
@@ -135,7 +134,8 @@ def extract_features(images, labels, methods, components, output_file_base, batc
 
                 if batch_features:
                     all_features.extend(batch_features)
-                    save_features(batch_features, batch_labels, output_file, append=(i > 0))
+                    if output_file is not None:
+                        save_features(batch_features, batch_labels, output_file, append=(i > 0))
                 else:
                     print(f"Warning: No valid features in batch {i // batch_size + 1}.")
 
