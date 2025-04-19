@@ -2,7 +2,6 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, ConfusionMatrixDisplay
-from sklearn.model_selection import learning_curve
 
 
 def plot_confusion_matrix(cm, method, comp, output_dir):
