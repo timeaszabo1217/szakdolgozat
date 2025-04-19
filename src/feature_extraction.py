@@ -175,15 +175,15 @@ def load_features(file_path):
 
 
 if __name__ == "__main__":
-    result_dir = 'results'
-    os.makedirs(result_dir, exist_ok=True)
+    results_dir = 'results'
+    os.makedirs(results_dir, exist_ok=True)
 
-    preprocessed_data = os.path.join(result_dir, 'preprocessed_data.joblib')
+    preprocessed_data = os.path.join(results_dir, 'preprocessed_data.joblib')
     images, labels = load_preprocessed_data(preprocessed_data)
 
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
     for method in methods:
-        output_file_base = os.path.join(result_dir, f"{method}_features_labels.joblib")
+        output_file_base = os.path.join(results_dir, f"{method}_features_labels.joblib")
         extract_features(images, labels, [method], components, output_file_base, batch_size=200)

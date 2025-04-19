@@ -98,10 +98,10 @@ def load_preprocessed_data(file_path):
 
 if __name__ == "__main__":
     revised_dir = os.path.abspath('../data/CASIA2.0_revised')
-    result_dir = 'results'
-    os.makedirs(result_dir, exist_ok=True)
+    results_dir = 'results'
+    os.makedirs(results_dir, exist_ok=True)
 
-    output_file = os.path.join(result_dir, 'preprocessed_data.joblib')
+    output_file = os.path.join(results_dir, 'preprocessed_data.joblib')
 
     if os.path.exists(output_file):
         print("Preprocessed data already exists. Skipping preprocessing.")

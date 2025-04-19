@@ -68,11 +68,11 @@ def load_classifier(file_path):
     return classifier
 
 
-def process_features(methods, components, output_dir, metrics_dir, plots_dir):
+def process_features(methods, components, results_dir, metrics_dir, plots_dir):
     for method in methods:
         for comp in components:
-            features_file = os.path.join(output_dir, f'{method}_features_labels_{comp}.joblib')
-            classifier_file = os.path.join(output_dir, f'{method}_classifier_{comp}.joblib')
+            features_file = os.path.join(results_dir, f'{method}_features_labels_{comp}.joblib')
+            classifier_file = os.path.join(results_dir, f'{method}_classifier_{comp}.joblib')
             metrics_file = os.path.join(metrics_dir, f'{method}_evaluation_metrics_{comp}.txt')
             distribution_plot_file = os.path.join(plots_dir, f'{method}_data_distribution_{comp}.png')
             metrics_plot_file = os.path.join(plots_dir, f'{method}_metrics_plot_{comp}.png')
@@ -110,7 +110,7 @@ def process_features(methods, components, output_dir, metrics_dir, plots_dir):
             if not os.path.exists(distribution_plot_file):
                 plot_data_distribution(labels, f"Data Distribution", distribution_plot_file)
 
-            result_file = os.path.join(output_dir, 'results.txt')
+            result_file = os.path.join(results_dir, 'results.txt')
             with open(result_file, 'a', encoding="utf-8") as file:
                 file.write(f"{method.upper()} ({comp}) classification results: \n")
                 file.write(f"Number of images: {len(labels)}\n")
@@ -121,14 +121,14 @@ def process_features(methods, components, output_dir, metrics_dir, plots_dir):
 
 
 if __name__ == "__main__":
-    result_dir = 'results'
-    os.makedirs(result_dir, exist_ok=True)
-    metrics_dir = os.path.join(result_dir, 'metrics')
+    results_dir = 'results'
+    os.makedirs(results_dir, exist_ok=True)
+    metrics_dir = os.path.join(results_dir, 'metrics')
     os.makedirs(metrics_dir, exist_ok=True)
-    plots_dir = os.path.join(result_dir, 'plots')
+    plots_dir = os.path.join(results_dir, 'plots')
     os.makedirs(plots_dir, exist_ok=True)
 
     methods = ['lbp', 'ltp', 'fft_eltp']
     components = ['CbCr', 'Cb', 'Cr']
 
-    process_features(methods, components, result_dir, metrics_dir, plots_dir)
+    process_features(methods, components, results_dir, metrics_dir, plots_dir)
