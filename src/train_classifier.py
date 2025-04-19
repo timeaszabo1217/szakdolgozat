@@ -1,42 +1,40 @@
 import os
 import joblib
+import numpy as np
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score, recall_score
+from sklearn.metrics import accuracy_score, recall_score, pairwise_distances
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from feature_extraction import load_features
 from plot_utils import plot_data_distribution, plot_metrics, plot_roc_curve
 
 
-def train_and_evaluate(features, labels):
+def calculate_gamma(X_train):
+    distances = pairwise_distances(X_train, metric='euclidean')
+
+    avg_distance = np.mean(distances)
+
+    gamma = 1 / (2 * avg_distance ** 2)
+
+    return gamma
+
+
+def train_and_evaluate(features, labels, gamma):
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.1, stratify=labels)
 
-    num_features = len(X_train[0])
-    num_samples = len(X_train)
-
-    means = [sum(row[i] for row in X_train) / num_samples for i in range(num_features)]
-
-    variances = [
-        sum((row[i] - means[i]) ** 2 for row in X_train) / num_samples
-        for i in range(num_features)
-    ]
-
-    avg_variance = sum(variances) / len(variances)
-    gamma = 1 / (num_features * avg_variance)
-
-    print(f"Calculated gamma: {gamma}")
+    print(f"Using provided gamma: {gamma}")
 
     pipeline = Pipeline([('scaler', StandardScaler()), ('svm', SVC(probability=True))])
 
     param_grid = {
         'svm__C': [0.001, 0.1, 1, 10, 100, 1000],
-        'svm__gamma': [gamma],
+        'svm__gamma': [gamma, 0.3325, 'auto', 'scale'],
         'svm__kernel': ['rbf'],
         'svm__class_weight': ['balanced']
     }
 
-    grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=3, return_train_score=True)
+    grid = GridSearchCV(pipeline, param_grid, cv=10, refit=True, verbose=2, return_train_score=True)
     grid.fit(X_train, y_train)
 
     classifier = grid.best_estimator_
@@ -87,6 +85,8 @@ def process_features(methods, components, output_dir, metrics_dir, plots_dir):
             print(f"Loading {method.upper()} features ({comp}) from {features_file}")
             features, labels = load_features(features_file)
 
+            gamma = calculate_gamma(features)
+
             if os.path.exists(classifier_file):
                 print(f"Loading classifier from {classifier_file}")
                 classifier = load_classifier(classifier_file)
@@ -95,7 +95,7 @@ def process_features(methods, components, output_dir, metrics_dir, plots_dir):
                 accuracy = accuracy_score(y_test, y_pred)
                 recall = recall_score(y_test, y_pred, zero_division=1)
             else:
-                classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
+                classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels, gamma)
                 save_classifier(classifier, classifier_file)
 
             print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
