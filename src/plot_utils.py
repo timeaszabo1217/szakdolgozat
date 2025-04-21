@@ -9,7 +9,7 @@ def plot_confusion_matrix(cm, method, comp, output_dir):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=display_labels)
 
     fig, ax = plt.subplots(figsize=(6, 5))
-    disp.plot(ax=ax, cmap='Blues', colorbar=False)
+    disp.plot(ax=ax, cmap='Greens', colorbar=False)
     plt.title(f'Confusion Matrix - {method.upper()} - {comp}')
 
     filename = f'test_{method}_confusion_matrix_{comp}.png'
@@ -21,7 +21,7 @@ def plot_confusion_matrix(cm, method, comp, output_dir):
 
 def plot_classification_report(report_text, method, comp, output_dir):
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.text(0.01, 0.05, report_text, {'fontsize': 10}, fontproperties='monospace')
+    ax.text(0.01, 0.05, report_text, {'fontsize': 9}, fontproperties='consolas')
     ax.axis('off')
     plt.title(f'Classification Report - {method.upper()} - {comp}')
     filename = f'test_{method}_classification_report_{comp}.png'
@@ -32,7 +32,7 @@ def plot_classification_report(report_text, method, comp, output_dir):
 def plot_metrics(accuracy, recall, method, comp, output_dir, test=False):
     fig, ax = plt.subplots(figsize=(4, 4))
     metrics = {'Accuracy': accuracy, 'Recall': recall}
-    ax.bar(metrics.keys(), metrics.values(), color=['purple', 'green'])
+    ax.bar(metrics.keys(), metrics.values(), color=['mediumpurple', 'darkseagreen'])
     ax.set_ylim(0, 1)
     ax.set_ylabel('Score')
 
@@ -52,8 +52,8 @@ def plot_roc_curve(y_test, y_pred_prob, method, comp, output_file):
     roc_auc = auc(fpr, tpr)
 
     plt.figure()
-    plt.plot(fpr, tpr, color='purple', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.plot(fpr, tpr, color='mediumpurple', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
+    plt.plot([0, 1], [0, 1], color='darkslateblue', lw=2, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
@@ -71,7 +71,7 @@ def plot_data_distribution(labels, title, output_file):
     unique, counts = np.unique(labels, return_counts=True)
     print(f"Unique labels: {unique}, Counts: {counts}")
     plt.figure()
-    plt.bar(unique, counts, color=['purple', 'green'])
+    plt.bar(unique, counts, color=['mediumpurple', 'darkseagreen'])
     plt.xlabel('Classes')
     plt.ylabel('Number of Samples')
     plt.title(title)
