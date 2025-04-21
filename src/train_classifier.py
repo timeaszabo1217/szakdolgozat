@@ -82,6 +82,10 @@ def process_features(methods, components, results_dir, metrics_dir, plots_dir):
                 classifier, accuracy, recall, X_train, X_test, y_train, y_test = train_and_evaluate(features, labels)
                 save_classifier(classifier, classifier_file)
 
+            C_value = classifier.get_params()['svm__C']
+            gamma_value = classifier.get_params()['svm__gamma']
+            print(f'{method.upper()} ({comp}) C: {C_value}, gamma: {gamma_value}')
+
             print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
             print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
