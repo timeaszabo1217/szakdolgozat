@@ -32,8 +32,8 @@ def evaluate_classifier(images, labels, methods, components, classifier_dir, plo
             accuracy = accuracy_score(labels, predictions)
             recall = recall_score(labels, predictions, pos_label=1)
 
-            print(f'{method.upper()} Accuracy for {comp}: {accuracy * 100: .2f}%')
-            print(f'{method.upper()} Recall for {comp}: {recall * 100: .2f}%')
+            print(f'{method.upper()} ({comp}) Accuracy: {accuracy * 100: .2f}%')
+            print(f'{method.upper()} ({comp}) Recall: {recall * 100: .2f}%')
 
             cm = confusion_matrix(labels, predictions)
 
