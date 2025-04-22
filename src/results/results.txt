@@ -1,0 +1,880 @@
+LBP (CbCr) classification results:
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.56%
+Recall rate:  35.74%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  55.33%
+Recall rate:  42.58%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.64%
+Recall rate:  41.99%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.82%
+Recall rate:  54.10%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  62.18%
+Recall rate:  39.65%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.60%
+Recall rate:  15.04%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.61%
+Recall rate:  65.82%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  60.67%
+Recall rate:  67.19%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  59.08%
+Recall rate:  67.58%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.04%
+Recall rate:  35.35%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  53.98%
+Recall rate:  42.77%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.17%
+Recall rate:  42.58%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.90%
+Recall rate:  54.49%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  63.85%
+Recall rate:  40.23%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  59.24%
+Recall rate:  17.38%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.13%
+Recall rate:  62.89%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  60.91%
+Recall rate:  66.41%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  60.59%
+Recall rate:  67.58%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  60.11%
+Recall rate:  35.35%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.96%
+Recall rate:  44.73%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.37%
+Recall rate:  46.29%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  63.77%
+Recall rate:  58.98%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  62.42%
+Recall rate:  36.91%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.76%
+Recall rate:  16.80%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.76%
+Recall rate:  70.90%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  62.10%
+Recall rate:  66.99%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.26%
+Recall rate:  67.58%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.20%
+Recall rate:  35.55%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  54.14%
+Recall rate:  43.16%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.45%
+Recall rate:  42.19%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  64.33%
+Recall rate:  59.38%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  61.62%
+Recall rate:  37.30%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  60.27%
+Recall rate:  18.75%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.93%
+Recall rate:  67.97%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  59.00%
+Recall rate:  66.41%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.34%
+Recall rate:  66.80%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.92%
+Recall rate:  34.38%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.13%
+Recall rate:  43.75%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.32%
+Recall rate:  43.36%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  60.99%
+Recall rate:  55.47%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  61.39%
+Recall rate:  37.11%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.44%
+Recall rate:  15.62%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.68%
+Recall rate:  70.51%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  61.62%
+Recall rate:  66.02%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  61.78%
+Recall rate:  68.36%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  55.73%
+Recall rate:  31.64%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  54.22%
+Recall rate:  39.84%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.45%
+Recall rate:  45.12%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.10%
+Recall rate:  55.66%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  60.59%
+Recall rate:  34.77%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  59.00%
+Recall rate:  14.45%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.21%
+Recall rate:  64.06%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  58.20%
+Recall rate:  64.65%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  58.20%
+Recall rate:  63.09%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.60%
+Recall rate:  34.57%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.37%
+Recall rate:  45.51%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.64%
+Recall rate:  44.34%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  62.26%
+Recall rate:  58.59%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  63.54%
+Recall rate:  40.04%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  60.51%
+Recall rate:  17.97%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.29%
+Recall rate:  65.82%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  60.27%
+Recall rate:  67.19%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  61.78%
+Recall rate:  68.36%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.28%
+Recall rate:  36.13%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.32%
+Recall rate:  46.09%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.09%
+Recall rate:  44.14%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  63.14%
+Recall rate:  56.64%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  63.30%
+Recall rate:  37.70%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.68%
+Recall rate:  14.65%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  55.65%
+Recall rate:  65.62%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  59.08%
+Recall rate:  66.02%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  61.62%
+Recall rate:  66.21%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.77%
+Recall rate:  32.81%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  54.62%
+Recall rate:  41.99%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.48%
+Recall rate:  44.34%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  64.65%
+Recall rate:  56.05%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  62.02%
+Recall rate:  36.52%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.92%
+Recall rate:  13.48%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  56.13%
+Recall rate:  68.16%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  59.71%
+Recall rate:  63.87%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  61.46%
+Recall rate:  66.21%
+
+LBP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.40%
+Recall rate:  33.98%
+
+LBP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  52.07%
+Recall rate:  41.41%
+
+LBP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=100, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=100, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 100, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=100, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  58.12%
+Recall rate:  42.97%
+
+LTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  65.45%
+Recall rate:  58.40%
+
+LTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  62.02%
+Recall rate:  39.06%
+
+LTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=0.1, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 0.1, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=0.1, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.40%
+Recall rate:  14.26%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.1, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.1, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.1,
+                     probability=True))])
+Accuracy:  57.64%
+Recall rate:  64.84%
+
+FFT_ELTP (Cb) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', gamma=0.2, probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 0.2, 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', gamma=0.2,
+                     probability=True))])
+Accuracy:  61.07%
+Recall rate:  68.95%
+
+FFT_ELTP (Cr) classification results: 
+Number of images: 12560
+Best parameters: {'memory': None, 'steps': [('scaler', StandardScaler()), ('svm', SVC(C=1000, class_weight='balanced', probability=True))], 'transform_input': None, 'verbose': False, 'scaler': StandardScaler(), 'svm': SVC(C=1000, class_weight='balanced', probability=True), 'scaler__copy': True, 'scaler__with_mean': True, 'scaler__with_std': True, 'svm__C': 1000, 'svm__break_ties': False, 'svm__cache_size': 200, 'svm__class_weight': 'balanced', 'svm__coef0': 0.0, 'svm__decision_function_shape': 'ovr', 'svm__degree': 3, 'svm__gamma': 'scale', 'svm__kernel': 'rbf', 'svm__max_iter': -1, 'svm__probability': True, 'svm__random_state': None, 'svm__shrinking': True, 'svm__tol': 0.001, 'svm__verbose': False}
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1000, class_weight='balanced', probability=True))])
+Accuracy:  59.39%
+Recall rate:  61.72%
+
