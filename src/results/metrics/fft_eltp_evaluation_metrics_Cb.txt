@@ -1,2 +1,0 @@
-Accuracy:  61.07%
-Recall:  68.95%
