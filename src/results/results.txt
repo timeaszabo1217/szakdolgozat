@@ -28,3 +28,63 @@ Accuracy:  55.49%
 Recall rate:  64.52%
 F1-score:  54.62%
 
+LTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  48.55%
+Recall rate:  21.51%
+F1-score:  45.00%
+
+LTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  51.45%
+Recall rate:  21.51%
+F1-score:  47.21%
+
+LTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  47.98%
+Recall rate:  20.43%
+F1-score:  44.20%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  56.07%
+Recall rate:  56.99%
+F1-score:  55.95%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  52.60%
+Recall rate:  59.14%
+F1-score:  52.02%
+
+FFT_ELTP (CbCr) classification results: 
+Number of images: 1721
+Model type: Pipeline(steps=[('scaler', StandardScaler()),
+                ('svm',
+                 SVC(C=1, class_weight='balanced', gamma=0.3225,
+                     probability=True))])
+Accuracy:  58.96%
+Recall rate:  65.59%
+F1-score:  58.40%
+
