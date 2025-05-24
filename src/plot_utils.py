@@ -1,22 +1,27 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from sklearn.metrics import roc_curve, auc, ConfusionMatrixDisplay
 
 
-def plot_confusion_matrix(cm, method, comp, output_dir):
+def plot_confusion_matrix(cm, method, comp, output_file, test=False):
     display_labels = ['Authentic', 'Tampered']
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=display_labels)
+
+    colors = ['#FFFFFF', '#745DA1']
+    cmap = mcolors.LinearSegmentedColormap.from_list("custom_purple", colors)
 
     fig, ax = plt.subplots(figsize=(6, 5))
-    disp.plot(ax=ax, cmap='Greens', colorbar=False)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=display_labels)
+    disp.plot(ax=ax, cmap=cmap, colorbar=False)
+
     plt.title(f'Confusion Matrix - {method.upper()} - {comp}')
 
-    filename = f'test_{method}_confusion_matrix_{comp}.png'
-    output_path = os.path.join(output_dir, filename)
-    plt.savefig(output_path)
+    # prefix = 'test_' if test else ''
+    # filename = f'{prefix}{method}_confusion_matrix_{comp}.png'
+    plt.savefig(output_file)
     plt.close()
-    print(f"Confusion matrix saved to: {output_path}")
+    print(f"Confusion matrix saved to: {output_file}")
 
 
 def plot_classification_report(report_text, method, comp, output_dir):
@@ -32,7 +37,8 @@ def plot_classification_report(report_text, method, comp, output_dir):
 def plot_metrics(accuracy, recall, method, comp, output_dir, test=False):
     fig, ax = plt.subplots(figsize=(4, 4))
     metrics = {'Accuracy': accuracy, 'Recall': recall}
-    ax.bar(metrics.keys(), metrics.values(), color=['mediumpurple', 'darkseagreen'])
+    colors = ['#745DA1', '#5F9F5F']
+    ax.bar(metrics.keys(), metrics.values(), color=colors)
     ax.set_ylim(0, 1)
     ax.set_ylabel('Score')
 
@@ -52,8 +58,8 @@ def plot_roc_curve(y_test, y_pred_prob, method, comp, output_file):
     roc_auc = auc(fpr, tpr)
 
     plt.figure()
-    plt.plot(fpr, tpr, color='mediumpurple', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
-    plt.plot([0, 1], [0, 1], color='darkslateblue', lw=2, linestyle='--')
+    plt.plot(fpr, tpr, color='#745DA1', lw=2, label=f'ROC curve (area = {roc_auc: .2f})')
+    plt.plot([0, 1], [0, 1], color='#2D2D2D', lw=2, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
@@ -71,7 +77,7 @@ def plot_data_distribution(labels, title, output_file):
     unique, counts = np.unique(labels, return_counts=True)
     print(f"Unique labels: {unique}, Counts: {counts}")
     plt.figure()
-    plt.bar(unique, counts, color=['mediumpurple', 'darkseagreen'])
+    plt.bar(unique, counts, color=['#745DA1', '#5F9F5F'])
     plt.xlabel('Classes')
     plt.ylabel('Number of Samples')
     plt.title(title)

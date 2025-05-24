@@ -8,16 +8,25 @@ from numpy.fft import fft2, fftshift
 def convert_to_ycbcr(image_path):
     image = cv2.imread(image_path)
     if image is None:
-        print(f"Warning: Could not read image {image_path} image")
+        print(f"Warning: Could not read image {image_path}")
         return None
-
-    ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
+    try:
+        ycbcr_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
+    except Exception as e:
+        print(f"Warning: Could not convert image {image_path} to YCrCb: {e}")
+        return None
     return ycbcr_image
 
 
-def get_chrominance_components(image):
-    ycbcr_image = convert_to_ycbcr(image)
-    Y, Cb, Cr = cv2.split(ycbcr_image)
+def get_chrominance_components(image_path):
+    ycbcr_image = convert_to_ycbcr(image_path)
+    if ycbcr_image is None:
+        return None, None
+    try:
+        Y, Cb, Cr = cv2.split(ycbcr_image)
+    except Exception as e:
+        print(f"Warning: Could not split YCrCb channels for {image_path}: {e}")
+        return None, None
     return Cb, Cr
 
 
@@ -34,32 +43,27 @@ def apply_fft(image):
     return log_magnitude / max_val
 
 
-def split_into_overlapping_blocks(image, block_size=(3, 3), overlap_ratio=0.5):
-    blocks = []
+def split_into_overlapping_blocks(image, block_size=(3, 3), num_blocks=(254, 382)):  # 97028
     h, w = image.shape
     block_h, block_w = block_size
+    num_blocks_h, num_blocks_w = num_blocks
 
-    step_h = max(1, int(block_h * (1 - overlap_ratio)))
-    step_w = max(1, int(block_w * (1 - overlap_ratio)))
+    step_h = (h - block_h) / (num_blocks_h - 1) if num_blocks_h > 1 else 1
+    step_w = (w - block_w) / (num_blocks_w - 1) if num_blocks_w > 1 else 1
 
-    for i in range(0, h - block_h + 1, step_h):
-        for j in range(0, w - block_w + 1, step_w):
-            block = image[i:i + block_h, j:j + block_w]
+    blocks = []
+    for i in range(num_blocks_h):
+        for j in range(num_blocks_w):
+            start_i = int(round(i * step_h))
+            start_j = int(round(j * step_w))
+
+            if start_i + block_h > h:
+                start_i = h - block_h
+            if start_j + block_w > w:
+                start_j = w - block_w
+
+            block = image[start_i:start_i + block_h, start_j:start_j + block_w]
             blocks.append(block)
-
-    if h % step_h != 0:
-        for j in range(0, w - block_w + 1, step_w):
-            block = image[h - block_h:h, j:j + block_w]
-            blocks.append(block)
-
-    if w % step_w != 0:
-        for i in range(0, h - block_h + 1, step_h):
-            block = image[i:i + block_h, w - block_w:w]
-            blocks.append(block)
-
-    if h % step_h != 0 and w % step_w != 0:
-        block = image[h - block_h:h, w - block_w:w]
-        blocks.append(block)
 
     return blocks
 
@@ -68,17 +72,31 @@ def preprocess_images(image_dir):
     images, labels = [], []
 
     subdirs = ['Au', 'Tp']
-    subdir_exists = any(subdir in os.listdir(image_dir) for subdir in subdirs)
+    subdir_exists = all(os.path.isdir(os.path.join(image_dir, subdir)) for subdir in subdirs)
 
-    for subdir in (subdirs if subdir_exists else [image_dir]):
-        for file in os.listdir(os.path.join(image_dir, subdir) if subdir_exists else [image_dir]):
-            if file.endswith(('.jpg', '.png', '.tif')):
-                file_path = os.path.join(image_dir, subdir, file) if subdir_exists else os.path.join(image_dir, file)
+    if subdir_exists:
+        for subdir in subdirs:
+            folder_path = os.path.join(image_dir, subdir)
+            files = os.listdir(folder_path)
+            for file in files:
+                if file.lower().endswith('.jpg'):  # (('.jpeg', '.png', '.tif'))
+                    file_path = os.path.join(folder_path, file)
+                    print(f"Processing file: {file_path}")
+                    Cb, Cr = get_chrominance_components(file_path)
+                    if Cb is not None and Cr is not None:
+                        images.append((Cb, Cr))
+                        label = 0 if subdir == 'Au' else 1
+                        labels.append(label)
+    else:
+        files = os.listdir(image_dir)
+        for file in files:
+            if file.lower().endswith('.jpg'):  # (('.jpeg', '.png', '.tif'))
+                file_path = os.path.join(image_dir, file)
                 print(f"Processing file: {file_path}")
                 Cb, Cr = get_chrominance_components(file_path)
                 if Cb is not None and Cr is not None:
                     images.append((Cb, Cr))
-                    label = 0 if 'Au' in (subdir if subdir_exists else file) else 1
+                    label = 0 if 'Au' in file else 1
                     labels.append(label)
 
     print(f"Number of images: {len(images)}, Number of labels: {len(labels)}")
@@ -97,7 +115,7 @@ def load_preprocessed_data(file_path):
 
 
 if __name__ == "__main__":
-    revised_dir = os.path.abspath('../data/CASIA2.0_revised')
+    data_dir = os.path.abspath('../data/CASIA1.0')
     results_dir = 'results'
     os.makedirs(results_dir, exist_ok=True)
 
@@ -107,5 +125,5 @@ if __name__ == "__main__":
         print("Preprocessed data already exists. Skipping preprocessing.")
     else:
         print("Processing images")
-        images, labels = preprocess_images(revised_dir)
+        images, labels = preprocess_images(data_dir)
         save_preprocessed_data(images, labels, output_file)

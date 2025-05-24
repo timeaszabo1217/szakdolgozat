@@ -37,7 +37,7 @@ def evaluate_classifier(images, labels, methods, components, classifier_dir, plo
 
             cm = confusion_matrix(labels, predictions)
 
-            plot_confusion_matrix(cm, method, comp, plots_dir)
+            plot_confusion_matrix(cm, method, comp, plots_dir, test=True)
             plot_classification_report(report, method, comp, plots_dir)
             plot_metrics(accuracy, recall, method, comp, plots_dir, test=True)
 
@@ -72,7 +72,7 @@ def test_classifier(dataset_dir, methods, components, result_file, classifier_di
 
 
 if __name__ == "__main__":
-    test_dir = os.path.abspath('../data/CASIA1.0')
+    test_dir = os.path.abspath('../data/CASIA2.0_revised')
     results_dir = 'results'
     os.makedirs(results_dir, exist_ok=True)
     plots_dir = os.path.join(results_dir, 'plots')

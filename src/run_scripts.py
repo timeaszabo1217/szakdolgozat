@@ -8,7 +8,7 @@ RESET = "\033[0m"
 
 start_time = time.time()
 
-scripts = ["preprocess.py", "feature_extraction.py", "train_classifier.py", "test_classifier.py"]
+scripts = ["preprocess.py", "feature_extraction.py", "train_classifier.py"]  # , "test_classifier.py"
 
 for script in scripts:
     print(f"{PURPLE}➜ Running {script}...{RESET}", flush=True)

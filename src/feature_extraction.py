@@ -8,21 +8,17 @@ from preprocess import load_preprocessed_data, split_into_overlapping_blocks, ap
 def calculate_lbp(image):
     image = image.astype(np.float32)
     lbp_image = np.zeros_like(image, dtype=np.float32)
-
     for x in range(1, image.shape[0] - 1):
         for y in range(1, image.shape[1] - 1):
             g_t = image[x, y]
             binary_pattern = []
-
             neighbors = [
                 image[x - 1, y - 1], image[x - 1, y], image[x - 1, y + 1],
                 image[x, y + 1], image[x + 1, y + 1], image[x + 1, y],
                 image[x + 1, y - 1], image[x, y - 1]
             ]
-
             for g_x in neighbors:
                 binary_pattern.append(1 if g_x >= g_t else 0)
-
             lbp_image[x, y] = sum([binary_pattern[i] * (2 ** i) for i in range(8)])  # type: ignore
 
     return lbp_image
@@ -31,18 +27,15 @@ def calculate_lbp(image):
 def calculate_ltp(image, th=5):
     image = image.astype(np.float32)
     ltp_image = np.zeros_like(image, dtype=np.float32)
-
     for x in range(1, image.shape[0] - 1):
         for y in range(1, image.shape[1] - 1):
             g_t = image[x, y]
             ternary_pattern = []
-
             neighbors = [
                 image[x - 1, y - 1], image[x - 1, y], image[x - 1, y + 1],
                 image[x, y + 1], image[x + 1, y + 1], image[x + 1, y],
                 image[x + 1, y - 1], image[x, y - 1]
             ]
-
             for g_x in neighbors:
                 if g_x >= g_t + th:
                     ternary_pattern.append(1)
@@ -50,7 +43,6 @@ def calculate_ltp(image, th=5):
                     ternary_pattern.append(-1)
                 else:
                     ternary_pattern.append(0)
-
             ltp_image[x, y] = sum([ternary_pattern[i] * (3 ** i) for i in range(8)])  # type: ignore
 
     return ltp_image
@@ -156,7 +148,7 @@ def save_features(batch_features, batch_labels, output_file, append=False):
 def load_features(file_path):
     features = []
     labels = []
-    count = 0
+    loaded = 0
 
     with open(file_path, 'rb') as file:
         while True:
@@ -164,9 +156,9 @@ def load_features(file_path):
                 entry = joblib.load(file)
                 features.append(entry['feature'])
                 labels.append(entry['label'])
-                count += 1
-                if count % 200 == 0:
-                    print(f"Loaded {count} feature")
+                loaded += 1
+                if loaded % 200 == 0:
+                    print(f"Loaded {loaded} feature")
             except EOFError:
                 break
 
@@ -177,13 +169,10 @@ def load_features(file_path):
 if __name__ == "__main__":
     results_dir = 'results'
     os.makedirs(results_dir, exist_ok=True)
-
     preprocessed_data = os.path.join(results_dir, 'preprocessed_data.joblib')
     images, labels = load_preprocessed_data(preprocessed_data)
-
     methods = ['lbp', 'ltp', 'fft_eltp']
-    components = ['CbCr', 'Cb', 'Cr']
-
+    components = ['CbCr']  # , 'Cb', 'Cr'
     for method in methods:
         output_file_base = os.path.join(results_dir, f"{method}_features_labels.joblib")
         extract_features(images, labels, [method], components, output_file_base, batch_size=200)
