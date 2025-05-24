@@ -1,5 +1,3 @@
-❕Még folyamatban lévő projekt.
-
 # Szakdolgozat
 
 Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet használatával különböző képfeldolgozási és gépi tanulási technikákat vizsgál a manipulált képek felismerésére, a **Detection of Digital Image Forgery using Fast FourierTransform and Local Features** nevű kutatásra alapozva. A kutatás célja a digitális képhamisítás kimutatása Fast Fourier-transzformáció (FFT) és helyi textúra-leírók (LBP, LTP és ELTP) alkalmazásával.
@@ -20,9 +18,9 @@ Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA2.0** adatkészlet ha
 A projekt célja egy gépi tanulási modell kifejlesztése, amely képes azonosítani a módosított képeket.
 
 A projekt az alábbi fő lépéseket tartalmazza:
-1. Az adatok előfeldolgozása és jellemzők kinyerése
-2. A modell betanítása és értékelése
-3. Az osztályozó tesztelése új adatkészleteken
+1. Az adatok előfeldolgozása
+2. A képjellemzők kinyerése
+3. A modell betanítása és kiértékelése
 
 ## Követelmények
 A projekt futtatásához a következő könyvtárak és eszközök szükségesek:
@@ -39,9 +37,9 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
    ```
    
 2. **Adatok Letöltése**:
-   [CASIA2.0 adatkészlet](https://paperswithcode.com/dataset/casia-v2) letöltése, és elhelyezése a `data/` könyvtárban.
+   [CASIA1.0 adatkészlet]([https://paperswithcode.com/dataset/casia-v2](https://www.kaggle.com/datasets/sophatvathana/casia-dataset)) letöltése, és elhelyezése a `data/` könyvtárban.
    
-   A projekt már tartalmazza az adatkészlet `revised` verzióját.
+   A projekt már tartalmazza az adatkészletet.
 
 ## Futtatás
 
@@ -66,11 +64,6 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
    ```bash
    python src/train_classifier.py
    ```
-   
-4. **Osztályozó Tesztelése**: Futtasuk a `test_classifier.py` scriptet az új adatkészleten történő teszteléshez:
-   ```bash
-   python src/test_classifier.py
-   ```
 
 ## Eredmények
 A betanított modell teljesítményének értékeléséhez a következő metrikákat használom:
@@ -79,47 +72,34 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 
 **Visszahívás (Recall)**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
 
-Az eredményeket a `results` mappában tároljuk:
-
-- `{method}_evaluation_metrics.txt`: A modell teljesítményének metrikái az adott módszer alapján
-
-- `{method}_metrics_plot.png`: A teljesítménymutatók grafikonja az adott módszer alapján
-
-- `results.txt`: Az összesített eredmények a `revised` adatkészleten alapján
-
-- `test_results.txt`: Az összesített eredmények a `test` adatkészlet alapján
+Az eredményeket a `results` mappában tároljuk.
 
 ## Következtetések
-További munkák és kutatások szükségesek a modell pontosságának növelése érdekében.
+További munkák és kutatások lehetnek szükségesek a modell pontosságának növelése érdekében.
 
 ## Fájlstruktúra
 A projekt könyvtárszerkezete a következő:
 ```
 ├── data/
-│   ├── CASIA1.0/
-│   │   ├── Au/
-│   │   └── Tp/
-│   └── CASIA2.0_revised/
-│   │   ├── Au/
-│   │   └── Tp/
+│   └── CASIA1.0/
+│         ├── Au/
+│         └── Tp/
 ├── src/
 │   ├── results/
+│   │   ├── metrics/
+│   │   │   └── evaluation_metrics.txt
 │   │   ├── plots/
 │   │   │   ├── data_distribution.png
+│   │   │   ├── confusion_matrix.png
 │   │   │   ├── metrics_plot.png
-│   │   │   ├── roc_curve.png
-│   │   │   ├── learning_curve.png
-│   │   ├── metrics/
-│   │   │   ├── evaluation_metrics.txt
+│   │   │   └── roc_curve.png
 │   │   ├── classifier.joblib
 │   │   ├── features_labels.joblib
 │   │   ├── preprocessed_data.joblib
-│   │   ├── results.txt
-│   │   └── test_results.txt
+│   │   └── results.txt
 │   ├── feature_extraction.py
 │   ├── preprocess.py
 │   ├── run_scripts.py
-│   ├── test_classifier.py
 │   └── train_classifier.py
 ├── .gitattributes
 ├── .gitignore
@@ -131,7 +111,7 @@ Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gya
 
 **Adat Betöltési Hiba**:
 
-Győződjünk meg róla, hogy az `data/` könyvtárban találhatóak a szükséges `Au` és `Tp` mappák, és a fájlnevek helyesen vannak megadva.
+Győződjünk meg róla, hogy az `data/` mappában találhatóak a szükséges `Au` és `Tp` mappák, és a fájlnevek helyesen vannak megadva.
 
 **Kép Konvertálási Hiba**:
 
@@ -147,7 +127,7 @@ Ha a vituális környezetben nem fut le megfeleleően, töröljük és hozzuk ú
 
 **Modell Betöltési Hiba**:
 
-Győződjünk meg róla, hogy a `classifier.pkl` fájl elérhető a `results/` könyvtárban, és helyesen van elmentve.
+Győződjünk meg róla, hogy a `classifier.pkl` fájl elérhető a `results/` mappában, és helyesen van elmentve.
 
 **Memória Túlcsordulás, Lassú Futás Hiba**:
 
