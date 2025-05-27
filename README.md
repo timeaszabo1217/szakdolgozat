@@ -27,17 +27,17 @@ A projekt futtatásához a következő könyvtárak és eszközök szükségesek
 - Python 3.x
 - OpenCV
 - NumPy
-- Matplotlib
 - Scikit-learn
+- Matplotlib
 
 ## Telepítés
 1. **Könyvtárak Telepítése**: Szükséges Python könyvtárak telepítése az alábbi parancs futtatásával:
    ```bash
-   pip install opencv-python numpy matplotlib scikit-learn
+   pip install opencv-python numpy scikit-learn matplotlib
    ```
    
 2. **Adatok Letöltése**:
-   [CASIA1.0 adatkészlet]([https://paperswithcode.com/dataset/casia-v2](https://www.kaggle.com/datasets/sophatvathana/casia-dataset)) letöltése, és elhelyezése a `data/` könyvtárban.
+   [CASIA1.0 adatkészlet](https://www.kaggle.com/datasets/sophatvathana/casia-dataset) letöltése, és elhelyezése a `data/` könyvtárban.
    
    A projekt már tartalmazza az adatkészletet.
 
