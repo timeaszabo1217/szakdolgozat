@@ -1,3 +1,6 @@
+
+<img width="1920" height="1080" alt="szakdoga" src="https://github.com/user-attachments/assets/a956fc87-6c11-4d25-94cc-162e296a82f3" />
+
 # Szakdolgozat
 
 Ez a projekt a szakdolgozatomhoz készült, amely a **CASIA1.0** adatkészlet használatával különböző képfeldolgozási és gépi tanulási technikákat vizsgál a manipulált képek felismerésére, a **Detection of Digital Image Forgery using Fast FourierTransform and Local Features** nevű kutatásra alapozva. A kutatás célja a digitális képhamisítás kimutatása Fast Fourier-transzformáció (FFT) és helyi textúra-leírók (LBP, LTP és ELTP) alkalmazásával.
