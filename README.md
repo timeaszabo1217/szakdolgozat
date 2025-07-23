@@ -1,5 +1,5 @@
 
-<img width="1920" height="1080" alt="szakdoga" src="https://github.com/user-attachments/assets/a956fc87-6c11-4d25-94cc-162e296a82f3" />
+<img width="1920" height="665" alt="szakdoga_wide" src="https://github.com/user-attachments/assets/6de68081-b4fb-432b-b35c-93291273eefa" />
 
 # Szakdolgozat
 
