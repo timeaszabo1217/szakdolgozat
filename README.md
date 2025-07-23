@@ -1,5 +1,5 @@
 
-<img alt="szakdolgozat" src="https://github.com/user-attachments/assets/6de68081-b4fb-432b-b35c-93291273eefa" />
+<img alt="szakdolgozat" src="https://github.com/user-attachments/assets/8363fefc-825f-4a6c-9181-8f56f87406ec" />
 
 # Szakdolgozat
 
@@ -24,6 +24,12 @@ A projekt az alábbi fő lépéseket tartalmazza:
 1. Az adatok előfeldolgozása
 2. A képjellemzők kinyerése
 3. A modell betanítása és kiértékelése
+
+**Az 1. módszer folyamatai:**
+<img alt="lepesek1" src="https://github.com/user-attachments/assets/ebdefab5-197f-40d4-b6bc-a40771778034" />
+
+**A 2. módszer folyamatai:**
+<img alt="lepesek2" src="https://github.com/user-attachments/assets/9bfac8e3-4191-4180-b3f4-72dd633abbb8" />
 
 ## Követelmények
 A projekt futtatásához a következő könyvtárak és eszközök szükségesek:
@@ -75,10 +81,12 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 
 **Visszahívás (Recall)**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
 
+<img alt="eredmenyek" src="https://github.com/user-attachments/assets/c42e41bf-b44f-492e-b155-fd5a1022d368" />
+
 Az eredményeket a `results` mappában tároljuk.
 
 ## Következtetések
-További munkák és kutatások lehetnek szükségesek a modell pontosságának növelése érdekében.
+Az eredmények alapján az FFT-ELTP módszerrel a modell közepesen hatékonyan ismerte fel és  különböztette meg az eltérő textúrákat. További munka lehet szükséges a modell fejlesztéséhez – például többféle jellemző kivonása, más tanító-tesztadat arány, másik adatkészlet (CASIA2.0) használata segíthet.
 
 ## Fájlstruktúra
 A projekt könyvtárszerkezete a következő:
