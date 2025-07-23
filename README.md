@@ -111,11 +111,11 @@ Ha problémák merülnek fel a scriptek futtatása közben, itt van néhány gya
 
 **Adat Betöltési Hiba**:
 
-Győződjünk meg róla, hogy az `data/` mappában találhatóak a szükséges `Au` és `Tp` mappák, és a fájlnevek helyesen vannak megadva.
+Győződjünk meg róla, hogy a `data/` mappában találhatóak a szükséges `Au` és `Tp` mappák, és a fájlnevek helyesen vannak megadva.
 
 **Kép Konvertálási Hiba**:
 
-Ellenőrizzük, hogy az `OpenCV` megfelelően telepítve van, és a képek elérhetők-e.
+Ellenőrizzük, hogy az `OpenCV` megfelelően telepítve van és a képek elérhetők.
 
 **Import Hiba**:
 
@@ -123,11 +123,11 @@ Ha valamely csomag nem megfelelően töltödött le, próbáljuk frissíteni, va
 
 **Virtuális Környezet Hiba**:
 
-Ha a vituális környezetben nem fut le megfeleleően, töröljük és hozzuk újra létre a `venv`-et.
+Ha a virtuális környezetben nem fut le megfeleleően, töröljük és hozzuk újra létre a `venv`-et.
 
 **Modell Betöltési Hiba**:
 
-Győződjünk meg róla, hogy a `classifier.pkl` fájl elérhető a `results/` mappában, és helyesen van elmentve.
+Győződjünk meg róla, hogy a `classifier.joblib` fájl elérhető a `results/` mappában, és helyesen van elmentve.
 
 **Memória Túlcsordulás, Lassú Futás Hiba**:
 
