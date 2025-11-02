@@ -25,12 +25,6 @@ A projekt az alábbi fő lépéseket tartalmazza:
 2. A képjellemzők kinyerése
 3. A modell betanítása és kiértékelése
 
-**Az 1. módszer folyamatai:**
-<img alt="lepesek1" src="https://github.com/user-attachments/assets/ebdefab5-197f-40d4-b6bc-a40771778034" />
-
-**A 2. módszer folyamatai:**
-<img alt="lepesek2" src="https://github.com/user-attachments/assets/9bfac8e3-4191-4180-b3f4-72dd633abbb8" />
-
 ## Követelmények
 A projekt futtatásához a következő könyvtárak és eszközök szükségesek:
 - Python 3.x
@@ -80,8 +74,6 @@ A betanított modell teljesítményének értékeléséhez a következő metrik�
 **Pontosság (Accuracy)**: Az összes helyes előrejelzés aránya az összes előrejelzéshez képest.
 
 **Visszahívás (Recall)**: A helyesen előrejelzett pozitív esetek aránya az összes tényleges pozitív esethez képest.
-
-<img alt="eredmenyek" src="https://github.com/user-attachments/assets/c42e41bf-b44f-492e-b155-fd5a1022d368" />
 
 Az eredményeket a `results` mappában tároljuk.
 
